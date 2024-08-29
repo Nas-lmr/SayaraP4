@@ -32,14 +32,13 @@ const router = createBrowserRouter([
         element: <ProfilPage />,
       },
       {
-        path: "/reservation",
+        path: "/trajet",
         element: <BookingPage />,
-        children: [
-          {
-            path: "/reservation/nouveau-trajet",
-            element: <NewJourneyPage />,
-          },
-        ],
+      },
+
+      {
+        path: "/trajet/nouveau-trajet",
+        element: <NewJourneyPage />,
       },
     ],
   },

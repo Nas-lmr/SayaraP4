@@ -74,10 +74,12 @@ export default function SearchForm() {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#321F47",
+                  fontFamily: "Montserrat",
                 },
                 "& .MuiInputLabel-root.Mui-focused": {
                   color: "#321F47",
                 },
+                fontFamily: "Montserrat",
               }}
               variant="standard"
               label="Ville de départ"
@@ -110,10 +112,12 @@ export default function SearchForm() {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#321F47",
+                  fontFamily: "Montserrat",
                 },
                 "& .MuiInputLabel-root.Mui-focused": {
                   color: "#321F47",
                 },
+                fontFamily: "Montserrat",
               }}
               variant="standard"
               label="Ville d'arrivée"
@@ -146,6 +150,7 @@ export default function SearchForm() {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#321F47",
+                  fontFamily: "Montserrat",
                 },
                 "& .MuiInputLabel-root.Mui-focused": {
                   color: "#321F47",
@@ -183,6 +188,7 @@ export default function SearchForm() {
                     {
                       borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
                     },
+                  fontFamily: "Montserrat",
                 }}
               >
                 Passager

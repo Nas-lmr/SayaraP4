@@ -11,9 +11,11 @@ export default function SearchJourneyBtn() {
         backgroundColor: "#321F47",
         color: "#FDC55E",
         borderRadius: "0 0 1rem 1rem",
+        fontFamily: "Montserrat",
+        textTransform: "none",
       }}
     >
-      Réservez un trajet
+      Rechercher un trajet
     </Button>
   );
 }
