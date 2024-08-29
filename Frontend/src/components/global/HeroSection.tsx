@@ -14,7 +14,7 @@ export default function HeroSection() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
       }}
     >
       <Typography

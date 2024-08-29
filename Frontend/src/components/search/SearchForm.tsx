@@ -2,17 +2,35 @@ import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import FlagRoundedIcon from "@mui/icons-material/FlagRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
-import { Box, Paper, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
 
 export default function SearchForm() {
   return (
-    <Box sx={{ height: "40vh", width: "80vw", zIndex: 1 }}>
+    <Box
+      sx={{
+        height: { xs: "45vh", sm: "45vh" },
+        width: { xs: "80vw", sm: "50vw" },
+        maxWidth: { xs: "80vw", sm: "50vw" },
+        zIndex: 1,
+        position: "relative",
+        bottom: "-1.5rem",
+        display: { xs: "block", md: "none" },
+      }}
+    >
       <Paper
         elevation={3}
         sx={{
           height: "100%",
-          backgroundColor: "rgba(255,255,255,45%)",
+          backgroundColor: "rgba(255,255,255,65%)",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -48,7 +66,18 @@ export default function SearchForm() {
             <TextField
               sx={{
                 width: "80%",
-                "&.MuiFormLabel-root": { color: "#321F47" },
+                "& .MuiInput-underline:before": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#321F47",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#321F47",
+                },
               }}
               variant="standard"
               label="Ville de départ"
@@ -73,7 +102,18 @@ export default function SearchForm() {
             <TextField
               sx={{
                 width: "80%",
-                color: "#321F47",
+                "& .MuiInput-underline:before": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#321F47",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#321F47",
+                },
               }}
               variant="standard"
               label="Ville d'arrivée"
@@ -98,7 +138,18 @@ export default function SearchForm() {
             <TextField
               sx={{
                 width: "80%",
-                color: "#321F47",
+                "& .MuiInput-underline:before": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#321F47",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#321F47",
+                },
               }}
               variant="standard"
               label="Date"
@@ -120,14 +171,45 @@ export default function SearchForm() {
                 color: "#321F47",
               }}
             />
-            <TextField
-              sx={{
-                width: "80%",
-                color: "#321F47",
-              }}
-              variant="standard"
-              label="Passager/s"
-            />
+
+            <FormControl variant="standard" sx={{ width: "80%" }}>
+              <InputLabel
+                sx={{
+                  color: "#321F47",
+                  "&.Mui-focused": {
+                    color: "#321F47", // Couleur du label lorsque le champ est focalisé
+                  },
+                  "& .MuiInputBase-root.MuiInput-root.MuiInput-underline :before":
+                    {
+                      borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
+                    },
+                }}
+              >
+                Passager
+              </InputLabel>
+              <Select
+                variant="standard"
+                label="Passagers"
+                sx={{
+                  width: "100%",
+
+                  "&:before": {
+                    borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
+                  },
+                  "&:after": {
+                    borderBottomColor: "#321F47", // Couleur de la bordure inférieure après le focus
+                  },
+                  "& .MuiSelect-select": {
+                    color: "#321F47", // Couleur de la valeur sélectionnée
+                  },
+                }}
+              >
+                <MenuItem>---</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </Box>
         <SearchJourneyBtn />
