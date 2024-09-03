@@ -6,7 +6,7 @@ export default function NewJourneyBtn() {
   return (
     <Fab
       component={NavLink}
-      to="/reservation/nouveau-trajet"
+      to="/trajet/nouveau-trajet"
       aria-label="add"
       sx={{
         position: "fixed",

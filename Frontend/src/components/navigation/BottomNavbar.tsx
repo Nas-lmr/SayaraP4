@@ -51,18 +51,28 @@ export default function BottomNavbar() {
         />
         <BottomNavigationAction
           component={NavLink}
-          to="/reservation"
+          to="/trajet"
           label="Trajets"
           icon={<CalendarMonthRoundedIcon fontSize="large" />}
           sx={{
             minWidth: 50,
             maxWidth: 70,
-            color: pathname === "/reservation" ? activeStyle.color : "#321F47",
+            color:
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.color
+                : "#321F47",
             backgroundColor:
-              pathname === "/reservation" ? activeStyle.backgroundColor : "",
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.backgroundColor
+                : "",
             borderRadius:
-              pathname === "/reservation" ? activeStyle.borderRadius : "",
-            height: pathname === "/reservation" ? activeStyle.height : "100%",
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.borderRadius
+                : "",
+            height:
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.height
+                : "100%",
           }}
         />
         <BottomNavigationAction

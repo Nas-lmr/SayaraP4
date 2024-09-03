@@ -29,15 +29,27 @@ export default function HeroSection() {
           color: "#321F47",
         }}
       >
-        <span style={{ fontSize: "1.25rem", fontWeight: 400 }}>
+        <span
+          style={{
+            fontSize: "1.25rem",
+            fontWeight: 400,
+            fontFamily: "Montserrat",
+          }}
+        >
           Avec SAYARA,
         </span>
         <br />
-        <span style={{ fontSize: "1.3rem", fontWeight: 500 }}>
+        <span
+          style={{
+            fontSize: "1.3rem",
+            fontWeight: 500,
+            fontFamily: "Montserrat",
+          }}
+        >
           économises et pars sans tracas !
         </span>
       </Typography>
-      <SearchForm />
+      <SearchForm onClose={() => {}} />
     </Box>
   );
 }
