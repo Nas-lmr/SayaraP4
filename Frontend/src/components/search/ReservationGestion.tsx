@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import HistoryBtn from "../buttons/HistoryBtn";
-import MyBookingBtn from "../buttons/MyBookingBtn";
+import SearchPageBtn from "../buttons/SearchPageBtn";
 
 export default function ReservationGestion() {
   return (
@@ -15,7 +14,7 @@ export default function ReservationGestion() {
           fontWeight: 600,
         }}
       >
-        Gères tes réservations:
+        Gères tes réservations
       </Typography>
       <Box
         sx={{
@@ -28,8 +27,14 @@ export default function ReservationGestion() {
           gap: "0.8rem",
         }}
       >
-        <MyBookingBtn />
-        <HistoryBtn />
+        <SearchPageBtn
+          label="Mes réservations"
+          onclick={() => console.log("Mes reservations")}
+        />
+        <SearchPageBtn
+          label="Historique"
+          onclick={() => console.log("Historique")}
+        />
       </Box>
     </>
   );

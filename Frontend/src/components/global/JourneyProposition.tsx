@@ -1,6 +1,6 @@
 import WhatshotRoundedIcon from "@mui/icons-material/WhatshotRounded";
 import { Box, Typography } from "@mui/material";
-import PropositionCard from "./PropositionCard";
+import PropositionCard from "../cards/PropositionCard";
 
 export default function JourneyProposition() {
   const trajets: [string, string][] = [
@@ -30,11 +30,12 @@ export default function JourneyProposition() {
       <Box
         sx={{
           pt: "0.5rem",
-          height: "70%",
+          height: "50%",
           width: "100%",
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "center",
+          justifyContent: "space-evenly",
+          alignItems: "center",
           gap: "0.5rem",
         }}
       >

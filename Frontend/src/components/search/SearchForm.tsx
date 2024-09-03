@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
 
-export default function SearchForm() {
+export default function SearchForm({ onClose }: { onClose: () => void }) {
   return (
     <Box
       sx={{
@@ -218,7 +218,7 @@ export default function SearchForm() {
             </FormControl>
           </Box>
         </Box>
-        <SearchJourneyBtn />
+        <SearchJourneyBtn onClose={onClose} />
       </Paper>
     </Box>
   );

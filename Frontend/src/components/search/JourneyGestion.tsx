@@ -1,7 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import CompleteJourneyBtn from "../buttons/CompleteJourneyBtn";
-import MyJourneyBtn from "../buttons/MyJourneyBtn";
-import NewSearchJourneyBtn from "../buttons/NewSearchJourneyBtn";
+import SearchPageBtn from "../buttons/SearchPageBtn";
 
 export default function JourneyGestion() {
   return (
@@ -17,7 +15,7 @@ export default function JourneyGestion() {
           fontWeight: 600,
         }}
       >
-        Gères tes trajets :
+        Gères tes trajets
       </Typography>
       <Box
         sx={{
@@ -30,9 +28,18 @@ export default function JourneyGestion() {
           gap: "0.8rem",
         }}
       >
-        <NewSearchJourneyBtn />
-        <MyJourneyBtn />
-        <CompleteJourneyBtn />
+        <SearchPageBtn
+          label="Nouveau trajet"
+          onclick={() => console.log("Nouveau trajet")}
+        />
+        <SearchPageBtn
+          label="Mes trajets"
+          onclick={() => console.log("Mes trajets")}
+        />
+        <SearchPageBtn
+          label="Mes trajets effectués"
+          onclick={() => console.log("Mes trajets effectués")}
+        />
       </Box>
     </>
   );

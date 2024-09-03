@@ -2,8 +2,20 @@ import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
+import SearchDrawer from "../drawers/SearchDrawer";
 
 export default function Searchbar() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleOpenDrawer = () => {
+    setIsDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
   return (
     <>
       <Box
@@ -45,6 +57,7 @@ export default function Searchbar() {
             borderRadius: "0.5rem 0 0 0.5rem",
             borderColor: "rgb(50,31,71,30%)",
           }}
+          onClick={handleOpenDrawer}
         >
           <Box
             sx={{
@@ -102,6 +115,7 @@ export default function Searchbar() {
         >
           <TuneRoundedIcon sx={{ color: "#321F47" }} />
         </Button>
+        <SearchDrawer isOpen={isDrawerOpen} onclose={handleCloseDrawer} />
       </Box>
     </>
   );

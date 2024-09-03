@@ -49,7 +49,7 @@ export default function HeroSection() {
           économises et pars sans tracas !
         </span>
       </Typography>
-      <SearchForm />
+      <SearchForm onClose={() => {}} />
     </Box>
   );
 }

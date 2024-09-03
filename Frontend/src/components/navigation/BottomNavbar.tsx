@@ -57,12 +57,22 @@ export default function BottomNavbar() {
           sx={{
             minWidth: 50,
             maxWidth: 70,
-            color: pathname === "/trajet" ? activeStyle.color : "#321F47",
+            color:
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.color
+                : "#321F47",
             backgroundColor:
-              pathname === "/trajet" ? activeStyle.backgroundColor : "",
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.backgroundColor
+                : "",
             borderRadius:
-              pathname === "/trajet" ? activeStyle.borderRadius : "",
-            height: pathname === "/trajet" ? activeStyle.height : "100%",
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.borderRadius
+                : "",
+            height:
+              pathname === "/trajet" || pathname === "/trajet/resultats"
+                ? activeStyle.height
+                : "100%",
           }}
         />
         <BottomNavigationAction
