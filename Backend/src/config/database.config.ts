@@ -1,5 +1,4 @@
 import { DataSourceOptions } from 'typeorm';
-import { CityEntity } from 'src/city/entity/city.entity';
 import 'dotenv/config';
 
 export const databaseConfig: DataSourceOptions = {
@@ -13,5 +12,4 @@ export const databaseConfig: DataSourceOptions = {
   synchronize: true,
 };
 
-//entities: [__dirname + '/../../*/.entity{.ts,.js}'],
 
