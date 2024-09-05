@@ -1,32 +1,38 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { UserEntity } from 'src/user/entity/user.entity';
-import { CityEntity } from 'src/city/entity/city.entity';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { UserEntity } from "src/user/entity/user.entity";
+import { CityEntity } from "src/city/entity/city.entity";
+
 @Entity()
 export class TripEntity {
-  @PrimaryGeneratedColumn() 
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserEntity) 
-  @JoinColumn({ name: 'owner_id' })
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: "owner_id" })
   owner: UserEntity;
 
-  @ManyToOne(() => CityEntity) 
-  @JoinColumn({ name: 'departure_city_id' })
+  @ManyToOne(() => CityEntity)
+  @JoinColumn({ name: "departure_city_id" })
   departureCity: CityEntity;
 
-  @ManyToOne(() => CityEntity) 
-  @JoinColumn({ name: 'destination_city_id' })
+  @ManyToOne(() => CityEntity)
+  @JoinColumn({ name: "destination_city_id" })
   destinationCity: CityEntity;
 
-  @Column({ type: 'point', nullable: false }) // POINT type; ensure your database supports this
-  meetingPoint: string; // Alternatively, use separate columns for latitude and longitude if 'point' is not supported
-
-  @Column({ type: 'int', nullable: false }) 
+  @Column({ type: "point", nullable: false })
+  meetingPoint: string;
+  @Column({ type: "int", nullable: false })
   availableSeats: number;
 
-  @Column({ type: 'int', nullable: false }) 
+  @Column({ type: "int", nullable: false })
   pricePerSeat: number;
 
-  @Column({ type: 'timestamp', nullable: false }) 
+  @Column({ type: "timestamp", nullable: false })
   departureTime: Date;
 }

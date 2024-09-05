@@ -12,6 +12,7 @@ import ProfilPage from "./pages/ProfilPage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
+import { UserProvider } from "./context/UserContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -65,7 +66,9 @@ if (rootElement !== null) {
   const root = createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </React.StrictMode>
   );
 } else {
