@@ -25,8 +25,6 @@ export class TripEntity {
   @JoinColumn({ name: "destination_city_id" })
   destinationCity: CityEntity;
 
-  @Column({ type: "point", nullable: false })
-  meetingPoint: string;
   @Column({ type: "int", nullable: false })
   availableSeats: number;
 
