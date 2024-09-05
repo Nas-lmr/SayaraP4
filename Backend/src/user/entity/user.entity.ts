@@ -1,19 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar',length: 100,unique: true })
+  @Column({ type: "varchar", length: 100, unique: true })
   username: string;
 
-  @Column({type:'varchar', length: 100 })
+  @Column({ type: "varchar", length: 100, unique: true })
   email: string;
 
-  @Column({ type:'varchar',length:255  })
+  @Column({ type: "varchar", length: 255 })
   password: string;
 
-  @Column({ type:'text' })
+  @Column({ type: "text" })
   description: string;
 }
