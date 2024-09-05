@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import BgImage from "../../assets/images/covoiturage.png";
-import SearchForm from "../search/SearchForm";
+import SearchForm from "../forms/SearchForm";
 
 export default function HeroSection() {
   return (

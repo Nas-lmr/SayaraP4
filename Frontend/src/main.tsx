@@ -6,10 +6,12 @@ import MainLayout from "./layouts/MainLayout.tsx";
 import BookingPage from "./pages/BookingPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import NotificationPage from "./pages/NotificationPage.tsx";
+import LoginPage from "./pages/profil/LoginPage.tsx";
+import RegisterPage from "./pages/profil/RegisterPage.tsx";
 import ProfilPage from "./pages/ProfilPage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
-import TchatPage from "./pages/TchatPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
+import TchatPage from "./pages/TchatPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: "/accueil",
+        path: "/",
         element: <HomePage />,
       },
       {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "/profil",
         element: <ProfilPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
       },
       {
         path: "/trajet",

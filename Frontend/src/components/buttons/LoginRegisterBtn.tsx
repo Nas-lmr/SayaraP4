@@ -1,24 +1,18 @@
-import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { Button, Typography } from "@mui/material";
-import { ISearchPageBtn } from "../../interfaces/components/ISearchPageBtn";
+import { IFormsBtn } from "../../interfaces/components/IFormsBtn";
 
-export default function SearchPageBtn({
-  label,
-  onclick,
-  type,
-}: ISearchPageBtn) {
+export default function LoginRegisterBtn({ label, onclick, type }: IFormsBtn) {
   return (
     <Button
       onClick={onclick}
       variant="contained"
       type={type}
-      endIcon={<ArrowForwardIosRoundedIcon sx={{ color: "#FDC55E" }} />}
       sx={{
         backgroundColor: "#321F47",
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         height: "5vh",
-        width: "100%",
+        width: "85%",
         textTransform: "none",
       }}
     >

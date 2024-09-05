@@ -31,14 +31,17 @@ export default function JourneyGestion() {
         <SearchPageBtn
           label="Nouveau trajet"
           onclick={() => console.log("Nouveau trajet")}
+          type="button"
         />
         <SearchPageBtn
           label="Mes trajets"
           onclick={() => console.log("Mes trajets")}
+          type="button"
         />
         <SearchPageBtn
           label="Mes trajets effectués"
           onclick={() => console.log("Mes trajets effectués")}
+          type="button"
         />
       </Box>
     </>

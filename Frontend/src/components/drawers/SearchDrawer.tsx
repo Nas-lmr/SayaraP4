@@ -1,7 +1,7 @@
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box, Drawer, IconButton, Typography } from "@mui/material";
 import { IDrawer } from "../../interfaces/components/IDrawer";
-import SearchForm from "../search/SearchForm";
+import SearchForm from "../forms/SearchForm";
 
 export default function SearchDrawer({ isOpen, onclose }: IDrawer) {
   return (

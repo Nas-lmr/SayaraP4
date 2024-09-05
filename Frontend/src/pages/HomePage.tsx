@@ -7,6 +7,7 @@ export default function HomePage() {
   return (
     <Container
       disableGutters
+      maxWidth={false}
       sx={{
         height: "100%",
         pt: "4rem",

@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
-import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
+import RegisterForm from "../../components/forms/RegisterForm";
 
-export default function ProfilPage() {
+export default function RegisterPage() {
   return (
     <Container
       disableGutters
@@ -13,9 +13,10 @@ export default function ProfilPage() {
         backgroundColor: "#F4F4F4",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <InfoProfilNotLogged />
+      <RegisterForm />
     </Container>
   );
 }
