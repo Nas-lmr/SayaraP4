@@ -1,11 +1,46 @@
 import { Box, Paper, TextField, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
+import { loginService } from "../../services/user/UserService";
 import LoginRegisterBtn from "../buttons/LoginRegisterBtn";
 
 export default function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { login } = useUserContext();
+
+  const navigate = useNavigate();
+
+  const handleMailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const response = await loginService({ email, password });
+
+    if (response.success) {
+      login({ ...response.user });
+      console.info("Connecté");
+      navigate("/profil");
+      console.info("Connexion réussie");
+    } else {
+      navigate("/login");
+      console.error("Echec de la connexion:", response.error);
+    }
+  };
+
   return (
     <Paper
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         width: "20rem",
         height: "40vh",
@@ -44,6 +79,8 @@ export default function LoginForm() {
           variant="outlined"
           label="Email"
           type="email"
+          value={email}
+          onChange={handleMailChange}
           sx={{
             width: "85%",
             "& .MuiOutlinedInput-root ": {
@@ -67,6 +104,8 @@ export default function LoginForm() {
           variant="outlined"
           label="Mot de passe"
           type="password"
+          value={password}
+          onChange={handlePasswordChange}
           sx={{
             width: "85%",
             "& .MuiOutlinedInput-root ": {
@@ -116,11 +155,7 @@ export default function LoginForm() {
             Inscris-toi !
           </NavLink>
         </Typography>
-        <LoginRegisterBtn
-          label="Se connecter"
-          onclick={() => console.log("CONNEXION")}
-          type="submit"
-        />
+        <LoginRegisterBtn label="Se connecter" type="submit" />
       </Box>
     </Paper>
   );

@@ -1,32 +1,72 @@
-import {createContext, useState} from "react";
-import {ApiConfig} from "../config/apiConfig";
-import {IUser} from "../interfaces/context/IUser";
-import {IResponse} from "../interfaces/context/IResponse";
-import {verifyUrlNotNull} from "../utils";
+import { jwtDecode } from "jwt-decode";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
+import { IDecodedToken } from "../interfaces/context/IDecodedToken";
+import { IUserContext } from "../interfaces/context/IUserContext";
+import { IUserInfo } from "../interfaces/context/IUserInfo";
+const userContext = createContext<IUserContext | null>(null);
 
-export const UserContext = createContext({});
+export function UserContextProvider({ children }: { children: ReactNode }) {
+  // Utilisation de useLocalStorage avec le type IUserInfo | null
+  const [userData, setUserData] = useLocalStorage<IUserInfo | null>(
+    "user",
+    null
+  );
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken | null>(null);
 
-export function UserProvider({children}: any) {
-  const [user, setUser] = useState({
-    token: '',
-    authenticated: false
-  });
+  const login = (userInfo: IUserInfo) => {
+    setUserData(userInfo);
+    const decoded = jwtDecode<IDecodedToken>(userInfo.token);
+    setDecodedToken(decoded);
+  };
 
-  const loginAction = async (user: IUser): Promise<any> => {
-    if(verifyUrlNotNull(ApiConfig.private.login)) {
-      const response: IResponse|any = await fetch(ApiConfig.private.login, { method: 'POST', body: JSON.stringify(user) });
-      setUser({token: response.token, authenticated: true});
-      localStorage.setItem('user', response.token);
+  const logout = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.status === 200) {
+        localStorage.clear();
+        setUserData(null);
+        setDecodedToken(null);
+      } else {
+        console.error("Failed to logout. Please try again.");
+      }
+    } catch (err) {
+      console.error("An error occurred during logout:", err);
     }
-    return !!localStorage.getItem('user');
   };
 
-  const logOut = () => {
-    setUser({token: '', authenticated: false});
-    localStorage.removeItem('user');
-    window.location.href = '';
-  };
+  // Mémorisation de la valeur du contexte
+  const contextValue = useMemo(
+    () => ({
+      userData,
+      setUserData,
+      login,
+      logout,
+      decodedToken,
+    }),
+    [userData, decodedToken]
+  );
+
   return (
-    <UserContext.Provider value={{loginAction, logOut, user}}>{children}</UserContext.Provider>
+    <userContext.Provider value={contextValue}>{children}</userContext.Provider>
   );
 }
+
+// Hook pour accéder au contexte utilisateur
+export const useUserContext = () => {
+  const context = useContext(userContext);
+  if (!context) {
+    throw new Error(
+      "useUserContext must be used within a PlayerContextProvider"
+    );
+  }
+  return context;
+};

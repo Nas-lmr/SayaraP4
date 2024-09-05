@@ -1,8 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import SearchPageBtn from "../buttons/SearchPageBtn";
 import { useNavigate } from "react-router-dom";
+import { IInfoNotLogged } from "../../interfaces/components/IInfoNotLogged";
+import SearchPageBtn from "../buttons/SearchPageBtn";
 
-export default function InfoProfilNotLogged() {
+export default function InfoProfilNotLogged({
+  text,
+  image,
+  alt,
+}: IInfoNotLogged) {
   const navigate = useNavigate();
   return (
     <Box
@@ -15,34 +20,50 @@ export default function InfoProfilNotLogged() {
         pt: "1rem",
       }}
     >
-      <Typography
-        variant="h1"
-        textAlign="center"
-        sx={{
-          color: "#321F47",
-          fontFamily: "Montserrat",
-          fontWeight: 500,
-          fontSize: "1.5rem",
-          width: "90%",
-        }}
-      >
-        Pour accéder à ton profil tu dois te connecter ou bien créer un compte!
-      </Typography>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          height: "70%",
+          alignItems: "center",
+          height: "60%",
           justifyContent: "space-around",
+        }}
+      >
+        <Typography
+          variant="h1"
+          textAlign="center"
+          sx={{
+            color: "#321F47",
+            fontFamily: "Montserrat",
+            fontWeight: 500,
+            fontSize: "1.5rem",
+            width: "90%",
+          }}
+        >
+          {text}
+        </Typography>
+        <Box
+          component="img"
+          src={image}
+          alt={alt}
+          sx={{ height: "70%", width: "80%" }}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "40%",
+          gap: "2rem",
         }}
       >
         <Box
           sx={{
-            height: "20%",
+            height: "30%",
             width: "20rem",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-around",
+            gap: "1rem",
           }}
         >
           <Typography
@@ -65,11 +86,11 @@ export default function InfoProfilNotLogged() {
         </Box>
         <Box
           sx={{
-            height: "20%",
+            height: "30%",
             width: "20rem",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-around",
+            gap: "1rem",
           }}
         >
           <Typography

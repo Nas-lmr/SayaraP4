@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { UserContextProvider } from "./context/UserContext.tsx";
 import "./index.css";
 import MainLayout from "./layouts/MainLayout.tsx";
 import BookingPage from "./pages/BookingPage.tsx";
@@ -12,7 +13,6 @@ import ProfilPage from "./pages/ProfilPage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
-import { UserProvider } from "./context/UserContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -66,9 +66,9 @@ if (rootElement !== null) {
   const root = createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <UserProvider>
+      <UserContextProvider>
         <RouterProvider router={router} />
-      </UserProvider>
+      </UserContextProvider>
     </React.StrictMode>
   );
 } else {

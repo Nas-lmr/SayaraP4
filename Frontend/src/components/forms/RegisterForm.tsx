@@ -1,11 +1,46 @@
 import { Box, Paper, TextField, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { registerService } from "../../services/user/UserService";
 import LoginRegisterBtn from "../buttons/LoginRegisterBtn";
 
 export default function RegisterForm() {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleMailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { success } = await registerService({
+      username,
+      email,
+      password,
+    });
+
+    if (success) {
+      navigate("/login");
+    } else {
+      console.info("Pas inscrit");
+    }
+  };
+
   return (
     <Paper
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         width: "20rem",
         height: "50vh",
@@ -45,6 +80,8 @@ export default function RegisterForm() {
           variant="outlined"
           label="Pseudo"
           type="text"
+          onChange={handleUsernameChange}
+          value={username}
           sx={{
             width: "85%",
             "& .MuiOutlinedInput-root ": {
@@ -68,6 +105,8 @@ export default function RegisterForm() {
           variant="outlined"
           label="Email"
           type="email"
+          onChange={handleMailChange}
+          value={email}
           sx={{
             width: "85%",
             "& .MuiOutlinedInput-root ": {
@@ -91,6 +130,8 @@ export default function RegisterForm() {
           variant="outlined"
           label="Mot de passe"
           type="password"
+          onChange={handlePasswordChange}
+          value={password}
           sx={{
             width: "85%",
             "& .MuiOutlinedInput-root ": {
@@ -140,11 +181,7 @@ export default function RegisterForm() {
             Connectes-toi !
           </NavLink>
         </Typography>
-        <LoginRegisterBtn
-          label="S'inscrire"
-          onclick={() => console.log("inscription")}
-          type="submit"
-        />
+        <LoginRegisterBtn label="S'inscrire" type="submit" />
       </Box>
     </Paper>
   );

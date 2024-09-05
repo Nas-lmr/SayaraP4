@@ -1,7 +1,10 @@
 import { Container } from "@mui/material";
 import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
+import ProfilSection from "../components/global/ProfilSection";
+import { useUserContext } from "../context/UserContext";
 
 export default function ProfilPage() {
+  const { userData } = useUserContext();
   return (
     <Container
       disableGutters
@@ -15,7 +18,15 @@ export default function ProfilPage() {
         justifyContent: "center",
       }}
     >
-      <InfoProfilNotLogged />
+      {userData === null ? (
+        <InfoProfilNotLogged
+          text=" Pour accéder à ton profil tu dois te connecter ou bien crées un compte!"
+          image="../src/assets/images/ProfilImg.png"
+          alt="Homme souriant"
+        />
+      ) : (
+        <ProfilSection />
+      )}
     </Container>
   );
 }
