@@ -8,12 +8,9 @@ export class CityEntity {
   @Column({ type: 'varchar', length: 50,unique: true }) 
   name: string;
 
-  @Column({ type: 'varchar', length: 150 }) 
+  @Column({ type: 'varchar', length: 150, nullable: true })
   adresse: string;
 
-  @Column({ type: 'decimal', precision: 9, scale: 6 }) 
-  longitude: number;
-
-  @Column({ type: 'decimal', precision: 9, scale: 6 }) 
-  latitude: number;
+  @Column({ type: "point", nullable: false })
+  coordinate: string;
 }
