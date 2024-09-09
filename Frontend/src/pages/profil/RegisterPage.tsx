@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
-import NotificationContainer from "../components/global/NotificationContainer";
+import RegisterForm from "../../components/forms/RegisterForm";
 
-export default function NotificationPage() {
+export default function RegisterPage() {
   return (
     <Container
       disableGutters
@@ -10,12 +10,13 @@ export default function NotificationPage() {
         height: "100vh",
         pt: "4rem",
         pb: "3rem",
-        backgroundColor: "#321F47",
+        backgroundColor: "#F4F4F4",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <NotificationContainer />
+      <RegisterForm />
     </Container>
   );
 }

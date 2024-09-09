@@ -1,21 +1,23 @@
 import { Container } from "@mui/material";
-import NotificationContainer from "../components/global/NotificationContainer";
+import LoginForm from "../../components/forms/LoginForm";
 
-export default function NotificationPage() {
+export default function LoginPage() {
   return (
     <Container
       disableGutters
       maxWidth={false}
       sx={{
+        m: 0,
         height: "100vh",
         pt: "4rem",
         pb: "3rem",
-        backgroundColor: "#321F47",
+        backgroundColor: "#F4F4F4",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <NotificationContainer />
+      <LoginForm />
     </Container>
   );
 }

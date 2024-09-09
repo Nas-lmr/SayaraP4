@@ -2,10 +2,12 @@ import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneR
 // import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
 
 export default function Header() {
   const location = useLocation();
   const pathname = location.pathname;
+  const { userData } = useUserContext();
 
   const activeStyle = {
     backgroundColor: "#321F47",
@@ -45,6 +47,7 @@ export default function Header() {
                   : "",
               borderRadius:
                 pathname === "/notifications" ? activeStyle.borderRadius : "",
+              display: !userData ? "none" : "",
             }}
           >
             <NotificationsNoneRoundedIcon

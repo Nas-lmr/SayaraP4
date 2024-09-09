@@ -7,6 +7,7 @@ export default function BookingPage() {
   return (
     <Container
       disableGutters
+      maxWidth={false}
       sx={{
         height: "100vh",
         pt: "4rem",

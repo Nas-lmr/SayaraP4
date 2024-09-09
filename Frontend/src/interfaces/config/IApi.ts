@@ -4,6 +4,6 @@
 export interface IApi {
   private: {
     login: string;
+    register: string;
   };
-  public: {};
 }
