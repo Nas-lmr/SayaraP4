@@ -1,25 +1,46 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { IDecodedToken } from "../interfaces/context/IDecodedToken";
 import { IUserContext } from "../interfaces/context/IUserContext";
 import { IUserInfo } from "../interfaces/context/IUserInfo";
+
+// Création du contexte utilisateur
 const userContext = createContext<IUserContext | null>(null);
 
 export function UserContextProvider({ children }: { children: ReactNode }) {
-  // Utilisation de useLocalStorage avec le type IUserInfo | null
+  // État pour stocker les données utilisateur et le token décodé
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken | null>(null);
   const [userData, setUserData] = useLocalStorage<IUserInfo | null>(
     "user",
     null
   );
-  const [decodedToken, setDecodedToken] = useState<IDecodedToken | null>(null);
 
+  // Restaurer le token à partir des données utilisateur lors du rechargement
+  useEffect(() => {
+    if (userData && userData.token) {
+      const decoded = jwtDecode<IDecodedToken>(userData.token);
+      setDecodedToken(decoded);
+    } else {
+      setDecodedToken(null);
+    }
+  }, [userData]);
+
+  // Fonction de login pour définir les données utilisateur
   const login = (userInfo: IUserInfo) => {
-    setUserData(userInfo);
-    const decoded = jwtDecode<IDecodedToken>(userInfo.token);
-    setDecodedToken(decoded);
+    setUserData(userInfo); // Stocke les données utilisateur
+    const decoded = jwtDecode<IDecodedToken>(userInfo.token); // Décode le token JWT
+    setDecodedToken(decoded); // Met à jour le token décodé dans l'état
   };
 
+  // Fonction de logout pour effacer les données utilisateur
   const logout = async () => {
     try {
       const response = await fetch(
@@ -32,9 +53,9 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
       );
 
       if (response.status === 200) {
-        localStorage.clear();
-        setUserData(null);
-        setDecodedToken(null);
+        localStorage.clear(); // Vide le localStorage
+        setUserData(null); // Supprime les données utilisateur
+        setDecodedToken(null); // Réinitialise le token décodé
       } else {
         console.error("Failed to logout. Please try again.");
       }
@@ -43,7 +64,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Mémorisation de la valeur du contexte
+  // Utilise useMemo pour mémoriser les valeurs du contexte
   const contextValue = useMemo(
     () => ({
       userData,
@@ -64,9 +85,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
 export const useUserContext = () => {
   const context = useContext(userContext);
   if (!context) {
-    throw new Error(
-      "useUserContext must be used within a PlayerContextProvider"
-    );
+    throw new Error("useUserContext must be used within a UserContextProvider");
   }
   return context;
 };

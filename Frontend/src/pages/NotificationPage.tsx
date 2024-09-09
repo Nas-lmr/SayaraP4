@@ -1,9 +1,7 @@
 import { Container } from "@mui/material";
-import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
-import { useUserContext } from "../context/UserContext";
+import NotificationContainer from "../components/global/NotificationContainer";
 
 export default function NotificationPage() {
-  const { userData } = useUserContext();
   return (
     <Container
       disableGutters
@@ -12,16 +10,12 @@ export default function NotificationPage() {
         height: "100vh",
         pt: "4rem",
         pb: "3rem",
-        backgroundColor: "#F4F4F4",
+        backgroundColor: "#321F47",
         display: "flex",
         justifyContent: "center",
       }}
     >
-      {userData === null ? (
-        <InfoProfilNotLogged text=" Pour voir tes notifications tu dois te connecter ou bien crées un compte!" />
-      ) : (
-        <h1>ARHHHAAAAAA</h1>
-      )}
+      <NotificationContainer />
     </Container>
   );
 }
