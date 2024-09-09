@@ -10,6 +10,9 @@ import ProfilPage from "./pages/ProfilPage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
+import RoadMap from "./pages/reservations/RoadMap.tsx";
+
+// context provider 
 import {UserProvider} from "./context/UserContext.tsx";
 
 const router = createBrowserRouter([
@@ -18,6 +21,9 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
+        path: "/",  
+        element: <HomePage />,
+      }, {
         path: "/accueil",
         element: <HomePage />,
       },
@@ -46,6 +52,11 @@ const router = createBrowserRouter([
         path: "/trajet/resultats",
         element: <ResultPage />,
       },
+      {
+        path: "/trajet/map",
+        element: <RoadMap />,
+      },
+     
     ],
   },
 ]);
