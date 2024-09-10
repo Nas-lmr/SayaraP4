@@ -23,7 +23,15 @@ export default function BottomNavbar() {
   };
 
   return (
-    <Box sx={{ width: "100%", height: "3.5rem", position: "fixed", bottom: 0 }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "3.5rem",
+        position: "fixed",
+        bottom: 0,
+        display: { md: "none" },
+      }}
+    >
       <BottomNavigation
         showLabels
         sx={{

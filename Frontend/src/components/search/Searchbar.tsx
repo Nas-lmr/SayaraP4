@@ -21,24 +21,8 @@ export default function Searchbar() {
       <Box
         sx={{
           width: "100%",
-          height: "10vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h1"
-          sx={{ fontSize: "1.8rem", fontFamily: "Montserrat", fontWeight: 600 }}
-        >
-          Trouves ton trajet idéal !
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
           height: "5vh",
-          display: "flex",
+          display: { xs: "flex", md: "none" },
           justifyContent: "center",
           pl: "1rem",
           pr: "1rem",
