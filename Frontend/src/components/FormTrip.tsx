@@ -5,6 +5,10 @@ import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -15,20 +19,35 @@ import {
   Select,
   TextField,
   Typography,
-  Button,
+  Button
 } from "@mui/material";
 import  CreateJourneyBtn  from "./buttons/CreateTripBtn";
 import { useState } from "react";
 
-function FormTrip({ onClose }: { onClose?: () => void }) {
-  const [price, setPrice] = useState(0);
 
+const FormTrip: React.FC = () => {
+  const [price, setPrice] = useState(0);
+const [villeDepart, setVilleDepart] = useState("")
+const [villeArrive, setVilleArrive] = useState("")
+const [dateDepart, setDateDepart] = useState<Date | null>(null); 
+  const [heureDisponible, setHeureDisponible] = useState("00:00");
+const navigate = useNavigate();
   const handlePlusPrice = () => {
     setPrice(price + 1);
   };
   const handleMinusPrice = () => {
-    setPrice(price - 1);
+    if( price > 0){
+      setPrice(price - 1);
+
+    }
   };
+
+  const handleSubmit = () => {
+    if (villeDepart && villeArrive && dateDepart && heureDisponible) {
+      navigate("/trajet/map", { state: { villeDepart, villeArrive,dateDepart,heureDisponible } });
+    }
+  };
+
   return (
     <Paper
       component="form"
@@ -106,6 +125,8 @@ function FormTrip({ onClose }: { onClose?: () => void }) {
             }}
             variant="outlined"
             label="Ville de départ"
+            value={villeDepart}
+            onChange={(e) => setVilleDepart(e.target.value)}
           />
         </Box>
         <Box
@@ -149,6 +170,8 @@ function FormTrip({ onClose }: { onClose?: () => void }) {
             }}
             variant="outlined"
             label="Ville d'arrivée"
+            value={villeArrive}
+            onChange={(e) => setVilleArrive(e.target.value)}
           />
         </Box>
         <Box
@@ -167,7 +190,8 @@ function FormTrip({ onClose }: { onClose?: () => void }) {
               color: "#321F47",
             }}
           />
-          <TextField
+          <LocalizationProvider dateAdapter={AdapterDateFns}> 
+          <DatePicker
             sx={{
               width: "100%",
               "& .MuiInput-underline:before": {
@@ -189,9 +213,11 @@ function FormTrip({ onClose }: { onClose?: () => void }) {
                 borderRadius: "10px",
               },
             }}
-            variant="outlined"
             label="Date de départ"
+            value={dateDepart}
+            onChange={(newValue) => setDateDepart(newValue)}
           />
+          </LocalizationProvider>
         </Box>
         <Box
           sx={{
@@ -206,6 +232,8 @@ function FormTrip({ onClose }: { onClose?: () => void }) {
               label="Heure disponible"
               type="time"
               defaultValue="00:00"
+              value={heureDisponible}
+              onChange={(e) => setHeureDisponible(e.target.value)}
               slotProps={{
                 input: {
                   inputProps: {
@@ -390,7 +418,7 @@ function FormTrip({ onClose }: { onClose?: () => void }) {
           </Button>
         </Box>
       </Box>
-      <CreateJourneyBtn onClose={onClose ? onClose : () => {}} />
+      <CreateJourneyBtn onClick={handleSubmit} />
     </Paper>
   );
 }

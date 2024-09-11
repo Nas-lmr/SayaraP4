@@ -1,20 +1,16 @@
 import { Button } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
 
-export default function CreateJourneyBtn({ onClose }: { onClose: () => void }) {
-  const location = useLocation();
+export default function CreateJourneyBtn({ onClick }: { onClick: () => void }) {
 
   const handleClick = () => {
-    if (location.pathname === "/trajet/map") {
-      onClose();
-    }
+    
+      onClick();
+    
   };
 
   return (
     <Button
-      component={NavLink}
-      to="/trajet/map"
-      onClick={handleClick}
+   onClick={handleClick}
       variant="contained"
       sx={{
         width: "100%",

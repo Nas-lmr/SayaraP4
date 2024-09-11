@@ -1,7 +1,7 @@
 import {  useMap} from 'react-leaflet';
 import { useEffect } from 'react';
 
- // composont pour afficher les villes a et b en même temps sur le map 
+ // composont pour afficher les villes a et b 
  const FitBounds: React.FC<{ coords1: [number, number] | null; coords2: [number, number] | null }> = ({ coords1, coords2 }) => {
     const map = useMap();
   
