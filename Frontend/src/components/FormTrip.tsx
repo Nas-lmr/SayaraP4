@@ -1,17 +1,18 @@
+import AddIcon from "@mui/icons-material/Add";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
+import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
 import FlagRoundedIcon from "@mui/icons-material/FlagRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
-import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useNavigate } from "react-router-dom";
 
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -19,32 +20,31 @@ import {
   Select,
   TextField,
   Typography,
-  Button
 } from "@mui/material";
-import  CreateJourneyBtn  from "./buttons/CreateTripBtn";
 import { useState } from "react";
-
+import CreateJourneyBtn from "./buttons/CreateTripBtn";
 
 const FormTrip: React.FC = () => {
   const [price, setPrice] = useState(0);
-const [villeDepart, setVilleDepart] = useState("")
-const [villeArrive, setVilleArrive] = useState("")
-const [dateDepart, setDateDepart] = useState<Date | null>(null); 
+  const [villeDepart, setVilleDepart] = useState("");
+  const [villeArrive, setVilleArrive] = useState("");
+  const [dateDepart, setDateDepart] = useState<Date | null>(null);
   const [heureDisponible, setHeureDisponible] = useState("00:00");
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const handlePlusPrice = () => {
     setPrice(price + 1);
   };
   const handleMinusPrice = () => {
-    if( price > 0){
+    if (price > 0) {
       setPrice(price - 1);
-
     }
   };
 
   const handleSubmit = () => {
     if (villeDepart && villeArrive && dateDepart && heureDisponible) {
-      navigate("/trajet/map", { state: { villeDepart, villeArrive,dateDepart,heureDisponible } });
+      navigate("/trajet/nouveau-trajet/itineraire", {
+        state: { villeDepart, villeArrive, dateDepart, heureDisponible },
+      });
     }
   };
 
@@ -190,33 +190,33 @@ const navigate = useNavigate();
               color: "#321F47",
             }}
           />
-          <LocalizationProvider dateAdapter={AdapterDateFns}> 
-          <DatePicker
-            sx={{
-              width: "100%",
-              "& .MuiInput-underline:before": {
-                borderBottomColor: "#321F47",
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#321F47",
-              },
-              "& .MuiInputLabel-root": {
-                color: "#321F47",
-                fontFamily: "Montserrat",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "#321F47",
-              },
-              borderRadius: "10px",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-              "& .MuiOutlinedInput-root": {
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              sx={{
+                width: "100%",
+                "& .MuiInput-underline:before": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#321F47",
+                  fontFamily: "Montserrat",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#321F47",
+                },
                 borderRadius: "10px",
-              },
-            }}
-            label="Date de départ"
-            value={dateDepart}
-            onChange={(newValue) => setDateDepart(newValue)}
-          />
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "10px",
+                },
+              }}
+              label="Date de départ"
+              value={dateDepart}
+              onChange={(newValue) => setDateDepart(newValue)}
+            />
           </LocalizationProvider>
         </Box>
         <Box
@@ -421,6 +421,6 @@ const navigate = useNavigate();
       <CreateJourneyBtn onClick={handleSubmit} />
     </Paper>
   );
-}
+};
 
 export default FormTrip;

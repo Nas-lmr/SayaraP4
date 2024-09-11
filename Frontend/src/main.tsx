@@ -12,8 +12,8 @@ import RegisterPage from "./pages/profil/RegisterPage.tsx";
 import ProfilPage from "./pages/ProfilPage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
-import RoadMap from "./pages/reservations/RoadMap.tsx";
 
+import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
 
 const router = createBrowserRouter([
@@ -59,10 +59,9 @@ const router = createBrowserRouter([
         element: <ResultPage />,
       },
       {
-        path: "/trajet/map",
-        element: <RoadMap />,
+        path: "/trajet/nouveau-trajet/itineraire",
+        element: <ItinerairePage />,
       },
-     
     ],
   },
 ]);

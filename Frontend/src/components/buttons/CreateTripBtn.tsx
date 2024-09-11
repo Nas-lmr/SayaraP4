@@ -1,16 +1,13 @@
 import { Button } from "@mui/material";
 
 export default function CreateJourneyBtn({ onClick }: { onClick: () => void }) {
-
   const handleClick = () => {
-    
-      onClick();
-    
+    onClick();
   };
 
   return (
     <Button
-   onClick={handleClick}
+      onClick={handleClick}
       variant="contained"
       sx={{
         width: "100%",
@@ -21,7 +18,7 @@ export default function CreateJourneyBtn({ onClick }: { onClick: () => void }) {
         borderRadius: "0 0 1rem 1rem",
         fontFamily: "Montserrat",
         textTransform: "none",
-        fontSize:"2rem"
+        fontSize: "2rem",
       }}
     >
       Suivant
