@@ -1,28 +1,6 @@
 import { Container } from "@mui/material";
-<<<<<<< HEAD
-import FormTrip from "../../components/FormTrip";
-
-
-export default function NewJourneyPage() {
-  return (
-    <Container
-    disableGutters
-    sx={{
-      height: "100vh",
-      pt: "4rem",
-      pb: "3.5rem",
-      backgroundColor: "#F4F4F4",
-      display:"flex",
-      justifyContent:"center",
-      alignItems:"center",
-      
-    }}
-  >
-  <FormTrip/>
-  </Container>
-  )
-=======
 import InfoProfilNotLogged from "../../components/global/InfoProfilNotLogged";
+import FormTrip from "../../components/FormTrip";
 import { useUserContext } from "../../context/UserContext";
 
 export default function NewJourneyPage() {
@@ -50,9 +28,8 @@ export default function NewJourneyPage() {
           alt="Homme réfléchisant à côté d'une voiture"
         />
       ) : (
-        <h1>ARHHHAAAAAA</h1>
+        <FormTrip/>
       )}
     </Container>
   );
->>>>>>> dev
 }
