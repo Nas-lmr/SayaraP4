@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import JourneyProposition from "../components/global/JourneyProposition";
 import GestionSearchCpnt from "../components/search/GestionSearchCpnt";
-import Searchbar from "../components/search/Searchbar";
+import TopSearchCpnt from "../components/search/TopSearchCpnt";
 
 export default function BookingPage() {
   return (
@@ -11,11 +11,11 @@ export default function BookingPage() {
       sx={{
         height: "100vh",
         pt: "4rem",
-        pb: "3.5rem",
+        pb: "4rem",
         backgroundColor: "#F4F4F4",
       }}
     >
-      <Searchbar />
+      <TopSearchCpnt />
       <JourneyProposition />
       <GestionSearchCpnt />
     </Container>

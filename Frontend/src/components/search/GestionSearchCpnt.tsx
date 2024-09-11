@@ -7,10 +7,11 @@ export default function GestionSearchCpnt() {
     <Box
       sx={{
         pt: "1.5rem",
-        height: "55%",
+        pb: "5rem",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
+        flexDirection: { xs: "column", sm: "row" },
+        width: "100%",
       }}
     >
       <ReservationGestion />

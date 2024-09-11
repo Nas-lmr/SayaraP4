@@ -3,12 +3,20 @@ import SearchPageBtn from "../buttons/SearchPageBtn";
 
 export default function ReservationGestion() {
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: { sm: "center" },
+        width: { xs: "100%", sm: "50%", md: "50%", lg: "40%" },
+      }}
+    >
       <Typography
-        textAlign="start"
+        textAlign="center"
         variant="h2"
         sx={{
           pl: "1rem",
+          pt: "1rem",
           fontSize: "1.5rem",
           fontFamily: "Montserrat",
           fontWeight: 600,
@@ -18,12 +26,11 @@ export default function ReservationGestion() {
       </Typography>
       <Box
         sx={{
-          pr: "1rem",
-          pl: "1rem",
-          height: "30%",
+          pt: "0.5rem",
           display: "flex",
+          width: { sm: "85%" },
           flexDirection: "column",
-          justifyContent: "center",
+          alignItems: "center",
           gap: "0.8rem",
         }}
       >
@@ -36,6 +43,6 @@ export default function ReservationGestion() {
           onclick={() => console.log("Historique")}
         />
       </Box>
-    </>
+    </Box>
   );
 }

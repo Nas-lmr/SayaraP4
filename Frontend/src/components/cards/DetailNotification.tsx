@@ -12,7 +12,6 @@ export default function DetailNotification() {
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
-        backgroundColor: "#FF5349",
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>

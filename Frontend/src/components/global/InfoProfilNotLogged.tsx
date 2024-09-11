@@ -46,7 +46,10 @@ export default function InfoProfilNotLogged({
           component="img"
           src={image}
           alt={alt}
-          sx={{ height: "70%", width: "80%" }}
+          sx={{
+            height: { xs: "70%", sm: "60%", md: "70%", lg: "80%" },
+            width: { xs: "80%", sm: "50%", md: "40%", lg: "30%" },
+          }}
         />
       </Box>
       <Box

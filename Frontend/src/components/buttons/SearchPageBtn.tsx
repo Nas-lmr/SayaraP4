@@ -17,8 +17,8 @@ export default function SearchPageBtn({
         backgroundColor: "#321F47",
         display: "flex",
         justifyContent: "space-between",
-        height: "5vh",
-        width: "100%",
+        height: "3rem",
+        width: { xs: "21rem", sm: "100%", md: "23rem" },
         textTransform: "none",
       }}
     >
