@@ -18,8 +18,7 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
     <Box
       sx={{
         height: { xs: "45vh", sm: "45vh" },
-        width: { xs: "80vw", sm: "50vw" },
-        maxWidth: { xs: "80vw", sm: "50vw" },
+        width: "20rem",
         zIndex: 1,
         position: "relative",
         bottom: "-1.5rem",

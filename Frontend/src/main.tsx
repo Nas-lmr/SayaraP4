@@ -1,19 +1,20 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { UserContextProvider } from "./context/UserContext.tsx";
 import "./index.css";
 import MainLayout from "./layouts/MainLayout.tsx";
 import BookingPage from "./pages/BookingPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import NotificationPage from "./pages/NotificationPage.tsx";
+import LoginPage from "./pages/profil/LoginPage.tsx";
+import RegisterPage from "./pages/profil/RegisterPage.tsx";
 import ProfilPage from "./pages/ProfilPage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
-import TchatPage from "./pages/TchatPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import RoadMap from "./pages/reservations/RoadMap.tsx";
 
-// context provider 
-import {UserProvider} from "./context/UserContext.tsx";
+import TchatPage from "./pages/TchatPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,10 +22,7 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: "/",  
-        element: <HomePage />,
-      }, {
-        path: "/accueil",
+        path: "/",
         element: <HomePage />,
       },
       {
@@ -38,6 +36,14 @@ const router = createBrowserRouter([
       {
         path: "/profil",
         element: <ProfilPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
       },
       {
         path: "/trajet",
@@ -67,9 +73,9 @@ if (rootElement !== null) {
   const root = createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <UserProvider>
+      <UserContextProvider>
         <RouterProvider router={router} />
-      </UserProvider>
+      </UserContextProvider>
     </React.StrictMode>
   );
 } else {

@@ -13,21 +13,26 @@ import {
 
 export default function ResultJourneyCard() {
   return (
-    <Card sx={{ height: "13vh", width: "90%" }}>
+    <Card
+      sx={{
+        height: { xs: "13vh", sm: "15vh", md: "18vh", lg: "20vh" },
+        width: { xs: "90%", sm: "80%", md: "70%", lg: "60%" },
+      }}
+    >
       <CardActionArea sx={{ height: "70%", width: "100%", display: "flex" }}>
         <Box
           sx={{
-            width: "20%",
+            width: { xs: "15%", md: "10%" },
             height: "100%",
             display: "flex",
             flexDirection: "column",
+            alignItems: { sm: "center" },
             justifyContent: "space-around",
           }}
         >
           <Typography
-            textAlign="center"
             sx={{
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.8rem", sm: "1rem" },
               fontFamily: "Montserrat",
               color: "#321F47",
               fontWeight: 500,
@@ -36,19 +41,20 @@ export default function ResultJourneyCard() {
             09h00
           </Typography>
           <Typography
-            textAlign="center"
             sx={{
-              fontSize: "0.6rem",
+              fontSize: { xs: "0.6rem", sm: "0.8rem" },
               fontFamily: "Montserrat",
               color: "#7E7E7E",
               fontWeight: 500,
-              pl: "0.5rem",
+              pl: { xs: "0.5rem", sm: "1rem" },
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <QueryBuilderRoundedIcon
               sx={{
                 color: "#7E7E7E",
-                fontSize: "0.6rem",
+                fontSize: { xs: "0.6rem", sm: "0.8rem" },
                 fontFamily: "Montserrat",
                 fontWeight: 600,
               }}
@@ -56,9 +62,8 @@ export default function ResultJourneyCard() {
             4h45
           </Typography>
           <Typography
-            textAlign="center"
             sx={{
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.8rem", sm: "1rem" },
               fontFamily: "Montserrat",
               color: "#321F47",
               fontWeight: 500,
@@ -79,7 +84,7 @@ export default function ResultJourneyCard() {
         >
           <TripOriginRoundedIcon
             sx={{
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.8rem", sm: "1rem" },
               color: "#321F47",
             }}
           />
@@ -93,7 +98,7 @@ export default function ResultJourneyCard() {
           />
           <TripOriginRoundedIcon
             sx={{
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.8rem", sm: "1rem" },
               color: "#321F47",
             }}
           />
@@ -118,72 +123,17 @@ export default function ResultJourneyCard() {
             <Typography
               sx={{
                 height: "50%",
-                fontSize: "0.8rem",
+                fontSize: { xs: "0.8rem", sm: "1rem" },
                 fontFamily: "Montserrat",
                 color: "#321F47",
                 fontWeight: 500,
               }}
             >
               Paris
-              {/* <Box
-                  sx={{
-                    display: "flex",
-                    gap: "0.5rem",
-                    width: "50%",
-                    height: "60%",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      height: "100%",
-                      width: "33%",
-                      backgroundColor: "#6AE35F",
-                      borderRadius: "100%",
-                    }}
-                  >
-                    <PersonRoundedIcon
-                      sx={{
-                        fontSize: "0.6rem",
-                        color: "#321F47",
-                      }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      height: "100%",
-                      width: "33%",
-                      backgroundColor: "#6AE35F",
-                      borderRadius: "100%",
-                    }}
-                  >
-                    <PersonRoundedIcon
-                      sx={{
-                        fontSize: "0.6rem",
-                        color: "#321F47",
-                      }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      height: "100%",
-                      width: "33%",
-                      backgroundColor: "#6AE35F",
-                      borderRadius: "100%",
-                    }}
-                  >
-                    <PersonRoundedIcon
-                      sx={{
-                        fontSize: "0.6rem",
-                        color: "#321F47",
-                      }}
-                    />
-                  </Box>
-                </Box> */}
             </Typography>
-
             <Typography
               sx={{
-                fontSize: "0.8rem",
+                fontSize: { xs: "0.8rem", sm: "1rem" },
                 fontFamily: "Montserrat",
                 color: "#321F47",
                 fontWeight: 500,
@@ -194,7 +144,7 @@ export default function ResultJourneyCard() {
           </Box>
           <Typography
             sx={{
-              fontSize: "1.25rem",
+              fontSize: { xs: "1.25rem", sm: "1.5rem" },
               fontFamily: "Montserrat",
               color: "#321F47",
               fontWeight: 500,
@@ -237,7 +187,7 @@ export default function ResultJourneyCard() {
         <Button
           endIcon={<KeyboardArrowRightRoundedIcon />}
           sx={{
-            width: "40%",
+            width: { xs: "35%", sm: "25%", md: "20%" },
             height: "100%",
             p: 0,
             fontSize: "0.9rem",

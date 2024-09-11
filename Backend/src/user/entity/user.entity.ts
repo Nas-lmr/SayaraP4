@@ -14,6 +14,6 @@ export class UserEntity {
   @Column({ type: "varchar", length: 255 })
   password: string;
 
-  @Column({ type: "text" })
+  @Column({ type: "text", nullable: true })
   description: string;
 }

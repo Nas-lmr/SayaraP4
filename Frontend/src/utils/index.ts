@@ -1,7 +1,9 @@
+
 import axios from "axios";
 
-export const verifyUrlNotNull = (url: string) =>
-  url !== "" && url !== null && url !== undefined;
+
+export const verifyUrlNotNull = (url: string) => url !== "";
+
 /**
  * This method does it call in first step before rendering component with useEffect((), [])
  */

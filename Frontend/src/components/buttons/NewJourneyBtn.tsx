@@ -13,6 +13,7 @@ export default function NewJourneyBtn() {
         bottom: "4.5rem",
         right: "1rem",
         backgroundColor: "#321F47",
+        display: { md: "none" },
       }}
     >
       <AddRounded fontSize="large" sx={{ color: "#FDC55E" }} />

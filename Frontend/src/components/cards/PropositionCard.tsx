@@ -13,7 +13,7 @@ export default function PropositionCard({
   return (
     <Card
       sx={{
-        width: "45%",
+        width: { xs: "70%", sm: "15rem", md: "20rem" },
         height: "5vh",
       }}
     >

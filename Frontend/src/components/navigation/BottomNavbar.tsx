@@ -23,7 +23,15 @@ export default function BottomNavbar() {
   };
 
   return (
-    <Box sx={{ width: "100%", height: "3.5rem", position: "fixed", bottom: 0 }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "3.5rem",
+        position: "fixed",
+        bottom: 0,
+        display: { md: "none" },
+      }}
+    >
       <BottomNavigation
         showLabels
         sx={{
@@ -35,18 +43,17 @@ export default function BottomNavbar() {
       >
         <BottomNavigationAction
           component={NavLink}
-          to="/accueil"
+          to="/"
           label="Accueil"
           icon={<HomeRoundedIcon fontSize="large" />}
           sx={{
             minWidth: 50,
             maxWidth: 70,
-            color: pathname === "/accueil" ? activeStyle.color : "#321F47",
+            color: pathname === "/" ? activeStyle.color : "#321F47",
             backgroundColor:
-              pathname === "/accueil" ? activeStyle.backgroundColor : "",
-            borderRadius:
-              pathname === "/accueil" ? activeStyle.borderRadius : "",
-            height: pathname === "/accueil" ? activeStyle.height : "100%",
+              pathname === "/" ? activeStyle.backgroundColor : "",
+            borderRadius: pathname === "/" ? activeStyle.borderRadius : "",
+            height: pathname === "/" ? activeStyle.height : "100%",
           }}
         />
         <BottomNavigationAction
@@ -58,19 +65,27 @@ export default function BottomNavbar() {
             minWidth: 50,
             maxWidth: 70,
             color:
-              pathname === "/trajet" || pathname === "/trajet/resultats"
+              pathname === "/trajet" ||
+              pathname === "/trajet/resultats" ||
+              pathname === "/trajet/nouveau-trajet"
                 ? activeStyle.color
                 : "#321F47",
             backgroundColor:
-              pathname === "/trajet" || pathname === "/trajet/resultats"
+              pathname === "/trajet" ||
+              pathname === "/trajet/resultats" ||
+              pathname === "/trajet/nouveau-trajet"
                 ? activeStyle.backgroundColor
                 : "",
             borderRadius:
-              pathname === "/trajet" || pathname === "/trajet/resultats"
+              pathname === "/trajet" ||
+              pathname === "/trajet/resultats" ||
+              pathname === "/trajet/nouveau-trajet"
                 ? activeStyle.borderRadius
                 : "",
             height:
-              pathname === "/trajet" || pathname === "/trajet/resultats"
+              pathname === "/trajet" ||
+              pathname === "/trajet/resultats" ||
+              pathname === "/trajet/nouveau-trajet"
                 ? activeStyle.height
                 : "100%",
           }}
@@ -109,12 +124,30 @@ export default function BottomNavbar() {
           sx={{
             minWidth: 50,
             maxWidth: 70,
-            color: pathname === "/profil" ? activeStyle.color : "#321F47",
+            color:
+              pathname === "/profil" ||
+              pathname === "/login" ||
+              pathname === "/register"
+                ? activeStyle.color
+                : "#321F47",
             backgroundColor:
-              pathname === "/profil" ? activeStyle.backgroundColor : "",
+              pathname === "/profil" ||
+              pathname === "/login" ||
+              pathname === "/register"
+                ? activeStyle.backgroundColor
+                : "",
             borderRadius:
-              pathname === "/profil" ? activeStyle.borderRadius : "",
-            height: pathname === "/profil" ? activeStyle.height : "100%",
+              pathname === "/profil" ||
+              pathname === "/login" ||
+              pathname === "/register"
+                ? activeStyle.borderRadius
+                : "",
+            height:
+              pathname === "/profil" ||
+              pathname === "/login" ||
+              pathname === "/register"
+                ? activeStyle.height
+                : "100%",
           }}
         />
       </BottomNavigation>
