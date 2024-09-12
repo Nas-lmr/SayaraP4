@@ -3,6 +3,7 @@ import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneR
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
+import logo from "/assets/images/Sayara-logo.png";
 
 export default function Header() {
   const location = useLocation();
@@ -17,7 +18,9 @@ export default function Header() {
   };
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{ backgroundColor: "white", height: "4rem" }}>
+      <AppBar
+        sx={{ backgroundColor: "white", height: { xs: "4rem", md: "4.5rem" } }}
+      >
         <Toolbar
           sx={{
             display: "flex",
@@ -28,9 +31,9 @@ export default function Header() {
         >
           <Box
             component="img"
-            src="../src/assets/images/Sayara-logo.png"
+            src={logo}
             alt="Logo Sayara"
-            sx={{ height: "90%" }}
+            sx={{ height: "90%", zIndex: 1000 }}
           />
           <Button
             component={NavLink}

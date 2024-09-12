@@ -7,7 +7,7 @@ export default function NextStepBtn({ onClick, label }: INextStepBtn) {
       onClick={onClick}
       variant="contained"
       sx={{
-        width: { xs: "80%" },
+        width: { xs: "20rem", md: "30rem" },
         height: { xs: "5vh" },
         backgroundColor: "#321F47",
         color: "#FDC55E",

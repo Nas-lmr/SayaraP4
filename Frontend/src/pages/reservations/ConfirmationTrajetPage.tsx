@@ -9,7 +9,7 @@ export default function ConfirmationTrajetPage() {
       sx={{
         height: "100vh",
         pt: "4rem",
-        pb: "3rem",
+        pb: { xs: "3rem", md: 0 },
         backgroundColor: "#F4F4F4",
       }}
     >
