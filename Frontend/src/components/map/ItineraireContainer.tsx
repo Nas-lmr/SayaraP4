@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import NextStepBtn from "../buttons/NextStepBtn";
 import ProposedItineraireContainer from "./ProposedItineraireContainer";
 import RoadMap from "./RoadMap";
@@ -8,6 +9,11 @@ export default function ItineraireContainer() {
   const [isChecked, setIsChecked] = useState(false);
   const [distance, setDistance] = useState<number | null>(null); // Add state for distance
   const [duration, setDuration] = useState<number | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { villeDepart, villeArrive, date, time, price, passager } =
+    location.state || {};
 
   const handleCheckboxChange = (checked: boolean) => {
     setIsChecked(checked);
@@ -16,6 +22,33 @@ export default function ItineraireContainer() {
   const handleRouteData = (distance: number, duration: number) => {
     setDistance(distance);
     setDuration(duration);
+  };
+
+  const handleNextStep = () => {
+    if (
+      isChecked &&
+      villeDepart &&
+      villeArrive &&
+      date &&
+      time &&
+      distance &&
+      duration &&
+      price &&
+      passager
+    ) {
+      navigate("/trajet/nouveau-trajet/confirmation", {
+        state: {
+          villeDepart,
+          villeArrive,
+          date,
+          time,
+          distance,
+          duration,
+          price,
+          passager,
+        },
+      });
+    }
   };
 
   return (
@@ -75,7 +108,9 @@ export default function ItineraireContainer() {
             distance={distance}
             duration={duration}
           />
-          {isChecked && <NextStepBtn />}
+          {isChecked && (
+            <NextStepBtn onClick={handleNextStep} label="Suivant" />
+          )}
         </Box>
       </Box>
     </Box>

@@ -4,8 +4,20 @@ import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
 import { Box, Button, OutlinedInput } from "@mui/material";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
+// import { ISearchbar } from "../../interfaces/components/ISearchbar";
 
 export default function SearchbarDesktop() {
+  //A METTRE EN PARAMETRE DE SearchbarDesktop
+  //   {
+  //   departureCity,
+  //   setDepartureCity,
+  //   arrivalCity,
+  //   setArrivalCity,
+  //   travelDate,
+  //   setTravelDate,
+  //   onSearch,
+  // }
+  // :ISearchBar
   return (
     <Box
       sx={{
@@ -17,6 +29,8 @@ export default function SearchbarDesktop() {
       }}
     >
       <OutlinedInput
+        //       value={departureCity}
+        // onChange={(e) => setDepartureCity(e.target.value)}
         placeholder="Ville de départ"
         startAdornment={<PinDropRoundedIcon sx={{ color: "#321F47" }} />}
         sx={{
@@ -44,6 +58,8 @@ export default function SearchbarDesktop() {
       />
 
       <OutlinedInput
+        // value={arrivalCity}
+        // onChange={(e) => setArrivalCity(e.target.value)}
         placeholder="Ville d'arrivée"
         startAdornment={<FlagRoundedIcon sx={{ color: "#321F47" }} />}
         sx={{
@@ -78,6 +94,8 @@ export default function SearchbarDesktop() {
         }}
       />
       <Button
+        //  value={travelDate}
+        // onChange={(e) => setTravelDate(e.target.value)}
         startIcon={<CalendarMonthRoundedIcon sx={{ color: "#321F47" }} />}
         sx={{
           borderRadius: " 0",
@@ -105,8 +123,12 @@ export default function SearchbarDesktop() {
       >
         Date
       </Button>
-      <PassengerSearchbar />
-      <SearchDesktopBtn />
+      <PassengerSearchbar
+      // passengers={passengers} setPassengers={setPassengers}
+      />
+      <SearchDesktopBtn
+      // onClick={handleSearch}
+      />
     </Box>
   );
 }

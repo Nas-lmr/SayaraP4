@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import FormTrip from "../../components/FormTrip";
+import FormTrip from "../../components/forms/FormTrip";
 import InfoProfilNotLogged from "../../components/global/InfoProfilNotLogged";
 import { useUserContext } from "../../context/UserContext";
 

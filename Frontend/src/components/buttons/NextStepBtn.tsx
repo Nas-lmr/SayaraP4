@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
+import { INextStepBtn } from "../../interfaces/components/INextStepBtn";
 
-export default function NextStepBtn() {
+export default function NextStepBtn({ onClick, label }: INextStepBtn) {
   return (
     <Button
+      onClick={onClick}
       variant="contained"
       sx={{
         width: { xs: "80%" },
@@ -13,7 +15,7 @@ export default function NextStepBtn() {
         borderRadius: "0.5rem",
       }}
     >
-      Suivant
+      {label}
     </Button>
   );
 }

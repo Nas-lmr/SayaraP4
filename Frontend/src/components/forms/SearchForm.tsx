@@ -12,8 +12,22 @@ import {
   TextField,
 } from "@mui/material";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
+// import { ISearchbar } from "../../interfaces/components/ISearchbar";
 
 export default function SearchForm({ onClose }: { onClose: () => void }) {
+  //   {
+  //A mettre dans les props
+  //   departureCity,
+  //   setDepartureCity,
+  //   arrivalCity,
+  //   setArrivalCity,
+  //   travelDate,
+  //   setTravelDate,
+  // passengers
+  // setPassengers
+  //   onSearch,
+  // } :ISearcbar
+
   return (
     <Box
       sx={{
@@ -82,6 +96,8 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Ville de départ"
+              //       value={departureCity}
+              // onChange={(e) => setDepartureCity(e.target.value)}
             />
           </Box>
           <Box
@@ -120,6 +136,8 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Ville d'arrivée"
+              // value={arrivalCity}
+              // onChange={(e) => setArrivalCity(e.target.value)}
             />
           </Box>
           <Box
@@ -157,6 +175,8 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Date"
+              //     value={travelDate}
+              // onChange={(e) => setTravelDate(e.target.value)}
             />
           </Box>
           <Box
@@ -181,11 +201,11 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
                 sx={{
                   color: "#321F47",
                   "&.Mui-focused": {
-                    color: "#321F47", // Couleur du label lorsque le champ est focalisé
+                    color: "#321F47",
                   },
                   "& .MuiInputBase-root.MuiInput-root.MuiInput-underline :before":
                     {
-                      borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
+                      borderBottomColor: "#321F47",
                     },
                   fontFamily: "Montserrat",
                 }}
@@ -195,17 +215,19 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               <Select
                 variant="standard"
                 label="Passagers"
+                // value={passenger}
+                // onChange={(e) => setPassenger(e.target.value)}
                 sx={{
                   width: "100%",
 
                   "&:before": {
-                    borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
+                    borderBottomColor: "#321F47",
                   },
                   "&:after": {
-                    borderBottomColor: "#321F47", // Couleur de la bordure inférieure après le focus
+                    borderBottomColor: "#321F47",
                   },
                   "& .MuiSelect-select": {
-                    color: "#321F47", // Couleur de la valeur sélectionnée
+                    color: "#321F47",
                   },
                 }}
               >
@@ -217,7 +239,10 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
             </FormControl>
           </Box>
         </Box>
-        <SearchJourneyBtn onClose={onClose} />
+        <SearchJourneyBtn
+          // onClick={handleSearch}
+          onClose={onClose}
+        />
       </Paper>
     </Box>
   );

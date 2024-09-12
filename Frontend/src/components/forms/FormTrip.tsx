@@ -5,11 +5,6 @@ import FlagRoundedIcon from "@mui/icons-material/FlagRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { useNavigate } from "react-router-dom";
-
 import {
   Box,
   Button,
@@ -21,15 +16,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { TimePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useState } from "react";
-import CreateJourneyBtn from "./buttons/CreateTripBtn";
+import { useNavigate } from "react-router-dom";
+import CreateJourneyBtn from "../buttons/CreateTripBtn";
 
 const FormTrip: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [villeDepart, setVilleDepart] = useState("");
   const [villeArrive, setVilleArrive] = useState("");
+  const [passager, setPassager] = useState(1);
   const [dateDepart, setDateDepart] = useState<Date | null>(null);
-  const [heureDisponible, setHeureDisponible] = useState("00:00");
+  const [heureDisponible, setHeureDisponible] = useState<Date | null>(null);
   const navigate = useNavigate();
   const handlePlusPrice = () => {
     setPrice(price + 1);
@@ -42,8 +43,19 @@ const FormTrip: React.FC = () => {
 
   const handleSubmit = () => {
     if (villeDepart && villeArrive && dateDepart && heureDisponible) {
+      const date = dateDepart.toLocaleDateString("fr-FR");
+
+      // Extraire l'heure au format HH:MM
+      const time = `${heureDisponible
+        .getHours()
+        .toString()
+        .padStart(2, "0")} h ${heureDisponible
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
+
       navigate("/trajet/nouveau-trajet/itineraire", {
-        state: { villeDepart, villeArrive, dateDepart, heureDisponible },
+        state: { villeDepart, villeArrive, date, time, price, passager },
       });
     }
   };
@@ -227,47 +239,14 @@ const FormTrip: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <FormControl variant="outlined" sx={{ width: "50%" }}>
-            <TextField
-              label="Heure disponible"
-              type="time"
-              defaultValue="00:00"
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <TimePicker
+              label="Heure de départ"
+              ampm={false}
               value={heureDisponible}
-              onChange={(e) => setHeureDisponible(e.target.value)}
-              slotProps={{
-                input: {
-                  inputProps: {
-                    step: 300,
-                  },
-                },
-              }}
-              sx={{
-                width: "100%",
-                "& .MuiInputLabel-root": {
-                  color: "#321F47",
-                  fontFamily: "Montserrat",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#321F47",
-                },
-                "& .MuiInputBase-root": {
-                  color: "#321F47",
-                },
-
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#321F47",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#321F47",
-                },
-                borderRadius: "10px",
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
-                },
-              }}
+              onChange={(newHour) => setHeureDisponible(newHour)}
             />
-          </FormControl>
+          </LocalizationProvider>
           <PersonRoundedIcon
             sx={{
               width: "15%",
@@ -294,8 +273,10 @@ const FormTrip: React.FC = () => {
             </InputLabel>
 
             <Select
+              onChange={(e) => setPassager(e.target.value as number)}
               variant="outlined"
               label="Passagers"
+              value={passager}
               sx={{
                 width: "100%",
 
