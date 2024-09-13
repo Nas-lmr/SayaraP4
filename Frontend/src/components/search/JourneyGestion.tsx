@@ -1,7 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import SearchPageBtn from "../buttons/SearchPageBtn";
 
 export default function JourneyGestion() {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -37,17 +39,17 @@ export default function JourneyGestion() {
       >
         <SearchPageBtn
           label="Nouveau trajet"
-          onclick={() => console.log("Nouveau trajet")}
+          onclick={() => navigate("/trajet/nouveau-trajet")}
           type="button"
         />
         <SearchPageBtn
           label="Mes trajets"
-          onclick={() => console.log("Mes trajets")}
+          onclick={() => navigate("/")}
           type="button"
         />
         <SearchPageBtn
           label="Mes trajets effectués"
-          onclick={() => console.log("Mes trajets effectués")}
+          onclick={() => navigate("/")}
           type="button"
         />
       </Box>

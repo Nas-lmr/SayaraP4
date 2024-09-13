@@ -20,7 +20,6 @@ export const registerService = async ({
 
       body: JSON.stringify({ username, email, password }),
     });
-    console.log(response, "RESPONSE");
 
     const responseData = await response.json();
 
@@ -59,7 +58,6 @@ export const loginService = async ({
     if (response.status === 201) {
       const userData = await response.json();
       const token = userData.token;
-      console.log(token, "TOOOKKEEENNN");
 
       if (!token) {
         return {

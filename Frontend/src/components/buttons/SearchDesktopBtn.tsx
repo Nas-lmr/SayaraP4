@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
 
 export default function SearchDesktopBtn() {
+  // { onClick }
   return (
     <Button
+      // onClick={onClick}
       sx={{
         height: "100%",
         width: "15%",
