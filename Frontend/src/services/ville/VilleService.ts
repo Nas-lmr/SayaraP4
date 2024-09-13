@@ -1,6 +1,7 @@
 type Coordinates = [number, number];
 
-// function to transform the POINT Coordinates to normal coordinates
+/*************************function to transform the POINT Coordinates to normal coordinates ***************************************/
+
 const TransformPoint = (pointString: string): Coordinates | null => {
   if (!pointString) {
     return null;
@@ -52,7 +53,6 @@ const fetchCity = async (
 
 /*  2 ******************* service fetch city from external api if the city is not our database *************** */
 
-// Function to fetch city coordinates from external API
 export const getExternalApi = async (
   city: string
 ): Promise<Coordinates | null> => {
@@ -70,7 +70,6 @@ export const getExternalApi = async (
 
 /* ************************************ services to save city in database  ******************************/
 
-// 3. Save the city to the local database (POST method)
 const saveCity = async (
   cityName: string,
   coordinates: Coordinates
@@ -101,7 +100,6 @@ const saveCity = async (
 
 /*************************** MAIN FUNTION THAT FETCH LOCALY AND EXTERNAL API IN NEEDED AND SAVE LOCALY********************** */
 
-// Main function to fetch and save a city
 export const fetchAndSaveCity = async (
   cityName: string
 ): Promise<{
@@ -110,20 +108,34 @@ export const fetchAndSaveCity = async (
 } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
+  // First, fetch city from local database
   let cityData = await fetchCity(normalizedCityName);
 
   if (cityData === null) {
     const coordinates = await getExternalApi(cityName);
+
     if (coordinates) {
-      await saveCity(normalizedCityName, coordinates);
-      cityData = {
-        city: normalizedCityName,
-        coordinates: coordinates,
-      };
+      // check if the city is in the database localy before saving it 
+      const existingCity = await fetchCity(normalizedCityName);
+
+      if (!existingCity) {
+        try {
+          // save the city only if it doesn't exist already
+          await saveCity(normalizedCityName, coordinates);
+          cityData = {
+            city: normalizedCityName,
+            coordinates: coordinates,
+          };
+        } catch (error) {
+          console.error(`Failed to save city ${cityName}:`, error);
+          return null;
+        }
+      }
     } else {
       console.error("City not found in external API");
       return null;
     }
   }
+
   return cityData;
 };
