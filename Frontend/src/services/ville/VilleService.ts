@@ -99,7 +99,7 @@ const saveCity = async (
   }
 };
 
-/***************************************************************MAIN FUNTION THAT FETCH LOCALY AND EXTERNAL API IN NEEDED AND SAVE LOCALY********************** */
+/*************************** MAIN FUNTION THAT FETCH LOCALY AND EXTERNAL API IN NEEDED AND SAVE LOCALY********************** */
 
 // Main function to fetch and save a city
 export const fetchAndSaveCity = async (
