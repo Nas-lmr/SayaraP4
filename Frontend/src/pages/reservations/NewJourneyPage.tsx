@@ -17,6 +17,7 @@ export default function NewJourneyPage() {
         backgroundColor: "#F4F4F4",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
       {!userData ? (
