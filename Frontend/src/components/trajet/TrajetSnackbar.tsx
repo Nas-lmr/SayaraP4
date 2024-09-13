@@ -7,7 +7,6 @@ export default function TrajetSnackbar({
   onClose,
   severity,
 }: ISnackbar) {
-  console.log("Snackbar Props:", { open, message, severity });
   return (
     <Snackbar
       open={snackOpen}

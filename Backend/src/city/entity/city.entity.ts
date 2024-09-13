@@ -1,4 +1,4 @@
-import { Index, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class CityEntity {
@@ -9,7 +9,7 @@ export class CityEntity {
   name: string;
 
   @Column({ type: "varchar", length: 150, nullable: true })
-  adresse: string;
+  address: string;
 
   @Index({ spatial: true })
   @Column({ type: "geometry", spatialFeatureType: "Point", srid: 4326 })
