@@ -1,25 +1,23 @@
 import AddIcon from "@mui/icons-material/Add";
-import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
 import FlagRoundedIcon from "@mui/icons-material/FlagRounded";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import PersonRounded from "@mui/icons-material/PersonRounded";
 import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
 import RemoveIcon from "@mui/icons-material/Remove";
 import {
   Box,
   Button,
-  FormControl,
-  InputLabel,
   MenuItem,
+  OutlinedInput,
   Paper,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import fr from "date-fns/locale/fr";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateJourneyBtn from "../buttons/CreateTripBtn";
@@ -65,8 +63,8 @@ const FormTrip: React.FC = () => {
       component="form"
       elevation={3}
       sx={{
-        height: "90%",
-        width: "80%",
+        height: "40rem",
+        width: { xs: "20rem", md: "25rem" },
         backgroundColor: "rgba(255,255,255,65%)",
         display: "flex",
         flexDirection: "column",
@@ -84,7 +82,7 @@ const FormTrip: React.FC = () => {
           marginTop: "2rem",
         }}
       >
-        Crées ton trajet :
+        Crées ton trajet
       </Typography>
       <Box
         sx={{
@@ -93,73 +91,77 @@ const FormTrip: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center ",
+          justifyContent: "space-around",
         }}
       >
-        <Box
+        <OutlinedInput
           sx={{
-            height: "15%",
-            width: "90%",
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <PinDropRoundedIcon
-            sx={{
-              width: "15%",
-              height: "50%",
-              mb: "0.3rem",
+            height: "3rem",
+            width: "85%",
+            "& .MuiInput-underline:before": {
+              borderBottomColor: "#321F47",
+            },
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#321F47",
+            },
+            "& .MuiInputLabel-root": {
               color: "#321F47",
-            }}
-          />
-          <TextField
-            sx={{
-              width: "100%",
-              "& .MuiInput-underline:before": {
-                borderBottomColor: "#321F47",
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#321F47",
-              },
-              "& .MuiInputLabel-root": {
-                color: "#321F47",
-                fontFamily: "Montserrat",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "#321F47",
-              },
               fontFamily: "Montserrat",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "#321F47",
+            },
+            fontFamily: "Montserrat",
 
+            borderRadius: "10px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+            "& .MuiOutlinedInput-root": {
               borderRadius: "10px",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "10px",
-              },
-            }}
-            variant="outlined"
-            label="Ville de départ"
-            value={villeDepart}
-            onChange={(e) => setVilleDepart(e.target.value)}
-          />
-        </Box>
-        <Box
-          sx={{
-            height: "15%",
-            width: "90%",
-            display: "flex",
-            alignItems: "flex-end",
+            },
           }}
-        >
-          <FlagRoundedIcon
-            sx={{
-              width: "15%",
-              height: "50%",
-              mb: "0.3rem",
+          placeholder="Ville de départ"
+          startAdornment={<PinDropRoundedIcon sx={{ color: "#321F47" }} />}
+          value={villeDepart}
+          onChange={(e) => setVilleDepart(e.target.value)}
+        />
+
+        <OutlinedInput
+          sx={{
+            height: "3rem",
+            width: "85%",
+            "& .MuiInput-underline:before": {
+              borderBottomColor: "#321F47",
+            },
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#321F47",
+            },
+            "& .MuiInputLabel-root": {
               color: "#321F47",
-            }}
-          />
-          <TextField
+              fontFamily: "Montserrat",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "#321F47",
+            },
+            fontFamily: "Montserrat",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "10px",
+            },
+          }}
+          placeholder="Ville d'arrivée"
+          startAdornment={<FlagRoundedIcon sx={{ color: "#321F47" }} />}
+          value={villeArrive}
+          onChange={(e) => setVilleArrive(e.target.value)}
+        />
+
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
+          <DatePicker
             sx={{
-              width: "100%",
+              width: "85%",
+              fontFamily: "Montserrat",
+              fontWeight: 400,
+
               "& .MuiInput-underline:before": {
                 borderBottomColor: "#321F47",
               },
@@ -173,70 +175,24 @@ const FormTrip: React.FC = () => {
               "& .MuiInputLabel-root.Mui-focused": {
                 color: "#321F47",
               },
-              fontFamily: "Montserrat",
-              borderRadius: "10px",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
               "& .MuiOutlinedInput-root": {
+                height: "3rem",
                 borderRadius: "10px",
               },
+              borderRadius: "10px",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             }}
-            variant="outlined"
-            label="Ville d'arrivée"
-            value={villeArrive}
-            onChange={(e) => setVilleArrive(e.target.value)}
+            value={dateDepart}
+            onChange={(newValue) => setDateDepart(newValue)}
           />
-        </Box>
+        </LocalizationProvider>
+
         <Box
           sx={{
-            height: "15%",
-            width: "90%",
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <CalendarMonthRoundedIcon
-            sx={{
-              width: "15%",
-              height: "50%",
-              mb: "0.3rem",
-              color: "#321F47",
-            }}
-          />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              sx={{
-                width: "100%",
-                "& .MuiInput-underline:before": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#321F47",
-                  fontFamily: "Montserrat",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#321F47",
-                },
-                borderRadius: "10px",
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
-                },
-              }}
-              label="Date de départ"
-              value={dateDepart}
-              onChange={(newValue) => setDateDepart(newValue)}
-            />
-          </LocalizationProvider>
-        </Box>
-        <Box
-          sx={{
-            height: "15%",
-            width: "90%",
+            width: "85%",
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -245,161 +201,175 @@ const FormTrip: React.FC = () => {
               ampm={false}
               value={heureDisponible}
               onChange={(newHour) => setHeureDisponible(newHour)}
-            />
-          </LocalizationProvider>
-          <PersonRoundedIcon
-            sx={{
-              width: "15%",
-              height: "50%",
-              mb: "0.3rem",
-              color: "#321F47",
-            }}
-          />
-          <FormControl variant="outlined" sx={{ width: "50%  " }}>
-            <InputLabel
               sx={{
-                color: "#321F47",
-                "&.Mui-focused": {
-                  color: "#321F47",
-                },
-                "& .MuiInputBase-root.MuiInput-root.MuiInput-underline :before":
-                  {
-                    borderBottomColor: "#321F47",
-                  },
-                fontFamily: "Montserrat",
-              }}
-            >
-              Place disponible
-            </InputLabel>
-
-            <Select
-              onChange={(e) => setPassager(e.target.value as number)}
-              variant="outlined"
-              label="Passagers"
-              value={passager}
-              sx={{
-                width: "100%",
-
-                "&:before": {
-                  borderBottomColor: "#321F47",
-                },
-                "&:after": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiSelect-select": {
-                  color: "#321F47",
-                },
-                borderRadius: "10px",
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
                 "& .MuiOutlinedInput-root": {
+                  height: "3rem",
                   borderRadius: "10px",
                 },
+                width: "60%",
+                borderRadius: "10px",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
               }}
-            >
-              <MenuItem>---</MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box
-          sx={{
-            height: "15%",
-            width: "90%",
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <PinDropRoundedIcon
-            sx={{
-              width: "15%",
-              height: "50%",
-              color: "#321F47",
-            }}
-          />
-          <TextField
-            sx={{
-              width: "100%",
-              "& .MuiInput-underline:before": {
-                borderBottomColor: "#321F47",
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#321F47",
-              },
-              "& .MuiInputLabel-root": {
-                color: "#321F47",
-                fontFamily: "Montserrat",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "#321F47",
-              },
-              fontFamily: "Montserrat",
+            />
+          </LocalizationProvider>
 
+          <Select
+            startAdornment={
+              <PersonRounded
+                sx={{
+                  color: "#321F47",
+                }}
+              />
+            }
+            onChange={(e) => setPassager(e.target.value as number)}
+            variant="outlined"
+            value={passager}
+            sx={{
+              width: "35%",
+              height: "3rem",
+              color: "#321F47",
+              fontFamily: "Montserrat",
+              fontWeight: 500,
+              "& .MuiInputBase-root": {
+                "&.focused": { borderColor: "#321F47" },
+              },
               borderRadius: "10px",
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "10px",
-              },
             }}
-            variant="outlined"
-            label="Point de Rendez vous"
-          />
+          >
+            <MenuItem
+              value={1}
+              sx={{
+                color: "#321F47",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+              }}
+            >
+              1
+            </MenuItem>
+            <MenuItem
+              value={2}
+              sx={{
+                color: "#321F47",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+              }}
+            >
+              2
+            </MenuItem>
+            <MenuItem
+              value={3}
+              sx={{
+                color: "#321F47",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+              }}
+            >
+              3
+            </MenuItem>
+          </Select>
         </Box>
+
+        <OutlinedInput
+          startAdornment={
+            <PinDropRoundedIcon
+              sx={{
+                color: "#321F47",
+              }}
+            />
+          }
+          sx={{
+            width: "85%",
+            height: "3rem",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+            "& .MuiOutlinedInput-root": {
+              color: "#321F47",
+            },
+          }}
+          placeholder="Point de rendez-vous"
+        />
+
         <Box
           sx={{
-            fontSize: "52px",
-            color: "321F47",
-            fontWeight: "bold",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+            height: "30%",
           }}
         >
           <Typography
+            textAlign="center"
             variant="h3"
             sx={{
               fontSize: "1.5rem",
               fontFamily: "Montserrat",
               fontWeight: 600,
-              marginTop: "2rem",
             }}
           >
             Choisis ton prix !
           </Typography>
-          <Button
-            onClick={handleMinusPrice}
+          <Box
             sx={{
-              backgroundColor: "#321F47",
-              borderRadius: "50%",
-              width: "20px",
-              height: "50px",
-              color: "#FDC55E",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+              width: "80%",
+              height: "70%",
             }}
           >
-            <RemoveIcon />{" "}
-          </Button>{" "}
-          {price}{" "}
-          <EuroRoundedIcon
-            sx={{
-              fontSize: "40px",
-              color: "321F47",
-              fontWeight: "bold",
-              margin: "0",
-            }}
-          />
-          <Button
-            onClick={handlePlusPrice}
-            sx={{
-              backgroundColor: "#321F47",
-              borderRadius: "50%",
-              width: "20px",
-              height: "50px",
-              color: "#FDC55E",
-            }}
-          >
-            <AddIcon />{" "}
-          </Button>
+            <Button
+              onClick={handleMinusPrice}
+              sx={{
+                minWidth: "2rem",
+                backgroundColor: "#321F47",
+                borderRadius: "50%",
+                width: "2rem",
+                height: "2rem",
+                color: "#FDC55E",
+              }}
+            >
+              <RemoveIcon />
+            </Button>{" "}
+            <Typography
+              sx={{
+                fontSize: "2.5rem",
+                fontFamily: "Montserrat",
+                color: "#321F47",
+                fontWeight: 600,
+                width: "40%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {price}{" "}
+              <EuroRoundedIcon
+                sx={{
+                  fontSize: "2.5rem",
+                  color: "#321F47",
+                  fontWeight: "bold",
+                }}
+              />
+            </Typography>
+            <Button
+              onClick={handlePlusPrice}
+              sx={{
+                minWidth: "2rem",
+                backgroundColor: "#321F47",
+                borderRadius: "50%",
+                width: "2rem",
+                height: "2rem",
+                color: "#FDC55E",
+              }}
+            >
+              <AddIcon />{" "}
+            </Button>
+          </Box>
+          <CreateJourneyBtn onClick={handleSubmit} />
         </Box>
       </Box>
-      <CreateJourneyBtn onClick={handleSubmit} />
     </Paper>
   );
 };
