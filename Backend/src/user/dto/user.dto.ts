@@ -8,3 +8,8 @@ export class UserDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class OwnerIdDTO {
+  @IsNotEmpty()
+  ownerID: number;
+}

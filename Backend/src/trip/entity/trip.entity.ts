@@ -31,6 +31,8 @@ export class TripEntity {
   @Column({ type: "int", nullable: false })
   pricePerSeat: number;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "time", nullable: false })
   departureTime: Date;
+  @Column({ type: "date", nullable: false })
+  departureDate: Date;
 }
