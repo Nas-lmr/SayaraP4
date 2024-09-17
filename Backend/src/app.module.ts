@@ -8,6 +8,7 @@ import { UserModule } from "./user/user.module";
 import { CityModule } from "./city/city.module";
 import { TripModule } from "./trip/trip.module";
 import { AuthModule } from "./auth/auth.module";
+import { ReservationModule } from './reservation/reservation.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from "./auth/auth.module";
     CityModule,
     TripModule,
     AuthModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

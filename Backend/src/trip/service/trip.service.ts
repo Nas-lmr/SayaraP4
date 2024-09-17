@@ -17,9 +17,6 @@ export class TripService {
 
     @InjectRepository(CityEntity)
     private readonly cityRepository: Repository<CityEntity>
-
-    // private readonly cityService: CityService,
-    // private readonly userService: UserService
   ) {}
 
   async create(
@@ -40,7 +37,6 @@ export class TripService {
         departureCityQuery,
         [tripData.departure_city_id]
       );
-      
 
       if (!departureCityResult) {
         return { status: 400, message: "Departure city not found." };
@@ -89,5 +85,44 @@ export class TripService {
         message: "An error occurred while creating the trip.",
       };
     }
+  }
+
+  async GetAll(): Promise<any[]> {
+    return await this.tripRepository
+      .createQueryBuilder("trip")
+      .innerJoinAndSelect("trip.departureCity", "departureCity")
+      .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+      .select([
+        "trip.id",
+        "trip.availableSeats",
+        "trip.pricePerSeat",
+        "trip.departureDateTime",
+        "departureCity.name",
+        "destinationCity.name",
+      ])
+      .getMany();
+  }
+
+  async GetFilteredTrip(
+    dCity: string,
+    aCity: string,
+    dateTrip: string
+  ): Promise<any[]> {
+    return await this.tripRepository
+      .createQueryBuilder("trip")
+      .innerJoinAndSelect("trip.departureCity", "departureCity")
+      .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+      .select([
+        "trip.id",
+        "trip.availableSeats",
+        "trip.pricePerSeat",
+        "trip.departureDateTime",
+        "departureCity.name",
+        "destinationCity.name",
+      ])
+      .where("departureCity.name = :dCity", { dCity })
+      .andWhere("destinationCity.name = :aCity", { aCity })
+      .andWhere("DATE(trip.departureDateTime) = :dateTrip", { dateTrip })
+      .getMany();
   }
 }
