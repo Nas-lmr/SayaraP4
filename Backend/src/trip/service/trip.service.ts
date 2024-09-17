@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CityEntity } from "src/city/entity/city.entity";
 import { UserEntity } from "src/user/entity/user.entity";
-import { UserService } from "src/user/service/user.service";
 import { Repository } from "typeorm";
 import { TripDto } from "../dto/trip.dto";
 import { TripEntity } from "../entity/trip.entity";
@@ -17,61 +16,17 @@ export class TripService {
     private readonly userRepository: Repository<UserEntity>,
 
     @InjectRepository(CityEntity)
-    private readonly cityRepository: Repository<CityEntity>,
+    private readonly cityRepository: Repository<CityEntity>
 
     // private readonly cityService: CityService,
-    private readonly userService: UserService
+    // private readonly userService: UserService
   ) {}
-
-  // async create(tripDto: TripDto, ownerId: OwnerIdDTO): Promise<TripEntity> {
-  //   // Récupérer l'utilisateur par ownerId
-  //   const owner = await this.userService.findById(ownerId.ownerID);
-  //   if (!owner) {
-  //     throw new NotFoundException("Owner not found");
-  //   }
-
-  //   // Récupérer la ville de départ via CityService
-  //   const departureCity = await this.cityService.findById(
-  //     tripDto.departureCityId
-  //   );
-  //   if (!departureCity) {
-  //     throw new NotFoundException("Departure city not found");
-  //   }
-
-  //   // Récupérer la ville de destination via CityService
-  //   const destinationCity = await this.cityService.findById(
-  //     tripDto.destinationCityId
-  //   );
-  //   if (!destinationCity) {
-  //     throw new NotFoundException("Destination city not found");
-  //   }
-
-  //   console.log("Owner:", owner);
-  //   console.log("Departure City:", departureCity);
-  //   console.log("Destination City:", destinationCity);
-  //   console.log("Trip Data:", tripDto);
-
-  //   // Création de l'entité Trip
-  //   const trip = this.tripRepository.create({
-  //     owner,
-  //     departureCity,
-  //     destinationCity,
-  //     availableSeats: tripDto.availableSeats,
-  //     pricePerSeat: tripDto.pricePerSeat,
-  //     departureDate: tripDto.departureDate,
-  //     departureTime: tripDto.departureTime,
-  //   });
-  //   console.log("TRIP:", trip);
-
-  //   // Enregistrer le voyage dans la base de données
-  //   return await this.tripRepository.save(trip);
-  // }
 
   async create(
     tripData: TripDto
   ): Promise<{ status: number; message: string }> {
     try {
-      const owner = await this.userService.findById(tripData.owner);
+      const owner = await this.userRepository.findOneBy({ id: tripData.owner });
       if (!owner) {
         return { status: 400, message: "Owner not found." };
       }
@@ -85,10 +40,7 @@ export class TripService {
         departureCityQuery,
         [tripData.departure_city_id]
       );
-      console.log(
-        [tripData.departure_city_id],
-        "DEPARTURECTIYRESULT SERVICE BACK"
-      );
+      
 
       if (!departureCityResult) {
         return { status: 400, message: "Departure city not found." };
@@ -107,7 +59,6 @@ export class TripService {
       if (!destinationCityResult) {
         return { status: 400, message: "Destination city not found." };
       }
-      console.log("SERVICE BACKEND Trip data received:", tripData);
 
       const dateTimeFormat = (date, time) => {
         const [day, mounth, year] = date.split("/");

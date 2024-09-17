@@ -13,15 +13,15 @@ export class TripEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { nullable: false })  
   @JoinColumn({ name: "owner_id" })
   owner: UserEntity;
 
-  @ManyToOne(() => CityEntity)
+  @ManyToOne(() => CityEntity, { nullable: false })
   @JoinColumn({ name: "departure_city_id" })
   departureCity: CityEntity;
 
-  @ManyToOne(() => CityEntity)
+  @ManyToOne(() => CityEntity, { nullable: false })
   @JoinColumn({ name: "destination_city_id" })
   destinationCity: CityEntity;
 

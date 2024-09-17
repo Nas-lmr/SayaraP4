@@ -35,6 +35,7 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
         let coordinates2: Coordinates | null = null;
         if (villeDepart) {
           const VilleD = await fetchAndSaveCity(villeDepart);
+          
           if (VilleD) {
             coordinates1 = VilleD.coordinates;
             setVilleDId(VilleD.id);
@@ -49,7 +50,6 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
             setVilleAId(VilleA.id);
             setCoords2(coordinates2);
           }
-          console.log(VilleA, "RRRRRRRRRRRRRRRRRRRRRRRRR");
         }
         if (coordinates1 && coordinates2) {
           const { routeCoordinate, distance, duration } = await getRoute(
@@ -74,9 +74,9 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
     heureDisponible,
     distance,
     duration,
-    villeAId,
     villeDId,
-    onRouteData,
+    villeAId,
+    onRouteData
   ]);
 
   return (

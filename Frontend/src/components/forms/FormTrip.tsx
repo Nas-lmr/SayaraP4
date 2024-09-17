@@ -39,7 +39,6 @@ const FormTrip: React.FC = () => {
     }
   };
 
-  console.log(villeDepart, "ARHAAAAAAAAAAAAAAA");
 
   const handleSubmit = () => {
     if (villeDepart && villeArrive && dateDepart && heureDisponible) {

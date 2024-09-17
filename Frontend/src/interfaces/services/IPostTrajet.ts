@@ -5,7 +5,7 @@ export interface IPostTrajet {
   pricePerSeat: number;
   departureTime: string;
   departureDate: string;
-  ownerId: string;
+  owner: string;
   departure_city_id: number;
   destination_city_id: number;
 }

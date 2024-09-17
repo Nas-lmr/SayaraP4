@@ -101,54 +101,12 @@ const saveCity = async (
 
 /*************************** MAIN FUNTION THAT FETCH LOCALY AND EXTERNAL API IN NEEDED AND SAVE LOCALY********************** */
 
-// export const fetchAndSaveCity = async (
-//   cityName: string
-// ): Promise<{
-//   id: number;
-//   city: string;
-//   coordinates: Coordinates;
-// } | null> => {
-//   const normalizedCityName = cityName.toLowerCase();
-
-//   // First, fetch city from local database
-//   let cityData = await fetchCity(normalizedCityName);
-
-//   if (cityData === null) {
-//     const coordinates = await getExternalApi(cityName);
-
-//     if (coordinates) {
-//       // check if the city is in the database localy before saving it
-//       const existingCity = await fetchCity(normalizedCityName);
-
-//       if (!existingCity) {
-//         try {
-//           // save the city only if it doesn't exist already
-//           await saveCity(normalizedCityName, coordinates);
-//           cityData = {
-//             city: normalizedCityName,
-//             coordinates: coordinates,
-//           };
-//         } catch (error) {
-//           console.error(`Failed to save city ${cityName}:`, error);
-//           return null;
-//         }
-//       }
-//     } else {
-//       console.error("City not found in external API");
-//       return null;
-//     }
-//   }
-//   console.log(cityData, "DATA CITY");
-
-//   return cityData;
-// };
-
 export const fetchAndSaveCity = async (
   cityName: string
 ): Promise<{
   city: string;
   coordinates: Coordinates;
-  id: number; // Inclure l'ID dans le retour
+  id: number; 
 } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
@@ -174,7 +132,7 @@ export const fetchAndSaveCity = async (
             return {
               city: cityData.city,
               coordinates: cityData.coordinates,
-              id: cityData.id, // Récupérer l'ID après sauvegarde
+              id: cityData.id, 
             };
           }
         } catch (error) {
@@ -192,7 +150,7 @@ export const fetchAndSaveCity = async (
     ? {
         city: cityData.city,
         coordinates: cityData.coordinates,
-        id: cityData.id, // Inclure l'ID lors de la récupération
+        id: cityData.id, 
       }
     : null;
 };

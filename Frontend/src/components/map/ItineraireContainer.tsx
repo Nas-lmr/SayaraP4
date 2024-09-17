@@ -7,7 +7,7 @@ import RoadMap from "./RoadMap";
 
 export default function ItineraireContainer() {
   const [isChecked, setIsChecked] = useState(false);
-  const [distance, setDistance] = useState<number | null>(null); // Add state for distance
+  const [distance, setDistance] = useState<number | null>(null); 
   const [duration, setDuration] = useState<number | null>(null);
   const [villeAId, setVilleAId] = useState<number | null>(null);
   const [villeDId, setVilleDId] = useState<number | null>(null);
@@ -24,13 +24,13 @@ export default function ItineraireContainer() {
   const handleRouteData = (
     distance: number,
     duration: number,
-    villeAId: number | null,
-    villeDId: number | null
+    villeDId: number | null,
+    villeAId: number | null
   ) => {
     setDistance(distance);
     setDuration(duration);
-    setVilleAId(villeAId);
     setVilleDId(villeDId);
+    setVilleAId(villeAId);
   };
 
   const handleNextStep = () => {
@@ -44,8 +44,8 @@ export default function ItineraireContainer() {
       duration &&
       price &&
       passager &&
-      villeAId &&
-      villeDId
+      villeDId &&
+      villeAId
     ) {
       navigate("/trajet/nouveau-trajet/confirmation", {
         state: {
@@ -57,13 +57,14 @@ export default function ItineraireContainer() {
           duration,
           price,
           passager,
-          villeAId,
           villeDId,
+          villeAId
         },
       });
     }
   };
-  console.log(villeAId, "DANS ITINERAIRE");
+ 
+
 
   return (
     <Box

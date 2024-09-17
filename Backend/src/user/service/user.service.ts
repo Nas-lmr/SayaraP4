@@ -34,7 +34,7 @@ export class UserService {
 
   async findById(userId: number): Promise<UserEntity | undefined> {
     const query = `
-    SELECT id,
+    SELECT id
     FROM user_entity
     WHERE id = ?
   `;

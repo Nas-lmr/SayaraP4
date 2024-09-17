@@ -8,7 +8,6 @@ export class TripController {
 
   @Post("new-trip")
   async create(@Body() tripDto: TripDto) {
-    console.log(tripDto, "TRIPDTO");
 
     return await this.tripService.create(tripDto);
   }

@@ -23,7 +23,7 @@ export default function RecapTrajetCreation() {
 
   const { decodedToken } = useUserContext();
 
-  const ownerId = decodedToken?.id || "";
+  const owner = decodedToken?.id || "";
   const location = useLocation();
   const {
     villeDepart,
@@ -45,12 +45,13 @@ export default function RecapTrajetCreation() {
   const departureDate = date;
   const pricePerSeat = price;
 
+
   const trajetData: IPostTrajet = {
     availableSeats,
     pricePerSeat,
     departureTime,
     departureDate,
-    ownerId,
+    owner,
     departure_city_id,
     destination_city_id,
   };

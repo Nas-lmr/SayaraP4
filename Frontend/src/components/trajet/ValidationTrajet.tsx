@@ -8,10 +8,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 import { IValidationTrajet } from "../../interfaces/services/IPostTrajet";
-// import { postTrajet } from "../../services/trajet/trajetService";
 import { usePostTrajet } from "../../services/trajet/trajetService";
 import TrajetSnackbar from "./TrajetSnackbar";
 
@@ -27,7 +26,7 @@ export default function ValidationTrajet({
   const [error, setError] = useState<string | null>(null);
 
   const { decodedToken } = useUserContext();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const postTrajet = usePostTrajet();
 
   const handleConfirm = async () => {
@@ -39,6 +38,9 @@ export default function ValidationTrajet({
 
         setIsSuccess(true);
         onSuccess?.();
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       } catch (error) {
         setIsSuccess(false);
         const errorMessage =
