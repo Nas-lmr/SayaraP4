@@ -1,27 +1,27 @@
+import { CityEntity } from "src/city/entity/city.entity";
+import { UserEntity } from "src/user/entity/user.entity";
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { UserEntity } from "src/user/entity/user.entity";
-import { CityEntity } from "src/city/entity/city.entity";
 
 @Entity()
 export class TripEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { nullable: false })  
   @JoinColumn({ name: "owner_id" })
   owner: UserEntity;
 
-  @ManyToOne(() => CityEntity)
+  @ManyToOne(() => CityEntity, { nullable: false })
   @JoinColumn({ name: "departure_city_id" })
   departureCity: CityEntity;
 
-  @ManyToOne(() => CityEntity)
+  @ManyToOne(() => CityEntity, { nullable: false })
   @JoinColumn({ name: "destination_city_id" })
   destinationCity: CityEntity;
 
@@ -31,6 +31,6 @@ export class TripEntity {
   @Column({ type: "int", nullable: false })
   pricePerSeat: number;
 
-  @Column({ type: "timestamp", nullable: false })
-  departureTime: Date;
+  @Column({ type: "datetime", nullable: false })
+  departureDateTime: Date;
 }

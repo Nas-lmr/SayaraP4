@@ -1,14 +1,13 @@
 import { IValidateTrajet } from "../components/IValidateTrajet";
 
 export interface IPostTrajet {
-  villeDepart: string;
-  villeArrive: string;
-  distance: number;
-  duration: number;
-  date: string;
-  time: string;
-  price: number;
-  passager: number;
+  availableSeats: number;
+  pricePerSeat: number;
+  departureTime: string;
+  departureDate: string;
+  owner: string;
+  departure_city_id: number;
+  destination_city_id: number;
 }
 
 export interface IValidationTrajet extends IValidateTrajet {

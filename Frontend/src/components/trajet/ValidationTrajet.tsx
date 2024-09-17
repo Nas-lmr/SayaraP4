@@ -8,10 +8,10 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 import { IValidationTrajet } from "../../interfaces/services/IPostTrajet";
-import { postTrajet } from "../../services/trajet/trajetService";
+import { usePostTrajet } from "../../services/trajet/trajetService";
 import TrajetSnackbar from "./TrajetSnackbar";
 
 export default function ValidationTrajet({
@@ -26,23 +26,27 @@ export default function ValidationTrajet({
   const [error, setError] = useState<string | null>(null);
 
   const { decodedToken } = useUserContext();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const postTrajet = usePostTrajet();
 
   const handleConfirm = async () => {
     if (decodedToken?.id) {
       setLoading(true);
-      setError(null); // Réinitialiser l'erreur avant l'appel
+      setError(null);
       try {
-        await postTrajet({ ...trajetData, ownerId: decodedToken.id });
+        await postTrajet({ ...trajetData });
+
         setIsSuccess(true);
-        onSuccess?.(); // Appeler onSuccess si défini
-        // setTimeout(() => navigate("/"), 2000); // Attendre 2 secondes avant la navigation
+        onSuccess?.();
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       } catch (error) {
         setIsSuccess(false);
         const errorMessage =
           "Erreur lors de la création du trajet. Veuillez réessayer.";
         setError(errorMessage);
-        onError?.(errorMessage); // Appeler onError si défini
+        onError?.(errorMessage);
         console.error("Erreur lors de la création du trajet", error);
       } finally {
         setLoading(false);
@@ -51,7 +55,7 @@ export default function ValidationTrajet({
     } else {
       const errorMessage = "User ID non trouvé.";
       setError(errorMessage);
-      onError?.(errorMessage); // Appeler onError si défini
+      onError?.(errorMessage);
       console.error("User ID non trouvé");
     }
   };

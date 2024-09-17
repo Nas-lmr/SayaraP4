@@ -2,6 +2,7 @@ import EuroSymbolRoundedIcon from "@mui/icons-material/EuroSymbolRounded";
 import { Box, Paper, Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
 import { IPostTrajet } from "../../interfaces/services/IPostTrajet";
 import {
   capitalizeFirstLetter,
@@ -20,6 +21,9 @@ export default function RecapTrajetCreation() {
     "success"
   );
 
+  const { decodedToken } = useUserContext();
+
+  const owner = decodedToken?.id || "";
   const location = useLocation();
   const {
     villeDepart,
@@ -30,17 +34,26 @@ export default function RecapTrajetCreation() {
     time,
     price,
     passager,
+    villeAId,
+    villeDId,
   } = location.state || {};
 
+  const availableSeats = passager;
+  const departure_city_id = villeDId;
+  const destination_city_id = villeAId;
+  const departureTime = time;
+  const departureDate = date;
+  const pricePerSeat = price;
+
+
   const trajetData: IPostTrajet = {
-    villeDepart,
-    villeArrive,
-    distance,
-    duration,
-    date,
-    time,
-    price,
-    passager,
+    availableSeats,
+    pricePerSeat,
+    departureTime,
+    departureDate,
+    owner,
+    departure_city_id,
+    destination_city_id,
   };
 
   const toggleConfirmation = () => {

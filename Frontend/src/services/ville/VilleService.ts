@@ -23,7 +23,7 @@ const TransformPoint = (pointString: string): Coordinates | null => {
 
 const fetchCity = async (
   cityName: string
-): Promise<{ city: string; coordinates: Coordinates } | null> => {
+): Promise<{ city: string; coordinates: Coordinates; id: number } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
   const response = await fetch(
@@ -32,13 +32,14 @@ const fetchCity = async (
   const data = await response.json();
 
   if (data) {
-    const { name, coordinates } = data;
+    const { name, coordinates, id } = data;
 
     if (coordinates) {
       const parsedCoordinates = TransformPoint(coordinates);
 
       if (parsedCoordinates) {
         return {
+          id: id,
           city: name,
           coordinates: parsedCoordinates,
         };
@@ -105,6 +106,7 @@ export const fetchAndSaveCity = async (
 ): Promise<{
   city: string;
   coordinates: Coordinates;
+  id: number; 
 } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
@@ -115,17 +117,24 @@ export const fetchAndSaveCity = async (
     const coordinates = await getExternalApi(cityName);
 
     if (coordinates) {
-      // check if the city is in the database localy before saving it 
+      // check if the city is in the database localy before saving it
       const existingCity = await fetchCity(normalizedCityName);
 
       if (!existingCity) {
         try {
           // save the city only if it doesn't exist already
           await saveCity(normalizedCityName, coordinates);
-          cityData = {
-            city: normalizedCityName,
-            coordinates: coordinates,
-          };
+
+          // Fetch the city again to get the id after saving
+          cityData = await fetchCity(normalizedCityName);
+
+          if (cityData) {
+            return {
+              city: cityData.city,
+              coordinates: cityData.coordinates,
+              id: cityData.id, 
+            };
+          }
         } catch (error) {
           console.error(`Failed to save city ${cityName}:`, error);
           return null;
@@ -137,5 +146,11 @@ export const fetchAndSaveCity = async (
     }
   }
 
-  return cityData;
+  return cityData
+    ? {
+        city: cityData.city,
+        coordinates: cityData.coordinates,
+        id: cityData.id, 
+      }
+    : null;
 };
