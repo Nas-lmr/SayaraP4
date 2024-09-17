@@ -23,7 +23,7 @@ const TransformPoint = (pointString: string): Coordinates | null => {
 
 const fetchCity = async (
   cityName: string
-): Promise<{ city: string; coordinates: Coordinates } | null> => {
+): Promise<{ city: string; coordinates: Coordinates; id: number } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
   const response = await fetch(
@@ -32,13 +32,14 @@ const fetchCity = async (
   const data = await response.json();
 
   if (data) {
-    const { name, coordinates } = data;
+    const { name, coordinates, id } = data;
 
     if (coordinates) {
       const parsedCoordinates = TransformPoint(coordinates);
 
       if (parsedCoordinates) {
         return {
+          id: id,
           city: name,
           coordinates: parsedCoordinates,
         };
@@ -100,11 +101,54 @@ const saveCity = async (
 
 /*************************** MAIN FUNTION THAT FETCH LOCALY AND EXTERNAL API IN NEEDED AND SAVE LOCALY********************** */
 
+// export const fetchAndSaveCity = async (
+//   cityName: string
+// ): Promise<{
+//   id: number;
+//   city: string;
+//   coordinates: Coordinates;
+// } | null> => {
+//   const normalizedCityName = cityName.toLowerCase();
+
+//   // First, fetch city from local database
+//   let cityData = await fetchCity(normalizedCityName);
+
+//   if (cityData === null) {
+//     const coordinates = await getExternalApi(cityName);
+
+//     if (coordinates) {
+//       // check if the city is in the database localy before saving it
+//       const existingCity = await fetchCity(normalizedCityName);
+
+//       if (!existingCity) {
+//         try {
+//           // save the city only if it doesn't exist already
+//           await saveCity(normalizedCityName, coordinates);
+//           cityData = {
+//             city: normalizedCityName,
+//             coordinates: coordinates,
+//           };
+//         } catch (error) {
+//           console.error(`Failed to save city ${cityName}:`, error);
+//           return null;
+//         }
+//       }
+//     } else {
+//       console.error("City not found in external API");
+//       return null;
+//     }
+//   }
+//   console.log(cityData, "DATA CITY");
+
+//   return cityData;
+// };
+
 export const fetchAndSaveCity = async (
   cityName: string
 ): Promise<{
   city: string;
   coordinates: Coordinates;
+  id: number; // Inclure l'ID dans le retour
 } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
@@ -115,17 +159,24 @@ export const fetchAndSaveCity = async (
     const coordinates = await getExternalApi(cityName);
 
     if (coordinates) {
-      // check if the city is in the database localy before saving it 
+      // check if the city is in the database localy before saving it
       const existingCity = await fetchCity(normalizedCityName);
 
       if (!existingCity) {
         try {
           // save the city only if it doesn't exist already
           await saveCity(normalizedCityName, coordinates);
-          cityData = {
-            city: normalizedCityName,
-            coordinates: coordinates,
-          };
+
+          // Fetch the city again to get the id after saving
+          cityData = await fetchCity(normalizedCityName);
+
+          if (cityData) {
+            return {
+              city: cityData.city,
+              coordinates: cityData.coordinates,
+              id: cityData.id, // Récupérer l'ID après sauvegarde
+            };
+          }
         } catch (error) {
           console.error(`Failed to save city ${cityName}:`, error);
           return null;
@@ -137,5 +188,11 @@ export const fetchAndSaveCity = async (
     }
   }
 
-  return cityData;
+  return cityData
+    ? {
+        city: cityData.city,
+        coordinates: cityData.coordinates,
+        id: cityData.id, // Inclure l'ID lors de la récupération
+      }
+    : null;
 };

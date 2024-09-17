@@ -1,10 +1,10 @@
 export class TripDto {
-  id: number;
-  departureCityId: number;
-  destinationCityId: number;
-  // meetingPoint: string;
   availableSeats: number;
+  pricePerSeat: number;
   departureTime: Date;
   departureDate: Date;
-  pricePerSeat: number;
+  owner: number;
+  departure_city_id: number;
+  destination_city_id: number;
+  // meetingPoint: string;
 }

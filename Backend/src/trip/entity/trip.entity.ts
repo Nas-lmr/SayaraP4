@@ -1,12 +1,12 @@
+import { CityEntity } from "src/city/entity/city.entity";
+import { UserEntity } from "src/user/entity/user.entity";
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { UserEntity } from "src/user/entity/user.entity";
-import { CityEntity } from "src/city/entity/city.entity";
 
 @Entity()
 export class TripEntity {
@@ -31,8 +31,6 @@ export class TripEntity {
   @Column({ type: "int", nullable: false })
   pricePerSeat: number;
 
-  @Column({ type: "time", nullable: false })
-  departureTime: Date;
-  @Column({ type: "date", nullable: false })
-  departureDate: Date;
+  @Column({ type: "datetime", nullable: false })
+  departureDateTime: Date;
 }

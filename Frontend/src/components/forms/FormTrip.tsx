@@ -39,6 +39,8 @@ const FormTrip: React.FC = () => {
     }
   };
 
+  console.log(villeDepart, "ARHAAAAAAAAAAAAAAA");
+
   const handleSubmit = () => {
     if (villeDepart && villeArrive && dateDepart && heureDisponible) {
       const date = dateDepart.toLocaleDateString("fr-FR");
@@ -53,7 +55,14 @@ const FormTrip: React.FC = () => {
         .padStart(2, "0")}`;
 
       navigate("/trajet/nouveau-trajet/itineraire", {
-        state: { villeDepart, villeArrive, date, time, price, passager },
+        state: {
+          villeDepart,
+          villeArrive,
+          date,
+          time,
+          price,
+          passager,
+        },
       });
     }
   };

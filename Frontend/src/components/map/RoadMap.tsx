@@ -9,8 +9,8 @@ import {
 } from "react-leaflet";
 import { useLocation } from "react-router-dom";
 import { IRoadMap } from "../../interfaces/components/IRoadMap";
-import {  getRoute } from "../../utils";
 import { fetchAndSaveCity } from "../../services/ville/VilleService";
+import { getRoute } from "../../utils";
 import FitBounds from "./FitBounds";
 
 type Coordinates = [number, number];
@@ -22,6 +22,8 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
 
   const [coords1, setCoords1] = useState<Coordinates | null>(null);
   const [coords2, setCoords2] = useState<Coordinates | null>(null);
+  const [villeAId, setVilleAId] = useState<number | null>(null);
+  const [villeDId, setVilleDId] = useState<number | null>(null);
   const [route, setRoute] = useState<Coordinates[]>([]);
   const [distance, setDistance] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
@@ -31,53 +33,39 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
       try {
         let coordinates1: Coordinates | null = null;
         let coordinates2: Coordinates | null = null;
-        if (villeDepart ) {
+        if (villeDepart) {
           const VilleD = await fetchAndSaveCity(villeDepart);
           if (VilleD) {
             coordinates1 = VilleD.coordinates;
-            setCoords1(coordinates1)
-          }}
-          // const coordinates1 = await getCoords(villeDepart);
-          // const coordinates2 = await getCoords(villeArrive);
-
-          // if (coordinates1) setCoords1(coordinates1);
-          // if (coordinates2) setCoords2(coordinates2);
-
-          // if (coordinates1 && coordinates2) {
-          //   const { routeCoordinate, distance, duration } = await getRoute(
-          //     coordinates1,
-          //     coordinates2
-          //   );
-          //   setRoute(routeCoordinate);
-          //   setDistance(distance); // distance in meters
-          //   setDuration(duration); // duration in seconds
-
-          //   onRouteData(distance, duration);
-
-          if(villeArrive){
-            const VilleA = await fetchAndSaveCity(villeArrive)
-            if(VilleA){
-              coordinates2 = VilleA.coordinates
-              setCoords2(coordinates2)
-            }
+            setVilleDId(VilleD.id);
+            setCoords1(coordinates1);
           }
-          if (coordinates1 && coordinates2) {
-            const { routeCoordinate, distance, duration } = await getRoute(
-              coordinates1,
-              coordinates2
-            );
-            setRoute(routeCoordinate);
-            setDistance(distance); // distance in meters
-            setDuration(duration); // duration in seconds
+        }
 
-            onRouteData(distance, duration);
-       
+        if (villeArrive) {
+          const VilleA = await fetchAndSaveCity(villeArrive);
+          if (VilleA) {
+            coordinates2 = VilleA.coordinates;
+            setVilleAId(VilleA.id);
+            setCoords2(coordinates2);
+          }
+          console.log(VilleA, "RRRRRRRRRRRRRRRRRRRRRRRRR");
+        }
+        if (coordinates1 && coordinates2) {
+          const { routeCoordinate, distance, duration } = await getRoute(
+            coordinates1,
+            coordinates2
+          );
+          setRoute(routeCoordinate);
+          setDistance(distance); // distance in meters
+          setDuration(duration); // duration in seconds
+
+          onRouteData(distance, duration, villeDId, villeAId);
         }
       } catch (err) {
         console.error("Error fetching the route data", err);
       }
     };
-
     fetchCoordinatesAndRoute();
   }, [
     villeDepart,
@@ -86,6 +74,8 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
     heureDisponible,
     distance,
     duration,
+    villeAId,
+    villeDId,
     onRouteData,
   ]);
 
