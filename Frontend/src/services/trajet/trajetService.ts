@@ -37,7 +37,7 @@ export const usePostTrajet = () => {
 //   .then((json) => console.log(JSON.stringify(json)));
 
 export const searchTrajet = async (params: ISearchTrajet) => {
-  const { departureCity, arrivalCity, travelDate, passengers } = params;
+  const { departureCity, arrivalCity, travelDate } = params;
 
   try {
     // Construction de l'URL avec des paramètres de requête
@@ -53,6 +53,7 @@ export const searchTrajet = async (params: ISearchTrajet) => {
       }
     );
 
+    console.log(response, "RESPONSE SERVICE");
     if (!response.ok) {
       throw new Error(
         `Erreur HTTP : ${response.status} ${response.statusText}`
@@ -60,6 +61,7 @@ export const searchTrajet = async (params: ISearchTrajet) => {
     }
 
     const data = await response.json();
+    console.log(data, "DATA SERVICE");
 
     return data;
   } catch (error) {

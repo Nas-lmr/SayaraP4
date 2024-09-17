@@ -3,11 +3,14 @@ import ResultJourneyContainer from "../../components/global/ResultJourneyContain
 import Searchbar from "../../components/search/Searchbar";
 import SearchbarDesktop from "../../components/search/SearchbarDesktop";
 
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function ResultPage() {
-  // const location = useLocation();
-  // const { results } = location.state || { results: [] };
+  const location = useLocation();
+  const { results } = location.state || { results: { data: [] } };
+
+  console.log(results, "DANS PAGE ");
+
   return (
     <Container
       disableGutters
@@ -25,8 +28,7 @@ export default function ResultPage() {
       <SearchbarDesktop />
       <Searchbar />
 
-      <ResultJourneyContainer />
-      {/* <ResultJourneyContainer results={results} /> */}
+      <ResultJourneyContainer results={results.data} />
     </Container>
   );
 }

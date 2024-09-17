@@ -7,66 +7,73 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import fr from "date-fns/locale/fr";
 import { useState } from "react";
-import { ISearchbar } from "../../interfaces/components/ISearchbar";
+import { useNavigate } from "react-router-dom";
+import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
+import { formatDate } from "../../services/common/ConversionValue";
+import { searchTrajet } from "../../services/trajet/trajetService";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
 
-export default function SearchbarDesktop({
+export default function SearchbarDesktop() {
+  // {
   //PROPS A SUPPRIMER
-  departureCity,
-  setDepartureCity,
-  arrivalCity,
-  setArrivalCity,
-  travelDate,
-  setTravelDate,
-}: // onSearch,
-ISearchbar) {
+  //   departureCity,
+  //   setDepartureCity,
+  //   arrivalCity,
+  //   setArrivalCity,
+  //   travelDate,
+  //   setTravelDate,
+  // }: // onSearch,
+  // ISearchbar
   // STATE A DECOMMENTER ET RETIRER LES PROPS DES PARAMETRE DE SEARCHBARDESKTOP
-
-  // const [departureCity, setDepartureCity] = useState<string>("");
-  // const [arrivalCity, setArrivalCity] = useState<string>("");
-  // const [travelDate, setTravelDate] = useState<Date | null>(null);
-  // const [passengers, setPassengers] = useState<number>(1);
+  const navigate = useNavigate();
+  const [departureCity, setDepartureCity] = useState<string>("");
+  const [arrivalCity, setArrivalCity] = useState<string>("");
+  const [travelDate, setTravelDate] = useState<Date | null>(null);
+  const [passengers, setPassengers] = useState<number>(1);
 
   // État pour stocker les résultats de la recherche
-  // const [searchResults, setSearchResults] = useState<any>(null);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Fonction appelée lors de la recherche
+  console.log("Travel Date:", formatDate(travelDate));
+  const handleSearch = async () => {
+    // Validation des paramètres avant la recherche
+    if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
+      setError("Veuillez remplir tous les champs");
+      return;
+    }
 
-  //  const handleSearch = async () => {
-  // Validation des paramètres avant la recherche
-  // if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
-  //   setError("Veuillez remplir tous les champs");
-  //   return;
-  // }
+    // Création de l'objet de recherche
+    const params: ISearchTrajet = {
+      departureCity,
+      arrivalCity,
+      travelDate: formatDate(travelDate),
+      // passengers,
+    };
 
-  // Création de l'objet de recherche
-  //   const params: ISearchTrajet = {
-  //     departureCity,
-  //     arrivalCity,
-  //     travelDate,
-  //     passengers,
-  //   };
+    console.log("Departure City:", departureCity);
+    console.log("Arrival City:", arrivalCity);
+    // Affichez la date formatée
+    console.log("Passengers:", passengers);
+    try {
+      setIsLoading(true);
+      setError(null);
 
-  //   try {
-  //     setIsLoading(true);
-  //     setError(null);
+      // Appel de la fonction de recherche
+      const results = await searchTrajet(params);
+      navigate("/trajet/resultats", {
+        state: { results },
+      });
+    } catch (err) {
+      setError("Une erreur est survenue lors de la recherche.");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // Appel de la fonction de recherche
-  //     const results = await searchTrajet(params);
-  //    navigate("/results", {
-  // state: { results },})
-  //   } catch (err) {
-  //     setError("Une erreur est survenue lors de la recherche.");
-  //     console.error(err);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  const [passengers, setPassengers] = useState(1);
   console.log(passengers, "DANS SEARCHBAR DESKTOP");
 
   return (
@@ -189,9 +196,7 @@ ISearchbar) {
         />
       </LocalizationProvider>
       <PassengerSearchbar passenger={passengers} setPassenger={setPassengers} />
-      <SearchDesktopBtn
-      // onClick={handleSearch}
-      />
+      <SearchDesktopBtn onClick={handleSearch} />
     </Box>
   );
 }

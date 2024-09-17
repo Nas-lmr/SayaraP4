@@ -1,6 +1,6 @@
 export interface ISearchTrajet {
   departureCity: string;
   arrivalCity: string;
-  travelDate: Date | null;
-  passengers: number;
+  travelDate: string | null;
+  // passengers: number;
 }

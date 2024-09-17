@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { INextStepBtn } from "../../interfaces/components/INextStepBtn";
+import { INextStepBtn } from "../../interfaces/components/buttons/INextStepBtn";
 
 export default function NextStepBtn({ onClick, label }: INextStepBtn) {
   return (

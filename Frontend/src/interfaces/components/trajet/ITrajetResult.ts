@@ -1,7 +1,8 @@
 export interface ITrajetResult {
   id: string;
-  departureDate: Date | null;
+  departureDateTime: string;
   departureTime: string;
-  departureCity: string;
-  arrivalCity: string;
+  departureCity: { name: string };
+  destinationCity: { name: string };
+  pricePerSeat: number;
 }

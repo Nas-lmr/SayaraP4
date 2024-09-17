@@ -10,10 +10,25 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-// import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
+import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
+import { capitalizeFirstLetter } from "../../services/common/ConversionValue";
 
-export default function ResultJourneyCard() {
-  // {trajet}:IResultCard
+export default function ResultJourneyCard({ trajet }: IResultCard) {
+  console.log(trajet, "DONNEE TRAJET");
+
+  const departureCity =
+    trajet.departureCity?.name || "Ville de départ inconnue";
+  const arrivalCity =
+    trajet.destinationCity?.name || "Ville d'arrivée inconnue";
+  const price = trajet.pricePerSeat || "Prix inconnu";
+  const departureDateTime = new Date(trajet.departureDateTime);
+
+  // Formater l'heure
+  const hours = departureDateTime.getHours().toString().padStart(2, "0");
+  const minutes = departureDateTime.getMinutes().toString().padStart(2, "0");
+
+  // Formatage de l'heure dans le format souhaité HH h MM
+  const formattedTime = `${hours}h${minutes}`;
   return (
     <Card
       sx={{
@@ -40,8 +55,7 @@ export default function ResultJourneyCard() {
               fontWeight: 500,
             }}
           >
-            09h00
-            {/* {journey.departureTime} */}
+            {formattedTime}
           </Typography>
           <Typography
             sx={{
@@ -132,7 +146,7 @@ export default function ResultJourneyCard() {
                 fontWeight: 500,
               }}
             >
-              Paris
+              {capitalizeFirstLetter(departureCity)}
             </Typography>
             <Typography
               sx={{
@@ -142,7 +156,7 @@ export default function ResultJourneyCard() {
                 fontWeight: 500,
               }}
             >
-              Marseille
+              {capitalizeFirstLetter(arrivalCity)}
             </Typography>
           </Box>
           <Typography
@@ -155,7 +169,7 @@ export default function ResultJourneyCard() {
               alignItems: "center",
             }}
           >
-            35
+            {price}
             <EuroRoundedIcon
               sx={{
                 fontSize: "1rem",
