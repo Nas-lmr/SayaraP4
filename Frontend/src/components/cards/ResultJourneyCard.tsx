@@ -10,8 +10,10 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+// import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
 
 export default function ResultJourneyCard() {
+  // {trajet}:IResultCard
   return (
     <Card
       sx={{
@@ -39,6 +41,7 @@ export default function ResultJourneyCard() {
             }}
           >
             09h00
+            {/* {journey.departureTime} */}
           </Typography>
           <Typography
             sx={{

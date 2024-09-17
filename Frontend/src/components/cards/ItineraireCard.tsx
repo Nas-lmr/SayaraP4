@@ -1,6 +1,6 @@
 import { Card, Checkbox, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { IItineraireCard } from "../../interfaces/components/IItineraireCard";
+import { IItineraireCard } from "../../interfaces/components/trajet/IItineraireCard";
 
 export default function ItineraireCard({
   onCheckboxChange,

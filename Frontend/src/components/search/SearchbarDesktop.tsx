@@ -1,25 +1,77 @@
-import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
+// import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import FlagRoundedIcon from "@mui/icons-material/FlagRounded";
 import PinDropRoundedIcon from "@mui/icons-material/PinDropRounded";
-import { Box, Button, OutlinedInput } from "@mui/material";
+import { Box, OutlinedInput } from "@mui/material";
+import { DesktopDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import fr from "date-fns/locale/fr";
+import { useState } from "react";
+import { ISearchbar } from "../../interfaces/components/ISearchbar";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
-// import { ISearchbar } from "../../interfaces/components/ISearchbar";
 
-export default function SearchbarDesktop() {
-  //A METTRE EN PARAMETRE DE SearchbarDesktop
-  //   {
-  //   departureCity,
-  //   setDepartureCity,
-  //   arrivalCity,
-  //   setArrivalCity,
-  //   travelDate,
-  //   setTravelDate,
-  //   onSearch,
+export default function SearchbarDesktop({
+  //PROPS A SUPPRIMER
+  departureCity,
+  setDepartureCity,
+  arrivalCity,
+  setArrivalCity,
+  travelDate,
+  setTravelDate,
+}: // onSearch,
+ISearchbar) {
+  // STATE A DECOMMENTER ET RETIRER LES PROPS DES PARAMETRE DE SEARCHBARDESKTOP
+
+  // const [departureCity, setDepartureCity] = useState<string>("");
+  // const [arrivalCity, setArrivalCity] = useState<string>("");
+  // const [travelDate, setTravelDate] = useState<Date | null>(null);
+  // const [passengers, setPassengers] = useState<number>(1);
+
+  // État pour stocker les résultats de la recherche
+  // const [searchResults, setSearchResults] = useState<any>(null);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [error, setError] = useState<string | null>(null);
+
+  // Fonction appelée lors de la recherche
+
+  //  const handleSearch = async () => {
+  // Validation des paramètres avant la recherche
+  // if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
+  //   setError("Veuillez remplir tous les champs");
+  //   return;
   // }
-  // :ISearchBar
+
+  // Création de l'objet de recherche
+  //   const params: ISearchTrajet = {
+  //     departureCity,
+  //     arrivalCity,
+  //     travelDate,
+  //     passengers,
+  //   };
+
+  //   try {
+  //     setIsLoading(true);
+  //     setError(null);
+
+  // Appel de la fonction de recherche
+  //     const results = await searchTrajet(params);
+  //    navigate("/results", {
+  // state: { results },})
+  //   } catch (err) {
+  //     setError("Une erreur est survenue lors de la recherche.");
+  //     console.error(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const [passengers, setPassengers] = useState(1);
+  console.log(passengers, "DANS SEARCHBAR DESKTOP");
+
   return (
     <Box
+      component="form"
       sx={{
         width: "85%",
         height: "4rem",
@@ -29,8 +81,8 @@ export default function SearchbarDesktop() {
       }}
     >
       <OutlinedInput
-        //       value={departureCity}
-        // onChange={(e) => setDepartureCity(e.target.value)}
+        value={departureCity}
+        onChange={(e) => setDepartureCity(e.target.value)}
         placeholder="Ville de départ"
         startAdornment={<PinDropRoundedIcon sx={{ color: "#321F47" }} />}
         sx={{
@@ -44,6 +96,7 @@ export default function SearchbarDesktop() {
           borderColor: "rgba(50, 31, 71, 0.5)",
           borderRight: "none",
           fontFamily: "Montserrat",
+          fontWeight: 500,
           "& fieldset": {
             borderColor: "#321F47",
             border: "none",
@@ -58,8 +111,8 @@ export default function SearchbarDesktop() {
       />
 
       <OutlinedInput
-        // value={arrivalCity}
-        // onChange={(e) => setArrivalCity(e.target.value)}
+        value={arrivalCity}
+        onChange={(e) => setArrivalCity(e.target.value)}
         placeholder="Ville d'arrivée"
         startAdornment={<FlagRoundedIcon sx={{ color: "#321F47" }} />}
         sx={{
@@ -91,41 +144,51 @@ export default function SearchbarDesktop() {
             backgroundColor: "rgba(50, 31, 71, 0.5)",
           },
           fontFamily: "Montserrat",
+          fontWeight: 500,
         }}
       />
-      <Button
-        //  value={travelDate}
-        // onChange={(e) => setTravelDate(e.target.value)}
-        startIcon={<CalendarMonthRoundedIcon sx={{ color: "#321F47" }} />}
-        sx={{
-          borderRadius: " 0",
-          backgroundColor: "white",
-          width: "15%",
-          height: "100%",
-          display: "flex",
-          borderTop: "1px solid",
-          borderBottom: "1px solid",
-          justifyContent: "flex-start",
-          borderColor: "rgba(50, 31, 71, 0.5)",
-          fontFamily: "Montserrat",
-          color: "#321F47",
-          textTransform: "none",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            left: "0",
-            top: "20%",
-            height: "60%",
-            width: "1px",
-            backgroundColor: "rgba(50, 31, 71, 0.5)",
-          },
-        }}
-      >
-        Date
-      </Button>
-      <PassengerSearchbar
-      // passengers={passengers} setPassengers={setPassengers}
-      />
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
+        <DesktopDatePicker
+          disablePast
+          sx={{
+            fontWeight: 400,
+            height: "100%",
+            borderRadius: 0,
+            borderTop: "1px solid",
+            borderBottom: "1px solid",
+            borderColor: "rgba(50, 31, 71, 0.5)",
+            "&.MuiDateCalendar-root": { fontFamily: "Montserrat" },
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: "white",
+              height: "100%",
+              borderRadius: 0,
+              fontFamily: "Montserrat",
+              fontWeight: 500,
+              position: "relative",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                left: "0",
+                top: "20%",
+                height: "60%",
+                width: "1px",
+                backgroundColor: "rgba(50, 31, 71, 0.5)",
+              },
+              "& fieldset": {
+                borderColor: "#321F47",
+                border: "none",
+              },
+              "&:hover fieldset": {
+                borderColor: "#321F47",
+              },
+            },
+            "&.MuiInputBase-root .MuiOutlinedInput-root": { border: "none" },
+          }}
+          value={travelDate}
+          onChange={(newValue) => setTravelDate(newValue)}
+        />
+      </LocalizationProvider>
+      <PassengerSearchbar passenger={passengers} setPassenger={setPassengers} />
       <SearchDesktopBtn
       // onClick={handleSearch}
       />

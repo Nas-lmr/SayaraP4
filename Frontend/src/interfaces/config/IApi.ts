@@ -6,5 +6,6 @@ export interface IApi {
     login: string;
     register: string;
     postTrajet: string;
+    searchTrajet: string;
   };
 }

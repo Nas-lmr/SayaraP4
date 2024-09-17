@@ -1,13 +1,15 @@
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import { Box, Button } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { IPassenger } from "../../interfaces/components/IPassenger";
 import SelectPassengers from "./SelectPassengers";
-// import { IPassenger } from "../../interfaces/components/IPassenger";
 
-export default function PassengerSearchbar() {
-  // {passenger,setPassenger}:IPassenger
+export default function PassengerSearchbar({
+  passenger,
+  setPassenger,
+}: IPassenger) {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [numberPassenger, setNumberPassenger] = useState(1);
+
   const ref = useRef<HTMLDivElement>(null);
 
   const toggleSelect = () => {
@@ -57,7 +59,7 @@ export default function PassengerSearchbar() {
           },
         }}
       >
-        {numberPassenger} {numberPassenger > 1 ? "Passagers" : "Passager"}
+        {passenger} {passenger > 1 ? "Passagers" : "Passager"}
         {isSelectOpen && (
           <Box
             sx={{
@@ -67,11 +69,9 @@ export default function PassengerSearchbar() {
             }}
           >
             <SelectPassengers
-              numberPassenger={numberPassenger}
-              setNumberPassenger={setNumberPassenger}
               // VERSION A GARDER UNE FOIS QUE LE FETCH SERA EFFECTUÉ DANS LE COMPOSANT PARENT
-              // numberPassenger={passenger}
-              // setNumberPassenger={setPassenger}
+              numberPassenger={passenger}
+              setNumberPassenger={setPassenger}
             />
           </Box>
         )}

@@ -4,20 +4,20 @@ import { Box, Card, Typography } from "@mui/material";
 import { ISelectPassengers } from "../../interfaces/components/ISelectPassengers";
 
 export default function SelectPassengers({
-  passenger,
-  setPassenger,
+  numberPassenger,
+  setNumberPassenger,
 }: ISelectPassengers) {
   const handleAdd = (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (passenger < 3) {
-      setPassenger(passenger + 1);
+    if (numberPassenger < 3) {
+      setNumberPassenger(numberPassenger + 1);
     }
   };
 
   const handleRemove = (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (passenger > 1) {
-      setPassenger(passenger - 1);
+    if (numberPassenger > 1) {
+      setNumberPassenger(numberPassenger - 1);
     }
   };
 
@@ -39,7 +39,7 @@ export default function SelectPassengers({
           color: "#321F47",
         }}
       >
-        {passenger > 1 ? "Passagers" : "Passager"}{" "}
+        {numberPassenger > 1 ? "Passagers" : "Passager"}{" "}
       </Typography>
       <Box
         sx={{
@@ -54,7 +54,8 @@ export default function SelectPassengers({
           fontSize="small"
           onClick={handleRemove}
           sx={{
-            color: "#321F47",
+            color: numberPassenger > 1 ? "#321F47" : "#E0E0E0", // Grise si on ne peut pas retirer
+            cursor: numberPassenger > 1 ? "pointer" : "not-allowed", // Désactive le clic si 1 passager
           }}
         />
         <Typography
@@ -64,14 +65,15 @@ export default function SelectPassengers({
             color: "#321F47",
           }}
         >
-          {passenger}{" "}
+          {numberPassenger}{" "}
         </Typography>
 
         <AddCircleOutlineRoundedIcon
           fontSize="small"
           onClick={handleAdd}
           sx={{
-            color: "#321F47",
+            color: numberPassenger < 3 ? "#321F47" : "#E0E0E0", // Grise si on ne peut pas retirer
+            cursor: numberPassenger < 3 ? "pointer" : "not-allowed", // Désactive le clic si 1 passager
           }}
         />
       </Box>

@@ -1,4 +1,4 @@
 export interface IPassenger {
-  passengers: number;
-  setPassengers: (value: number) => void;
+  passenger: number;
+  setPassenger: (value: number) => void;
 }

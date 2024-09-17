@@ -1,7 +1,27 @@
 import { Box, Typography } from "@mui/material";
 import ResultJourneyCard from "../cards/ResultJourneyCard";
+// import { IResultContainer } from "../../interfaces/components/trajet/IResultContainer";
 
 export default function ResultJourneyContainer() {
+  // { results }: IResultContainer
+
+  // if (results.length === 0) {
+  //   return (
+  //     <Typography
+  //       textAlign="center"
+  //       sx={{
+  //         width: "100%",
+  //         fontSize: { xs: "1.2rem", md: "1.5rem" },
+  //         fontFamily: "Montserrat",
+  //         color: "#321F47",
+  //         fontWeight: 500,
+  //         pt: "2rem",
+  //       }}
+  //     >
+  //       Aucun résultat trouvé.
+  //     </Typography>
+  //   );
+  // }
   return (
     <Box
       sx={{
@@ -41,6 +61,10 @@ export default function ResultJourneyContainer() {
         <ResultJourneyCard />
         <ResultJourneyCard />
         <ResultJourneyCard />
+
+        {/* {results.map((journey) => (
+          <ResultJourneyCard key={journey.id} journey={journey} />
+        ))} */}
       </Box>
     </Box>
   );
