@@ -6,57 +6,21 @@ import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import fr from "date-fns/locale/fr";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
-import { formatDate } from "../../services/common/ConversionValue";
-import { searchTrajet } from "../../services/trajet/trajetService";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
+import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
 
-export default function SearchbarDesktop() {
-  // STATE A DECOMMENTER ET RETIRER LES PROPS DES PARAMETRE DE SEARCHBARDESKTOP
-  const navigate = useNavigate();
-  const [departureCity, setDepartureCity] = useState<string>("");
-  const [arrivalCity, setArrivalCity] = useState<string>("");
-  const [travelDate, setTravelDate] = useState<Date | null>(null);
-  const [passengers, setPassengers] = useState<number>(1);
-
-  // État pour stocker les résultats de la recherche
-
-  // Fonction appelée lors de la recherche
-  const handleSearch = async () => {
-    // Validation des paramètres avant la recherche
-    if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
-      console.error("Veuillez remplir tous les champs");
-      return;
-    }
-
-    // Création de l'objet de recherche
-    const params: ISearchTrajet = {
-      departureCity,
-      arrivalCity,
-      travelDate: formatDate(travelDate),
-      // passengers,
-    };
-
-    console.log("Departure City:", departureCity);
-    console.log("Arrival City:", arrivalCity);
-    // Affichez la date formatée
-    console.log("Passengers:", passengers);
-    try {
-      // Appel de la fonction de recherche
-      const results = await searchTrajet(params);
-      navigate("/trajet/resultats", {
-        state: { results },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  console.log(passengers, "DANS SEARCHBAR DESKTOP");
-
+export default function SearchbarDesktop({
+  departureCity,
+  setDepartureCity,
+  arrivalCity,
+  setArrivalCity,
+  travelDate,
+  setTravelDate,
+  passengers,
+  setPassengers,
+  onSearch,
+}: ISearchbarProps) {
   return (
     <Box
       component="form"
@@ -177,7 +141,7 @@ export default function SearchbarDesktop() {
         />
       </LocalizationProvider>
       <PassengerSearchbar passenger={passengers} setPassenger={setPassengers} />
-      <SearchDesktopBtn onClick={handleSearch} />
+      <SearchDesktopBtn onClick={onSearch} onClose={() => ""} />
     </Box>
   );
 }

@@ -15,53 +15,26 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import fr from "date-fns/locale/fr";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
-import { formatDate } from "../../services/common/ConversionValue";
-import { searchTrajet } from "../../services/trajet/trajetService";
+import { ISearchForm } from "../../interfaces/components/trajet/ISearchForm";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
 
-export default function SearchForm({ onClose }: { onClose: () => void }) {
-  const navigate = useNavigate();
-
-  const [departureCity, setDepartureCity] = useState<string>("");
-  const [arrivalCity, setArrivalCity] = useState<string>("");
-  const [travelDate, setTravelDate] = useState<Date | null>(null);
-  const [passengers, setPassengers] = useState<number>(1);
-
-  const handleSearch = async () => {
-    // Validation des paramètres avant la recherche
-    if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
-      console.error("Veuillez remplir tous les champs");
-      return;
-    }
-
-    // Création de l'objet de recherche
-    const params: ISearchTrajet = {
-      departureCity,
-      arrivalCity,
-      travelDate: formatDate(travelDate),
-      // passengers,
-    };
-
-    console.log("Departure City:", departureCity);
-    console.log("Arrival City:", arrivalCity);
-    // Affichez la date formatée
-    console.log("Passengers:", passengers);
-    try {
-      // Appel de la fonction de recherche
-      const results = await searchTrajet(params);
-      navigate("/trajet/resultats", {
-        state: { results },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+export default function SearchForm({
+  onclose,
+  departureCity,
+  setDepartureCity,
+  arrivalCity,
+  setArrivalCity,
+  travelDate,
+  setTravelDate,
+  passengers,
+  setPassengers,
+  onSearch,
+}: ISearchForm) {
+  console.log(departureCity, "SEARCHFORM");
 
   return (
     <Box
+      component="form"
       sx={{
         height: { xs: "45vh", sm: "45vh" },
         width: "20rem",
@@ -285,7 +258,7 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
             </FormControl>
           </Box>
         </Box>
-        <SearchJourneyBtn onClick={handleSearch} onClose={onClose} />
+        <SearchJourneyBtn onClick={onSearch} onClose={onclose} />
       </Paper>
     </Box>
   );

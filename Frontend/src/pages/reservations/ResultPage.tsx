@@ -7,9 +7,7 @@ import { useLocation } from "react-router-dom";
 
 export default function ResultPage() {
   const location = useLocation();
-  const { results } = location.state || { results: { data: [] } };
-
-  console.log(results, "DANS PAGE ");
+  const { results } = location.state || { results: null }; // On récupère les deux types de résultats
 
   return (
     <Container
@@ -25,10 +23,13 @@ export default function ResultPage() {
         alignItems: "center",
       }}
     >
-      <SearchbarDesktop />
-      <Searchbar results={results.data} />
-
-      <ResultJourneyContainer results={results.data} />
+      {/* <SearchbarDesktop />
+      <Searchbar /> */}
+      {results ? (
+        <ResultJourneyContainer results={results.data} />
+      ) : (
+        <div>Aucun résultat trouvé</div> // Message d'erreur s'il n'y a pas de résultats
+      )}
     </Container>
   );
 }

@@ -4,13 +4,13 @@ import { IResultContainer } from "../../interfaces/components/trajet/IResultCont
 import ResultJourneyCard from "../cards/ResultJourneyCard";
 
 export default function ResultJourneyContainer({ results }: IResultContainer) {
-  console.log(results, "DANS CONTAINER");
+  console.log(results, "DANS CONTAINER desktop");
 
   if (!results || !Array.isArray(results) || results.length === 0) {
     return (
       <Box
         sx={{
-          display: "flex",
+          display: { xs: "none", md: "flex" },
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-around",
@@ -55,7 +55,7 @@ export default function ResultJourneyContainer({ results }: IResultContainer) {
   return (
     <Box
       sx={{
-        display: "flex",
+        display: { xs: "none", md: "flex" },
         flexDirection: "column",
         width: "100%",
         height: "90%",
@@ -92,12 +92,9 @@ export default function ResultJourneyContainer({ results }: IResultContainer) {
         <ResultJourneyCard />
         <ResultJourneyCard /> */}
 
-        {results &&
-          Array.isArray(results) &&
-          results.length > 0 &&
-          results.map((journey) => (
-            <ResultJourneyCard key={journey.id} trajet={journey} />
-          ))}
+        {results.map((journey) => (
+          <ResultJourneyCard key={journey.id} trajet={journey} />
+        ))}
       </Box>
     </Box>
   );

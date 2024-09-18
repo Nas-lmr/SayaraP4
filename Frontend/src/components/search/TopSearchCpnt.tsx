@@ -1,29 +1,54 @@
 import { Box, Typography } from "@mui/material";
-// import { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
+import { formatDate } from "../../services/common/ConversionValue";
+import { searchTrajet } from "../../services/trajet/trajetService";
 import Searchbar from "./Searchbar";
 import SearchbarDesktop from "./SearchbarDesktop";
 
 export default function TopSearchCpnt() {
-  //ELEMENT A DECOMMENTER LORSQUE SERVICE RECHERCHE EST PRET
+  const navigate = useNavigate();
+  const [departureCity, setDepartureCity] = useState<string>("");
+  const [arrivalCity, setArrivalCity] = useState<string>("");
+  const [travelDate, setTravelDate] = useState<Date | null>(null);
+  const [passengers, setPassengers] = useState<number>(1);
 
-  // const [departureCity, setDepartureCity] = useState("");
-  // const [arrivalCity, setArrivalCity] = useState("");
-  // const [travelDate, setTravelDate] = useState("");
-  // const [passengers, setPassengers] = useState(1);
-  // const [searchResults, setSearchResults] = useState([]);
+  // État pour stocker les résultats de la recherche
 
-  // const handleSearch = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       APPELER LE SERVICE ICI
-  //     );
-  //     const data = await response.json();
-  //     setSearchResults(data.results);
-  //     console.log(data.results);
-  //   } catch (error) {
-  //     console.error("Erreur lors de la recherche :", error);
-  //   }
-  // };
+  // Fonction appelée lors de la recherche
+  const handleSearch = async () => {
+    // Validation des paramètres avant la recherche
+    console.log("APPLIQUEEEEE");
+
+    if (!departureCity || !arrivalCity || !travelDate) {
+      console.error("Veuillez remplir tous les champs");
+      return;
+    }
+
+    // Création de l'objet de recherche
+    const params: ISearchTrajet = {
+      departureCity,
+      arrivalCity,
+      travelDate: formatDate(travelDate),
+      // passengers,
+    };
+    console.log(params, "PARAMSSS");
+
+    try {
+      // Appel de la fonction de recherche
+      const results = await searchTrajet(params);
+      console.log("RESULT:", results, "PARAMS:", params);
+
+      navigate("/trajet/resultats", {
+        state: { results },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  console.log(passengers, "DANS SEARCHBAR DESKTOP");
 
   return (
     <Box
@@ -44,26 +69,26 @@ export default function TopSearchCpnt() {
         Trouves ton trajet idéal !
       </Typography>
       <SearchbarDesktop
-      // departureCity={departureCity}
-      // setDepartureCity={setDepartureCity}
-      // arrivalCity={arrivalCity}
-      // setArrivalCity={setArrivalCity}
-      // travelDate={travelDate}
-      // setTravelDate={setTravelDate}
-      // passengers={passengers}
-      // setPassengers={setPassengers}
-      // onSearch={handleSearch}
+        departureCity={departureCity}
+        setDepartureCity={setDepartureCity}
+        arrivalCity={arrivalCity}
+        setArrivalCity={setArrivalCity}
+        travelDate={travelDate}
+        setTravelDate={setTravelDate}
+        passengers={passengers}
+        setPassengers={setPassengers}
+        onSearch={handleSearch}
       />
       <Searchbar
-      // departureCity={departureCity}
-      // setDepartureCity={setDepartureCity}
-      // arrivalCity={arrivalCity}
-      // setArrivalCity={setArrivalCity}
-      // travelDate={travelDate}
-      // setTravelDate={setTravelDate}
-      // passengers={passengers}
-      // setPassengers={setPassengers}
-      // onSearch={handleSearch}
+        departureCity={departureCity}
+        setDepartureCity={setDepartureCity}
+        arrivalCity={arrivalCity}
+        setArrivalCity={setArrivalCity}
+        travelDate={travelDate}
+        setTravelDate={setTravelDate}
+        passengers={passengers}
+        setPassengers={setPassengers}
+        onSearch={handleSearch}
       />
     </Box>
   );
