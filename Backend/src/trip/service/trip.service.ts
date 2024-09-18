@@ -55,7 +55,7 @@ export class TripService {
       if (!destinationCityResult) {
         return { status: 400, message: "Destination city not found." };
       }
-
+      // function to convert the date and time mysql date time
       const dateTimeFormat = (date, time) => {
         const [day, mounth, year] = date.split("/");
         const [hour, minute] = time.split(" h ");
@@ -66,6 +66,8 @@ export class TripService {
       const trip = this.tripRepository.create({
         availableSeats: tripData.availableSeats,
         pricePerSeat: tripData.pricePerSeat,
+        distance: tripData.distance,
+        duration: tripData.duration,
         departureDateTime: dateTimeFormat(
           tripData.departureDate,
           tripData.departureTime
@@ -99,6 +101,8 @@ export class TripService {
         "trip.departureDateTime",
         "departureCity.name",
         "destinationCity.name",
+        "trip.distance",
+        "trip.duration",
       ])
       .getMany();
   }
