@@ -37,8 +37,7 @@ export default function RecapTrajetCreation() {
     villeAId,
     villeDId,
   } = location.state || {};
-console.log(duration,"durationTime");
-console.log(distance,"distance");
+
 
 
   const availableSeats = passager;
