@@ -8,6 +8,8 @@ export interface IPostTrajet {
   owner: string;
   departure_city_id: number;
   destination_city_id: number;
+  distance:number;
+  duration:number;
 }
 
 export interface IValidationTrajet extends IValidateTrajet {

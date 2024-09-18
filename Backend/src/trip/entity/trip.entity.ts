@@ -33,4 +33,11 @@ export class TripEntity {
 
   @Column({ type: "datetime", nullable: false })
   departureDateTime: Date;
+
+  
+  @Column({ type: "int", nullable: false })
+  distance: number; 
+
+  @Column({ type: "int", nullable: false })
+  duration: number;  
 }
