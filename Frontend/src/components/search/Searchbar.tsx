@@ -3,9 +3,10 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { IResultContainer } from "../../interfaces/components/trajet/IResultContainer";
 import SearchDrawer from "../drawers/SearchDrawer";
 
-export default function Searchbar() {
+export default function Searchbar({ results }: IResultContainer) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleOpenDrawer = () => {
@@ -14,6 +15,14 @@ export default function Searchbar() {
 
   const handleCloseDrawer = () => {
     setIsDrawerOpen(false);
+  };
+
+  const formatDate = (dateTime: string): string => {
+    const date = new Date(dateTime);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${day}/${month}/${year}`; // Format DD/MM/YYYY
   };
 
   return (
@@ -64,14 +73,14 @@ export default function Searchbar() {
                 alignItems: "center",
               }}
             >
-              Paris
+              {results[0].departureCity.name}
               <span>
                 <ArrowRightAltRoundedIcon
                   fontSize="small"
                   sx={{ pt: "0.2rem" }}
                 />
               </span>
-              Marseille
+              {results[0].destinationCity.name}
             </Typography>
             <Typography
               textAlign="start"
@@ -82,7 +91,7 @@ export default function Searchbar() {
                 fontWeight: 500,
               }}
             >
-              24/02/2024
+              {formatDate(results[0].departureDateTime)}
             </Typography>
           </Box>
         </Button>

@@ -1,25 +1,46 @@
 import { Box, Typography } from "@mui/material";
+import NoResult from "../../assets/images/NoResult.png";
 import { IResultContainer } from "../../interfaces/components/trajet/IResultContainer";
 import ResultJourneyCard from "../cards/ResultJourneyCard";
 
 export default function ResultJourneyContainer({ results }: IResultContainer) {
   console.log(results, "DANS CONTAINER");
 
-  if (results.length === 0) {
+  if (!results || !Array.isArray(results) || results.length === 0) {
     return (
-      <Typography
-        textAlign="center"
+      <Box
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-around",
           width: "100%",
-          fontSize: { xs: "1.2rem", md: "1.5rem" },
-          fontFamily: "Montserrat",
-          color: "#321F47",
-          fontWeight: 500,
-          pt: "2rem",
+          height: "100%",
         }}
       >
-        Aucun résultat trouvé.
-      </Typography>
+        <Typography
+          textAlign="center"
+          sx={{
+            width: "100%",
+            fontSize: { xs: "1.2rem", md: "1.5rem" },
+            fontFamily: "Montserrat",
+            color: "#321F47",
+            fontWeight: 500,
+            pt: "2rem",
+          }}
+        >
+          Aucun résultat trouvé.
+        </Typography>
+        <Box
+          component="img"
+          src={NoResult}
+          alt="Homme attendant debout"
+          sx={{
+            height: { xs: "60%", sm: "60%", md: "70%", lg: "80%" },
+            width: { xs: "90%", sm: "70%", md: "60%", lg: "50%" },
+          }}
+        />
+      </Box>
     );
   }
 
@@ -71,9 +92,12 @@ export default function ResultJourneyContainer({ results }: IResultContainer) {
         <ResultJourneyCard />
         <ResultJourneyCard /> */}
 
-        {results.map((journey) => (
-          <ResultJourneyCard key={journey.id} trajet={journey} />
-        ))}
+        {results &&
+          Array.isArray(results) &&
+          results.length > 0 &&
+          results.map((journey) => (
+            <ResultJourneyCard key={journey.id} trajet={journey} />
+          ))}
       </Box>
     </Box>
   );

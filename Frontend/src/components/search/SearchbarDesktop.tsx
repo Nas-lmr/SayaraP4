@@ -15,16 +15,6 @@ import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
 
 export default function SearchbarDesktop() {
-  // {
-  //PROPS A SUPPRIMER
-  //   departureCity,
-  //   setDepartureCity,
-  //   arrivalCity,
-  //   setArrivalCity,
-  //   travelDate,
-  //   setTravelDate,
-  // }: // onSearch,
-  // ISearchbar
   // STATE A DECOMMENTER ET RETIRER LES PROPS DES PARAMETRE DE SEARCHBARDESKTOP
   const navigate = useNavigate();
   const [departureCity, setDepartureCity] = useState<string>("");
@@ -33,15 +23,12 @@ export default function SearchbarDesktop() {
   const [passengers, setPassengers] = useState<number>(1);
 
   // État pour stocker les résultats de la recherche
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
   // Fonction appelée lors de la recherche
-  console.log("Travel Date:", formatDate(travelDate));
   const handleSearch = async () => {
     // Validation des paramètres avant la recherche
     if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
-      setError("Veuillez remplir tous les champs");
+      console.error("Veuillez remplir tous les champs");
       return;
     }
 
@@ -58,19 +45,13 @@ export default function SearchbarDesktop() {
     // Affichez la date formatée
     console.log("Passengers:", passengers);
     try {
-      setIsLoading(true);
-      setError(null);
-
       // Appel de la fonction de recherche
       const results = await searchTrajet(params);
       navigate("/trajet/resultats", {
         state: { results },
       });
     } catch (err) {
-      setError("Une erreur est survenue lors de la recherche.");
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 

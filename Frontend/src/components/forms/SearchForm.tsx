@@ -11,22 +11,54 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import fr from "date-fns/locale/fr";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
+import { formatDate } from "../../services/common/ConversionValue";
+import { searchTrajet } from "../../services/trajet/trajetService";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
-// import { ISearchbar } from "../../interfaces/components/ISearchbar";
 
 export default function SearchForm({ onClose }: { onClose: () => void }) {
-  //   {
-  //A mettre dans les props
-  //   departureCity,
-  //   setDepartureCity,
-  //   arrivalCity,
-  //   setArrivalCity,
-  //   travelDate,
-  //   setTravelDate,
-  // passengers
-  // setPassengers
-  //   onSearch,
-  // } :ISearcbar
+  const navigate = useNavigate();
+
+  const [departureCity, setDepartureCity] = useState<string>("");
+  const [arrivalCity, setArrivalCity] = useState<string>("");
+  const [travelDate, setTravelDate] = useState<Date | null>(null);
+  const [passengers, setPassengers] = useState<number>(1);
+
+  const handleSearch = async () => {
+    // Validation des paramètres avant la recherche
+    if (!departureCity || !arrivalCity || !travelDate || passengers < 1) {
+      console.error("Veuillez remplir tous les champs");
+      return;
+    }
+
+    // Création de l'objet de recherche
+    const params: ISearchTrajet = {
+      departureCity,
+      arrivalCity,
+      travelDate: formatDate(travelDate),
+      // passengers,
+    };
+
+    console.log("Departure City:", departureCity);
+    console.log("Arrival City:", arrivalCity);
+    // Affichez la date formatée
+    console.log("Passengers:", passengers);
+    try {
+      // Appel de la fonction de recherche
+      const results = await searchTrajet(params);
+      navigate("/trajet/resultats", {
+        state: { results },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Box
@@ -96,8 +128,8 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Ville de départ"
-              //       value={departureCity}
-              // onChange={(e) => setDepartureCity(e.target.value)}
+              value={departureCity}
+              onChange={(e) => setDepartureCity(e.target.value)}
             />
           </Box>
           <Box
@@ -136,48 +168,62 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Ville d'arrivée"
-              // value={arrivalCity}
-              // onChange={(e) => setArrivalCity(e.target.value)}
+              value={arrivalCity}
+              onChange={(e) => setArrivalCity(e.target.value)}
             />
           </Box>
           <Box
             sx={{
               height: "15%",
-              width: "90%",
+              width: "85%",
               display: "flex",
-              alignItems: "flex-end",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <CalendarMonthRoundedIcon
               sx={{
-                width: "15%",
-                height: "50%",
-                mb: "0.3rem",
                 color: "#321F47",
               }}
             />
-            <TextField
-              sx={{
-                width: "80%",
-                "& .MuiInput-underline:before": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#321F47",
-                  fontFamily: "Montserrat",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#321F47",
-                },
-              }}
-              variant="standard"
-              label="Date"
-              //     value={travelDate}
-              // onChange={(e) => setTravelDate(e.target.value)}
-            />
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={fr}
+            >
+              <DatePicker
+                disablePast
+                sx={{
+                  fontWeight: 400,
+                  height: "100%",
+                  borderRadius: 0,
+                  border: "none",
+
+                  width: "85%",
+                  "&.MuiDateCalendar-root": { fontFamily: "Montserrat" },
+                  "& .MuiOutlinedInput-root": {
+                    height: "100%",
+                    borderColor: "#321F47",
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    fontFamily: "Montserrat",
+                    fontWeight: 500,
+                    p: 0,
+                    "& fieldset": {
+                      borderColor: "#321F47",
+                      border: "none",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#321F47",
+                    },
+                  },
+                  "&.MuiInputBase-root .MuiOutlinedInput-root": {
+                    border: "none",
+                  },
+                }}
+                value={travelDate}
+                onChange={(newDate) => setTravelDate(newDate)}
+              />
+            </LocalizationProvider>
           </Box>
           <Box
             sx={{
@@ -215,8 +261,8 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               <Select
                 variant="standard"
                 label="Passagers"
-                // value={passenger}
-                // onChange={(e) => setPassenger(e.target.value)}
+                value={passengers}
+                onChange={(e) => setPassengers(Number(e.target.value))}
                 sx={{
                   width: "100%",
 
@@ -239,10 +285,7 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
             </FormControl>
           </Box>
         </Box>
-        <SearchJourneyBtn
-          // onClick={handleSearch}
-          onClose={onClose}
-        />
+        <SearchJourneyBtn onClick={handleSearch} onClose={onClose} />
       </Paper>
     </Box>
   );

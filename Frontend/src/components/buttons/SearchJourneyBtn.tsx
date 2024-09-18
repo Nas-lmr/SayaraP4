@@ -1,11 +1,13 @@
 import { Button } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
+import { ISearchBtn } from "../../interfaces/components/buttons/ISearchBtn";
 
-export default function SearchJourneyBtn({ onClose }: { onClose: () => void }) {
+export default function SearchJourneyBtn({ onClose, onClick }: ISearchBtn) {
   const location = useLocation();
 
   const handleClick = () => {
     if (location.pathname === "/trajet/resultats") {
+      onClick();
       onClose();
     }
   };

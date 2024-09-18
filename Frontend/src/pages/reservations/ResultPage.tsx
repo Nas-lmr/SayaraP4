@@ -17,7 +17,7 @@ export default function ResultPage() {
       maxWidth={false}
       sx={{
         height: "100vh",
-        pt: "5rem",
+        pt: "5.5rem",
         pb: "3rem",
         backgroundColor: "#F4F4F4",
         display: "flex",
@@ -26,7 +26,7 @@ export default function ResultPage() {
       }}
     >
       <SearchbarDesktop />
-      <Searchbar />
+      <Searchbar results={results.data} />
 
       <ResultJourneyContainer results={results.data} />
     </Container>
