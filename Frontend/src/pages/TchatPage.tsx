@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
 import { useUserContext } from "../context/UserContext";
+import {MessagesComponent} from "../components/messages/MessagesComponent.tsx";
 
 export default function TchatPage() {
   const { userData } = useUserContext();
@@ -24,7 +25,7 @@ export default function TchatPage() {
           alt="Homme écrivant un message"
         />
       ) : (
-        <h1>ARHHHAAAAAA</h1>
+        <MessagesComponent />
       )}
     </Container>
   );

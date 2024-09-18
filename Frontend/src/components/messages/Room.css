@@ -1,0 +1,34 @@
+ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    background: white;
+    color: black;
+}
+
+ul li:hover {
+    background: wheat;
+}
+
+ul li span:nth-child(1) {
+    padding: 10px;
+    font-size: 1.2em;
+}
+
+.active {
+    background-color: #888888;
+}
+
+.active:hover {
+    background-color: #888888;
+}
