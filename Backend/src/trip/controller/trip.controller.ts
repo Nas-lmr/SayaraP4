@@ -18,7 +18,7 @@ export class TripController {
   async create(@Body() tripDto: TripDto) {
     return await this.tripService.create(tripDto);
   }
-
+// all trips 
   @Get()
   async getAll() {
     try {
@@ -41,7 +41,8 @@ export class TripController {
       );
     }
   }
-
+  
+// get trips based on researche
   @Get("filtre")
   async FiltreTrip(
     @Query("dCity") dCity: string,

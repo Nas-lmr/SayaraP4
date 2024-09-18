@@ -37,6 +37,9 @@ export default function RecapTrajetCreation() {
     villeAId,
     villeDId,
   } = location.state || {};
+console.log(duration,"durationTime");
+console.log(distance,"distance");
+
 
   const availableSeats = passager;
   const departure_city_id = villeDId;
@@ -44,6 +47,7 @@ export default function RecapTrajetCreation() {
   const departureTime = time;
   const departureDate = date;
   const pricePerSeat = price;
+
 
 
   const trajetData: IPostTrajet = {
@@ -54,6 +58,8 @@ export default function RecapTrajetCreation() {
     owner,
     departure_city_id,
     destination_city_id,
+    distance,
+    duration
   };
 
   const toggleConfirmation = () => {

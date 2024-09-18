@@ -6,4 +6,6 @@ export class TripDto {
   owner: number;
   departure_city_id: number;
   destination_city_id: number;
+  distance: number;
+  duration: number;
 }
