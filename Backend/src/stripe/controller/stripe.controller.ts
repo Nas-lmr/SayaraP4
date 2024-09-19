@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { StripeService } from '../service/stripe.service';
 import { PaymentRequestBody } from '../PaymentRequestBody';
-import { Response } from 'express'; // Importer Response depuis express
+import { Response } from 'express'; 
 
 @Controller('payments')
 export class StripeController {
