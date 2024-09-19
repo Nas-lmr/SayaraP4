@@ -36,3 +36,25 @@ export const formatDate = (date: Date | null): string | null => {
   if (!date) return null;
   return format(date, "yyyy-MM-dd");
 };
+
+//CALCUL DE L HEURER D ARRIVEE D UN TRAJET
+
+export const formatDurationFromSeconds = (seconds: number) => {
+  const totalMinutes = Math.floor(seconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}h${minutes.toString().padStart(2, "0")}`;
+};
+
+export const calculateArrivalDateTime = (
+  departureDateTime: Date,
+  durationInSeconds: number
+) => {
+  return new Date(departureDateTime.getTime() + durationInSeconds * 1000);
+};
+
+export const formatTime = (dateTime: Date) => {
+  const hours = dateTime.getHours().toString().padStart(2, "0");
+  const minutes = dateTime.getMinutes().toString().padStart(2, "0");
+  return `${hours}h${minutes}`;
+};

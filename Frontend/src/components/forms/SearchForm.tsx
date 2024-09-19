@@ -30,8 +30,6 @@ export default function SearchForm({
   setPassengers,
   onSearch,
 }: ISearchForm) {
-  console.log(departureCity, "SEARCHFORM");
-
   return (
     <Box
       component="form"

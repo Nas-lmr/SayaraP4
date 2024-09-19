@@ -6,9 +6,9 @@ import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import fr from "date-fns/locale/fr";
+import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
-import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
 
 export default function SearchbarDesktop({
   departureCity,

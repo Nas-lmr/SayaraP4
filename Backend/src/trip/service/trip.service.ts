@@ -123,6 +123,8 @@ export class TripService {
         "trip.departureDateTime",
         "departureCity.name",
         "destinationCity.name",
+        "trip.distance",
+        "trip.duration",
       ])
       .where("departureCity.name = :dCity", { dCity })
       .andWhere("destinationCity.name = :aCity", { aCity })

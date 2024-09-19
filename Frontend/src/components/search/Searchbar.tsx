@@ -3,8 +3,8 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
-import SearchDrawer from "../drawers/SearchDrawer";
 import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
+import SearchDrawer from "../drawers/SearchDrawer";
 
 export default function Searchbar({
   departureCity,
@@ -91,7 +91,10 @@ export default function Searchbar({
               <span>
                 <ArrowRightAltRoundedIcon
                   fontSize="small"
-                  sx={{ pt: "0.2rem" }}
+                  sx={{
+                    pt: "0.2rem",
+                    display: departureCity && arrivalCity ? "" : "none",
+                  }}
                 />
               </span>
               {arrivalCity}

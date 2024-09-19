@@ -5,4 +5,6 @@ export interface ITrajetResult {
   departureCity: { name: string };
   destinationCity: { name: string };
   pricePerSeat: number;
+  distance: number;
+  duration: number;
 }

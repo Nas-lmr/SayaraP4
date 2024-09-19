@@ -39,7 +39,6 @@ const FormTrip: React.FC = () => {
     }
   };
 
-
   const handleSubmit = () => {
     if (villeDepart && villeArrive && dateDepart && heureDisponible) {
       const date = dateDepart.toLocaleDateString("fr-FR");
@@ -165,6 +164,7 @@ const FormTrip: React.FC = () => {
 
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
           <DatePicker
+            disablePast
             sx={{
               width: "85%",
               fontFamily: "Montserrat",

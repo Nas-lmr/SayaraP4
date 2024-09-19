@@ -11,7 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
-import { capitalizeFirstLetter } from "../../services/common/ConversionValue";
+import {
+  capitalizeFirstLetter,
+  formatDuration,
+  calculateArrivalDateTime,
+  formatTime,
+} from "../../services/common/ConversionValue";
 
 export default function ResultJourneyCard({ trajet }: IResultCard) {
   const departureCity =
@@ -20,13 +25,17 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
     trajet.destinationCity?.name || "Ville d'arrivée inconnue";
   const price = trajet.pricePerSeat || "Prix inconnu";
   const departureDateTime = new Date(trajet.departureDateTime);
+  const durationInSeconds = trajet.duration; // La durée est en secondes
 
-  // Formater l'heure
-  const hours = departureDateTime.getHours().toString().padStart(2, "0");
-  const minutes = departureDateTime.getMinutes().toString().padStart(2, "0");
+  // Calculer l'heure d'arrivée
+  const arrivalDateTime = calculateArrivalDateTime(
+    departureDateTime,
+    durationInSeconds
+  );
 
-  // Formatage de l'heure dans le format souhaité HH h MM
-  const formattedTime = `${hours}h${minutes}`;
+  // Formater l'heure de départ et l'heure d'arrivée
+  const formattedDepartureTime = formatTime(departureDateTime);
+  const formattedArrivalTime = formatTime(arrivalDateTime);
   return (
     <Card
       sx={{
@@ -53,7 +62,7 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
               fontWeight: 500,
             }}
           >
-            {formattedTime}
+            {formattedDepartureTime}
           </Typography>
           <Typography
             sx={{
@@ -73,8 +82,8 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
                 fontFamily: "Montserrat",
                 fontWeight: 600,
               }}
-            />{" "}
-            4h45
+            />
+            {formatDuration(durationInSeconds)}
           </Typography>
           <Typography
             sx={{
@@ -84,7 +93,7 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
               fontWeight: 500,
             }}
           >
-            13h45
+            {formattedArrivalTime}
           </Typography>
         </Box>
         <Box
