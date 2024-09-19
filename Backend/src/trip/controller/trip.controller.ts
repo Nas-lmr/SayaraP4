@@ -16,9 +16,27 @@ export class TripController {
 
   @Post("new-trip")
   async create(@Body() tripDto: TripDto) {
-    return await this.tripService.create(tripDto);
+    try {
+      const data = await this.tripService.create(tripDto);
+      return {
+        statusCode: HttpStatus.CREATED,
+        success: true,
+        data,
+        message: "Trip created successfully",
+      };
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        {
+          statusCode: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+          success: false,
+          message: error.response?.message || "Failed to create trip",
+        },
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
-// all trips 
+  // all trips
   @Get()
   async getAll() {
     try {
@@ -41,8 +59,8 @@ export class TripController {
       );
     }
   }
-  
-// get trips based on researche
+
+  // get trips based on researche
   @Get("filtre")
   async FiltreTrip(
     @Query("dCity") dCity: string,

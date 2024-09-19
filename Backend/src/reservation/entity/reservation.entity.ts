@@ -6,15 +6,18 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  BeforeInsert,
 } from "typeorm";
+import { ReservationStatusEntity } from "./reservation_status.entity";
 
 @Entity()
-export class Reservation {
+export class ReservationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  reservationStatusId: number;
+  @ManyToOne(() => ReservationStatusEntity, { nullable: false })
+  @JoinColumn({ name: "reservation_status_id" })
+  reservationStatus: ReservationStatusEntity;
 
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: "passenger_id" })
@@ -29,4 +32,13 @@ export class Reservation {
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   reservationTime: Date;
+
+@BeforeInsert()
+  setDefaultReservationStatus() {
+    if (!this.reservationStatus) {
+      const defaultStatus = new ReservationStatusEntity();
+      defaultStatus.id = 1;  
+      this.reservationStatus = defaultStatus;
+    }
+  }
 }
