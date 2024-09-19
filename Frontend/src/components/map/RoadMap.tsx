@@ -8,7 +8,7 @@ import {
   TileLayer,
 } from "react-leaflet";
 import { useLocation } from "react-router-dom";
-import { IRoadMap } from "../../interfaces/components/IRoadMap";
+import { IRoadMap } from "../../interfaces/components/trajet/IRoadMap";
 import { fetchAndSaveCity } from "../../services/ville/VilleService";
 import { getRoute } from "../../utils";
 import FitBounds from "./FitBounds";
@@ -35,7 +35,7 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
         let coordinates2: Coordinates | null = null;
         if (villeDepart) {
           const VilleD = await fetchAndSaveCity(villeDepart);
-          
+
           if (VilleD) {
             coordinates1 = VilleD.coordinates;
             setVilleDId(VilleD.id);
@@ -76,7 +76,7 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
     duration,
     villeDId,
     villeAId,
-    onRouteData
+    onRouteData,
   ]);
 
   return (

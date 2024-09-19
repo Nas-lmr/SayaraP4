@@ -1,6 +1,7 @@
 import { ApiConfig } from "../../config/apiConfig";
 // import { useUserContext } from "../../context/UserContext";
 import { IPostTrajet } from "../../interfaces/services/IPostTrajet";
+import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
 
 export const usePostTrajet = () => {
   // const { userData } = useUserContext();
@@ -34,3 +35,35 @@ export const usePostTrajet = () => {
 // })
 //   .then((resp) => resp.json())
 //   .then((json) => console.log(JSON.stringify(json)));
+
+export const searchTrajet = async (params: ISearchTrajet) => {
+  const { departureCity, arrivalCity, travelDate } = params;
+
+  try {
+    // Construction de l'URL avec des paramètres de requête
+
+    const response = await fetch(
+      // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
+      `http://localhost:3310/trip/filtre?dCity=${departureCity}&aCity=${arrivalCity}&dDate=${travelDate}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Erreur HTTP : ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la recherche:", error);
+    throw new Error(`Erreur lors de la recherche: ${(error as Error).message}`);
+  }
+};

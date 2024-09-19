@@ -1,6 +1,4 @@
-export interface IDrawer {
-  isOpen: boolean;
-  onclose: () => void;
+export interface ISearchForm {
   departureCity: string;
   setDepartureCity: (value: string) => void;
   arrivalCity: string;
@@ -10,4 +8,5 @@ export interface IDrawer {
   passengers: number;
   setPassengers: (count: number) => void;
   onSearch: () => void;
+  onclose: () => void;
 }

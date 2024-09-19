@@ -1,6 +1,4 @@
-export interface IDrawer {
-  isOpen: boolean;
-  onclose: () => void;
+export interface ISearchbarProps {
   departureCity: string;
   setDepartureCity: (value: string) => void;
   arrivalCity: string;

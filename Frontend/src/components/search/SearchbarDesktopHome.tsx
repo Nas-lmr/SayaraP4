@@ -6,21 +6,54 @@ import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import fr from "date-fns/locale/fr";
-import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
+import { formatDate } from "../../services/common/ConversionValue";
+import { searchTrajet } from "../../services/trajet/trajetService";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
 
-export default function SearchbarDesktop({
-  departureCity,
-  setDepartureCity,
-  arrivalCity,
-  setArrivalCity,
-  travelDate,
-  setTravelDate,
-  passengers,
-  setPassengers,
-  onSearch,
-}: ISearchbarProps) {
+export default function SearchbarDesktopHome() {
+  const navigate = useNavigate();
+  const [departureCity, setDepartureCity] = useState<string>("");
+  const [arrivalCity, setArrivalCity] = useState<string>("");
+  const [travelDate, setTravelDate] = useState<Date | null>(null);
+  const [passengers, setPassengers] = useState<number>(1);
+
+  // État pour stocker les résultats de la recherche
+
+  // Fonction appelée lors de la recherche
+  const handleSearch = async () => {
+    // Validation des paramètres avant la recherche
+    console.log("APPLIQUEEEEE");
+
+    if (!departureCity || !arrivalCity || !travelDate) {
+      console.error("Veuillez remplir tous les champs");
+      return;
+    }
+
+    // Création de l'objet de recherche
+    const params: ISearchTrajet = {
+      departureCity,
+      arrivalCity,
+      travelDate: formatDate(travelDate),
+      // passengers,
+    };
+    console.log(params, "PARAMSSS");
+
+    try {
+      // Appel de la fonction de recherche
+      const results = await searchTrajet(params);
+      console.log("RESULT:", results, "PARAMS:", params);
+
+      navigate("/trajet/resultats", {
+        state: { results },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <Box
       component="form"
@@ -141,7 +174,7 @@ export default function SearchbarDesktop({
         />
       </LocalizationProvider>
       <PassengerSearchbar passenger={passengers} setPassenger={setPassengers} />
-      <SearchDesktopBtn onClick={onSearch} onClose={() => ""} />
+      <SearchDesktopBtn onClick={handleSearch} onClose={() => ""} />
     </Box>
   );
 }

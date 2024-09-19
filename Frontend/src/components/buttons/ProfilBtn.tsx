@@ -1,6 +1,6 @@
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { Button, Typography } from "@mui/material";
-import { ISearchPageBtn } from "../../interfaces/components/ISearchPageBtn";
+import { ISearchPageBtn } from "../../interfaces/components/buttons/ISearchPageBtn";
 
 export default function ProfilBtn({ label, onclick, type }: ISearchPageBtn) {
   return (

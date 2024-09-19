@@ -13,6 +13,7 @@ export const ApiConfig: IApi = {
     login: "http://localhost:3310/login",
     register: "http://localhost:3310/user/register",
     postTrajet: "http://localhost:3310/trip/new-trip",
+    searchTrajet: "http://localhost:3310/trip/search",
   },
   // TODO contains extern api url
   // TODO example: stripe: 'https://www.stripe.com/v1'

@@ -10,8 +10,32 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
+import {
+  capitalizeFirstLetter,
+  formatDuration,
+  calculateArrivalDateTime,
+  formatTime,
+} from "../../services/common/ConversionValue";
 
-export default function ResultJourneyCard() {
+export default function ResultJourneyCard({ trajet }: IResultCard) {
+  const departureCity =
+    trajet.departureCity?.name || "Ville de départ inconnue";
+  const arrivalCity =
+    trajet.destinationCity?.name || "Ville d'arrivée inconnue";
+  const price = trajet.pricePerSeat || "Prix inconnu";
+  const departureDateTime = new Date(trajet.departureDateTime);
+  const durationInSeconds = trajet.duration; // La durée est en secondes
+
+  // Calculer l'heure d'arrivée
+  const arrivalDateTime = calculateArrivalDateTime(
+    departureDateTime,
+    durationInSeconds
+  );
+
+  // Formater l'heure de départ et l'heure d'arrivée
+  const formattedDepartureTime = formatTime(departureDateTime);
+  const formattedArrivalTime = formatTime(arrivalDateTime);
   return (
     <Card
       sx={{
@@ -38,7 +62,7 @@ export default function ResultJourneyCard() {
               fontWeight: 500,
             }}
           >
-            09h00
+            {formattedDepartureTime}
           </Typography>
           <Typography
             sx={{
@@ -58,8 +82,8 @@ export default function ResultJourneyCard() {
                 fontFamily: "Montserrat",
                 fontWeight: 600,
               }}
-            />{" "}
-            4h45
+            />
+            {formatDuration(durationInSeconds)}
           </Typography>
           <Typography
             sx={{
@@ -69,7 +93,7 @@ export default function ResultJourneyCard() {
               fontWeight: 500,
             }}
           >
-            13h45
+            {formattedArrivalTime}
           </Typography>
         </Box>
         <Box
@@ -129,7 +153,7 @@ export default function ResultJourneyCard() {
                 fontWeight: 500,
               }}
             >
-              Paris
+              {capitalizeFirstLetter(departureCity)}
             </Typography>
             <Typography
               sx={{
@@ -139,7 +163,7 @@ export default function ResultJourneyCard() {
                 fontWeight: 500,
               }}
             >
-              Marseille
+              {capitalizeFirstLetter(arrivalCity)}
             </Typography>
           </Box>
           <Typography
@@ -152,7 +176,7 @@ export default function ResultJourneyCard() {
               alignItems: "center",
             }}
           >
-            35
+            {price}
             <EuroRoundedIcon
               sx={{
                 fontSize: "1rem",
