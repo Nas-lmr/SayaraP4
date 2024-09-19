@@ -5,8 +5,8 @@ import Header from "../components/navigation/Header";
 export default function MainLayout() {
   return (
     <>
-      <Outlet />
       <Header />
+      <Outlet />
       <BottomNavbar />
     </>
   );

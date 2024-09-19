@@ -1,5 +1,5 @@
 import { Button, Typography } from "@mui/material";
-import { IFormsBtn } from "../../interfaces/components/IFormsBtn";
+import { IFormsBtn } from "../../interfaces/components/buttons/IFormsBtn";
 
 export default function LoginRegisterBtn({ label, type }: IFormsBtn) {
   return onclick !== undefined ? (

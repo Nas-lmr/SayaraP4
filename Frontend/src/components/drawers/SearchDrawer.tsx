@@ -3,7 +3,19 @@ import { Box, Drawer, IconButton, Typography } from "@mui/material";
 import { IDrawer } from "../../interfaces/components/IDrawer";
 import SearchForm from "../forms/SearchForm";
 
-export default function SearchDrawer({ isOpen, onclose }: IDrawer) {
+export default function SearchDrawer({
+  isOpen,
+  onclose,
+  departureCity,
+  setDepartureCity,
+  arrivalCity,
+  setArrivalCity,
+  travelDate,
+  setTravelDate,
+  passengers,
+  setPassengers,
+  onSearch,
+}: IDrawer) {
   return (
     <Drawer
       anchor="bottom"
@@ -45,7 +57,18 @@ export default function SearchDrawer({ isOpen, onclose }: IDrawer) {
         >
           Où veux-tu aller ?
         </Typography>
-        <SearchForm onClose={onclose} />
+        <SearchForm
+          onclose={onclose}
+          departureCity={departureCity}
+          setDepartureCity={setDepartureCity}
+          arrivalCity={arrivalCity}
+          setArrivalCity={setArrivalCity}
+          travelDate={travelDate}
+          setTravelDate={setTravelDate}
+          passengers={passengers}
+          setPassengers={setPassengers}
+          onSearch={onSearch}
+        />
         <Box
           component="img"
           src="../src/assets/images/covoiturage.png"

@@ -1,4 +1,4 @@
 export interface ISelectPassengers {
-  passenger: number;
-  setPassenger: (value: number) => void;
+  numberPassenger: number;
+  setNumberPassenger: (value: number) => void;
 }

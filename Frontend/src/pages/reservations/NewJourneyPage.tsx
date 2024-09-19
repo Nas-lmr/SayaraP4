@@ -1,11 +1,10 @@
 import { Container } from "@mui/material";
+import FormTrip from "../../components/forms/FormTrip";
 import InfoProfilNotLogged from "../../components/global/InfoProfilNotLogged";
 import { useUserContext } from "../../context/UserContext";
 
 export default function NewJourneyPage() {
   const { userData } = useUserContext();
-
-  console.log("userData:", userData);
 
   return (
     <Container
@@ -18,6 +17,7 @@ export default function NewJourneyPage() {
         backgroundColor: "#F4F4F4",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
       {!userData ? (
@@ -27,7 +27,7 @@ export default function NewJourneyPage() {
           alt="Homme réfléchisant à côté d'une voiture"
         />
       ) : (
-        <h1>ARHHHAAAAAA</h1>
+        <FormTrip />
       )}
     </Container>
   );

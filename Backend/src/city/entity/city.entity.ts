@@ -1,16 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity() 
+@Entity()
 export class CityEntity {
-  @PrimaryGeneratedColumn() 
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 50,unique: true }) 
+  @Column({ type: "varchar", length: 50, unique: true })
   name: string;
 
-  @Column({ type: 'varchar', length: 150, nullable: true })
-  adresse: string;
+  @Column({ type: "varchar", length: 150, nullable: true })
+  address: string;
 
-  @Column({ type: "point", nullable: false })
+  @Index({ spatial: true })
+  @Column({ type: "geometry", spatialFeatureType: "Point", srid: 4326 })
   coordinate: string;
 }

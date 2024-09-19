@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
+import { ISearchBtn } from "../../interfaces/components/buttons/ISearchBtn";
 
-export default function SearchDesktopBtn() {
+export default function SearchDesktopBtn({ onClick }: ISearchBtn) {
   return (
     <Button
+      onClick={onClick}
       sx={{
         height: "100%",
         width: "15%",

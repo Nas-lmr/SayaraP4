@@ -3,9 +3,20 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
 import SearchDrawer from "../drawers/SearchDrawer";
 
-export default function Searchbar() {
+export default function Searchbar({
+  departureCity,
+  setDepartureCity,
+  arrivalCity,
+  setArrivalCity,
+  travelDate,
+  setTravelDate,
+  passengers,
+  setPassengers,
+  onSearch,
+}: ISearchbarProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleOpenDrawer = () => {
@@ -14,6 +25,18 @@ export default function Searchbar() {
 
   const handleCloseDrawer = () => {
     setIsDrawerOpen(false);
+  };
+
+  const formatDate = (dateTime: Date | null): string => {
+    if (!dateTime) {
+      return ""; // Vous pouvez gérer ce cas en renvoyant une chaîne vide ou un message d'erreur personnalisé.
+    }
+
+    const year = dateTime.getFullYear();
+    const month = (dateTime.getMonth() + 1).toString().padStart(2, "0");
+    const day = dateTime.getDate().toString().padStart(2, "0");
+
+    return `${day}/${month}/${year}`; // Format DD/MM/YYYY
   };
 
   return (
@@ -64,14 +87,17 @@ export default function Searchbar() {
                 alignItems: "center",
               }}
             >
-              Paris
+              {departureCity}
               <span>
                 <ArrowRightAltRoundedIcon
                   fontSize="small"
-                  sx={{ pt: "0.2rem" }}
+                  sx={{
+                    pt: "0.2rem",
+                    display: departureCity && arrivalCity ? "" : "none",
+                  }}
                 />
               </span>
-              Marseille
+              {arrivalCity}
             </Typography>
             <Typography
               textAlign="start"
@@ -82,7 +108,7 @@ export default function Searchbar() {
                 fontWeight: 500,
               }}
             >
-              24/02/2024
+              {formatDate(travelDate)}
             </Typography>
           </Box>
         </Button>
@@ -99,7 +125,19 @@ export default function Searchbar() {
         >
           <TuneRoundedIcon sx={{ color: "#321F47" }} />
         </Button>
-        <SearchDrawer isOpen={isDrawerOpen} onclose={handleCloseDrawer} />
+        <SearchDrawer
+          isOpen={isDrawerOpen}
+          onclose={handleCloseDrawer}
+          departureCity={departureCity}
+          setDepartureCity={setDepartureCity}
+          arrivalCity={arrivalCity}
+          setArrivalCity={setArrivalCity}
+          travelDate={travelDate}
+          setTravelDate={setTravelDate}
+          passengers={passengers}
+          setPassengers={setPassengers}
+          onSearch={onSearch}
+        />
       </Box>
     </>
   );

@@ -11,11 +11,28 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import fr from "date-fns/locale/fr";
+import { ISearchForm } from "../../interfaces/components/trajet/ISearchForm";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
 
-export default function SearchForm({ onClose }: { onClose: () => void }) {
+export default function SearchForm({
+  onclose,
+  departureCity,
+  setDepartureCity,
+  arrivalCity,
+  setArrivalCity,
+  travelDate,
+  setTravelDate,
+  passengers,
+  setPassengers,
+  onSearch,
+}: ISearchForm) {
   return (
     <Box
+      component="form"
       sx={{
         height: { xs: "45vh", sm: "45vh" },
         width: "20rem",
@@ -82,6 +99,8 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Ville de départ"
+              value={departureCity}
+              onChange={(e) => setDepartureCity(e.target.value)}
             />
           </Box>
           <Box
@@ -120,44 +139,62 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               }}
               variant="standard"
               label="Ville d'arrivée"
+              value={arrivalCity}
+              onChange={(e) => setArrivalCity(e.target.value)}
             />
           </Box>
           <Box
             sx={{
               height: "15%",
-              width: "90%",
+              width: "85%",
               display: "flex",
-              alignItems: "flex-end",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <CalendarMonthRoundedIcon
               sx={{
-                width: "15%",
-                height: "50%",
-                mb: "0.3rem",
                 color: "#321F47",
               }}
             />
-            <TextField
-              sx={{
-                width: "80%",
-                "& .MuiInput-underline:before": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: "#321F47",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#321F47",
-                  fontFamily: "Montserrat",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#321F47",
-                },
-              }}
-              variant="standard"
-              label="Date"
-            />
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={fr}
+            >
+              <DatePicker
+                disablePast
+                sx={{
+                  fontWeight: 400,
+                  height: "100%",
+                  borderRadius: 0,
+                  border: "none",
+
+                  width: "85%",
+                  "&.MuiDateCalendar-root": { fontFamily: "Montserrat" },
+                  "& .MuiOutlinedInput-root": {
+                    height: "100%",
+                    borderColor: "#321F47",
+                    borderBottom: "1px solid",
+                    borderRadius: 0,
+                    fontFamily: "Montserrat",
+                    fontWeight: 500,
+                    p: 0,
+                    "& fieldset": {
+                      borderColor: "#321F47",
+                      border: "none",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#321F47",
+                    },
+                  },
+                  "&.MuiInputBase-root .MuiOutlinedInput-root": {
+                    border: "none",
+                  },
+                }}
+                value={travelDate}
+                onChange={(newDate) => setTravelDate(newDate)}
+              />
+            </LocalizationProvider>
           </Box>
           <Box
             sx={{
@@ -181,11 +218,11 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
                 sx={{
                   color: "#321F47",
                   "&.Mui-focused": {
-                    color: "#321F47", // Couleur du label lorsque le champ est focalisé
+                    color: "#321F47",
                   },
                   "& .MuiInputBase-root.MuiInput-root.MuiInput-underline :before":
                     {
-                      borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
+                      borderBottomColor: "#321F47",
                     },
                   fontFamily: "Montserrat",
                 }}
@@ -195,17 +232,19 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
               <Select
                 variant="standard"
                 label="Passagers"
+                value={passengers}
+                onChange={(e) => setPassengers(Number(e.target.value))}
                 sx={{
                   width: "100%",
 
                   "&:before": {
-                    borderBottomColor: "#321F47", // Couleur de la bordure inférieure avant le focus
+                    borderBottomColor: "#321F47",
                   },
                   "&:after": {
-                    borderBottomColor: "#321F47", // Couleur de la bordure inférieure après le focus
+                    borderBottomColor: "#321F47",
                   },
                   "& .MuiSelect-select": {
-                    color: "#321F47", // Couleur de la valeur sélectionnée
+                    color: "#321F47",
                   },
                 }}
               >
@@ -217,7 +256,7 @@ export default function SearchForm({ onClose }: { onClose: () => void }) {
             </FormControl>
           </Box>
         </Box>
-        <SearchJourneyBtn onClose={onClose} />
+        <SearchJourneyBtn onClick={onSearch} onClose={onclose} />
       </Paper>
     </Box>
   );

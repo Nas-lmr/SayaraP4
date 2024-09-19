@@ -16,3 +16,7 @@ export interface ILoginErrorResponse {
   success: false;
   error: string;
 }
+
+export interface IUserId {
+  id: number;
+}

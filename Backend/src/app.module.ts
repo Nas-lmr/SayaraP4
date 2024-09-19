@@ -9,6 +9,7 @@ import { CityModule } from "./city/city.module";
 import { TripModule } from "./trip/trip.module";
 import { AuthModule } from "./auth/auth.module";
 import {WebsocketModule} from "./websocket/websocket.module";
+import { ReservationModule } from './reservation/reservation.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {WebsocketModule} from "./websocket/websocket.module";
     CityModule,
     TripModule,
     AuthModule,
+    ReservationModule,
     WebsocketModule,
   ],
   controllers: [AppController],
