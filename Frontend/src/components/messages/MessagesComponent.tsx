@@ -3,6 +3,7 @@ import './messages.css';
 import {useUserContext} from "../../context/UserContext.tsx";
 import {io} from "socket.io-client";
 import {Rooms} from "./Rooms.tsx";
+import {Box, Button, Container, FormControl} from "@mui/material";
 
 const socket = io('http://localhost:3310');
 socket.on('connect', () => {
@@ -14,17 +15,18 @@ export function MessagesComponent() {
   const {userData}: any = useUserContext();
   console.log(userData.token);
   const [activeRoom, setActiveRoom]: any = useState(0);
-  const scrollRef = useRef(null);
+  const scrollRef: any = useRef(null);
   const [input, setInput] = useState('');
   const handleMessage = (payload: any) => {
     console.log(payload);
     setMessages(payload);
   }
-  const onSubmit = (e: Event) => {
-    e.preventDefault();
-    const payload = {username: userData.token, message: input, roomId: activeRoom};
-    socket.emit('message', payload);
-    setInput('');
+  const onSubmit = () => {
+    if(input !== '') {
+      const payload = {username: userData.token, message: input, roomId: activeRoom};
+      socket.emit('message', payload);
+      setInput('');
+    }
   }
   useEffect(() => {
     socket.on('message', handleMessage)
@@ -43,13 +45,42 @@ export function MessagesComponent() {
     setActiveRoom(roomID);
   }
   useEffect(() => {
-    scrollRef.current.scrollIntoView({behavior: 'smooth'});
+    if(scrollRef.current !== null) {
+      scrollRef.current.scrollIntoView({behavior: 'smooth'});
+    }
   }, [messages]);
   return(
-    <>
-      <Rooms selectRoom={onChangeRoom} setMessages={(elmnt: any) => setMessages(...messages, elmnt)}/>
-      <div className="chatBox">
-        <div>
+
+    <Container
+      disableGutters
+      maxWidth={false}
+      sx={{
+        height: "100%",
+        pt: "4rem",
+        pb: "3rem",
+        backgroundColor: "#F4F4F4",
+      }}
+    >
+      <Rooms selectRoom={onChangeRoom} setMessages={(elmnt: any) => setMessages(...messages, elmnt)} />
+      <Box
+        component="section"
+        sx={{
+          height: "100%",
+          pt: "4rem",
+          pb: "3rem",
+          backgroundColor: "#F4F4F4",
+        }}
+      >
+        <Container
+          disableGutters
+          maxWidth={false}
+          sx={{
+            overflowY: 'scroll',
+            height: "50px",
+            pt: "4rem",
+            pb: "3rem",
+            backgroundColor: "#F4F4F4",
+          }}>
           {
             messages
               .filter((msg: any) => msg.roomId === activeRoom)
@@ -60,16 +91,21 @@ export function MessagesComponent() {
               ))
           }
           <div ref={scrollRef}></div>
-        </div>
-        <form onSubmit={(event: any) => onSubmit(event) }>
-                    <textarea
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="Enter text"
-                    />
-          <button>envoyer</button>
-        </form>
-      </div>
-    </>
+        </Container>
+        <FormControl sx={{display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter text"
+          />
+          <Button
+            onClick={() => onSubmit()}
+            fullWidth
+            variant="contained"
+            color="primary"
+          >Envoyer</Button>
+        </FormControl>
+      </Box>
+    </Container>
   );
 }

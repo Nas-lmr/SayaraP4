@@ -1,12 +1,7 @@
 import {useEffect, useState} from "react";
 import './Room.css'
 import {io} from "socket.io-client";
-
-
-async function removeRoom(id: number) {
-  const response = await fetch('http://localhost:3310/rooms/' + id, {method: 'DELETE'});
-  await response.json()
-}
+import {ToggleButton, ToggleButtonGroup} from "@mui/material";
 
 async function loadRooms() {
   const response = await fetch('http://localhost:3310/rooms');
@@ -22,11 +17,6 @@ export function Rooms({selectRoom}: any){
 
   const [rooms, setRooms]: any = useState([]);
   const [activeRoom, setActiveRoom] = useState(0);
-
-  const onRemoveRoom = (id: number) => {
-    removeRoom(id).then();
-    fetch(`http://localhost:3500/rooms/${id}`, { method: 'DELETE' }).then(res => res.json());
-  }
 
   const onChangeRoom = (id: number) => {
     selectRoom(id);
@@ -54,17 +44,25 @@ export function Rooms({selectRoom}: any){
       socket.off('room', handleRoom)
     }
   }, []);
-
+  let roomName = [];
+  for (const room of rooms) {
+    roomName.push(room.name);
+  }
   return (
     <>
-      <ul>
-        {rooms !== undefined ? rooms.map((room: any, i: number) => (
-          <li key={i} className={room.id === activeRoom ? 'active': ''}>
-            <span onClick={() => onChangeRoom(room.id)}>{room.name}</span>
-            <span onClick={() => onRemoveRoom(room.id)}>&#10060;</span>
-          </li>
-        )) : null}
-      </ul>
+      {
+        rooms.map((room: any, i: number) => (
+          <ToggleButtonGroup
+            sx={{height: '25%', width: '100%', margin: 'auto', pl: '12rem', mb: '5rem'}}
+            color="primary"
+            key={i}
+            className={activeRoom === room.id ? 'active' : ''}
+            aria-label="Platform"
+          >
+            <ToggleButton value={room.name} onClick={() => onChangeRoom(room.id)}>{room.name}</ToggleButton>
+          </ToggleButtonGroup>
+        ))
+      }
     </>
-  )
+  );
 }

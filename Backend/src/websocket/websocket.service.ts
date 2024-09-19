@@ -29,6 +29,7 @@ export class WebsocketService {
             id: trip['trips_id'],
             name: trip['users_username'] + '-' + trip['firstCity_name'] + '_' +
               trip['secondCity_name'] + '/' + trip['trips_departureTime'],
+            archived: false
           };
           this._rooms.push(obj);
           this.copyRoom.push(obj.id);
@@ -41,6 +42,7 @@ export class WebsocketService {
           id: trip['trips_id'],
           name: trip['users_username'] + '-' + trip['firstCity_name'] + '_' +
             trip['secondCity_name'] + '/' + trip['trips_departureTime'],
+          archived: false
         };
         if(!this.copyRoom.includes(obj.id)) {
           this._rooms.push(obj);
