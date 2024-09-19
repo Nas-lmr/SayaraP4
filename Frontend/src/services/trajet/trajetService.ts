@@ -53,7 +53,6 @@ export const searchTrajet = async (params: ISearchTrajet) => {
       }
     );
 
-    console.log(response, "RESPONSE SERVICE");
     if (!response.ok) {
       throw new Error(
         `Erreur HTTP : ${response.status} ${response.statusText}`
@@ -61,7 +60,6 @@ export const searchTrajet = async (params: ISearchTrajet) => {
     }
 
     const data = await response.json();
-    console.log(data, "DATA SERVICE");
 
     return data;
   } catch (error) {

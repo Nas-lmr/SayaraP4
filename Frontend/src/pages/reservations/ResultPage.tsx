@@ -1,13 +1,50 @@
 import { Container } from "@mui/material";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ResultJourneyContainer from "../../components/global/ResultJourneyContainer";
 import Searchbar from "../../components/search/Searchbar";
 import SearchbarDesktop from "../../components/search/SearchbarDesktop";
-
-import { useLocation } from "react-router-dom";
+import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
+import { formatDate } from "../../services/common/ConversionValue";
+import { searchTrajet } from "../../services/trajet/trajetService";
 
 export default function ResultPage() {
   const location = useLocation();
-  const { results } = location.state || { results: null }; // On récupère les deux types de résultats
+  const { results } = location.state || { results: null };
+
+  const [departureCity, setDepartureCity] = useState<string>("");
+  const [arrivalCity, setArrivalCity] = useState<string>("");
+  const [travelDate, setTravelDate] = useState<Date | null>(null);
+  const [passengers, setPassengers] = useState<number>(1);
+
+  const navigate = useNavigate();
+  const handleSearch = async () => {
+    // Validation des paramètres avant la recherche
+
+    if (!departureCity || !arrivalCity || !travelDate) {
+      console.error("Veuillez remplir tous les champs");
+      return;
+    }
+
+    // Création de l'objet de recherche
+    const params: ISearchTrajet = {
+      departureCity,
+      arrivalCity,
+      travelDate: formatDate(travelDate),
+      // passengers,
+    };
+
+    try {
+      // Appel de la fonction de recherche
+      const results = await searchTrajet(params);
+
+      navigate("/trajet/resultats", {
+        state: { results },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Container
@@ -23,12 +60,32 @@ export default function ResultPage() {
         alignItems: "center",
       }}
     >
-      {/* <SearchbarDesktop />
-      <Searchbar /> */}
+      <SearchbarDesktop
+        departureCity={departureCity}
+        setDepartureCity={setDepartureCity}
+        arrivalCity={arrivalCity}
+        setArrivalCity={setArrivalCity}
+        travelDate={travelDate}
+        setTravelDate={setTravelDate}
+        passengers={passengers}
+        setPassengers={setPassengers}
+        onSearch={handleSearch}
+      />
+      <Searchbar
+        departureCity={departureCity}
+        setDepartureCity={setDepartureCity}
+        arrivalCity={arrivalCity}
+        setArrivalCity={setArrivalCity}
+        travelDate={travelDate}
+        setTravelDate={setTravelDate}
+        passengers={passengers}
+        setPassengers={setPassengers}
+        onSearch={handleSearch}
+      />
       {results ? (
         <ResultJourneyContainer results={results.data} />
       ) : (
-        <div>Aucun résultat trouvé</div> // Message d'erreur s'il n'y a pas de résultats
+        <div>Aucun résultat trouvé</div>
       )}
     </Container>
   );

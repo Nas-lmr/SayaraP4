@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import BgImage from "../../assets/images/covoiturage.png";
-import SearchForm from "../forms/SearchForm";
-// import SearchbarDesktop from "../search/SearchbarDesktop";
+import SearchFormHome from "../forms/SearchFormHome";
+import SearchbarDesktopHome from "../search/SearchbarDesktopHome";
 
 export default function HeroSection() {
   return (
@@ -47,8 +47,8 @@ export default function HeroSection() {
           économises et pars sans tracas !
         </Typography>
       </Box>
-      {/* <SearchbarDesktop /> */}
-      <SearchForm onClose={() => {}} />
+      <SearchbarDesktopHome />
+      <SearchFormHome />
     </Box>
   );
 }

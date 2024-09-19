@@ -14,12 +14,9 @@ export default function TopSearchCpnt() {
   const [travelDate, setTravelDate] = useState<Date | null>(null);
   const [passengers, setPassengers] = useState<number>(1);
 
-  // État pour stocker les résultats de la recherche
-
   // Fonction appelée lors de la recherche
   const handleSearch = async () => {
     // Validation des paramètres avant la recherche
-    console.log("APPLIQUEEEEE");
 
     if (!departureCity || !arrivalCity || !travelDate) {
       console.error("Veuillez remplir tous les champs");
@@ -33,12 +30,10 @@ export default function TopSearchCpnt() {
       travelDate: formatDate(travelDate),
       // passengers,
     };
-    console.log(params, "PARAMSSS");
 
     try {
       // Appel de la fonction de recherche
       const results = await searchTrajet(params);
-      console.log("RESULT:", results, "PARAMS:", params);
 
       navigate("/trajet/resultats", {
         state: { results },
@@ -47,8 +42,6 @@ export default function TopSearchCpnt() {
       console.error(err);
     }
   };
-
-  console.log(passengers, "DANS SEARCHBAR DESKTOP");
 
   return (
     <Box

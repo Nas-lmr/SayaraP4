@@ -14,8 +14,6 @@ import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
 import { capitalizeFirstLetter } from "../../services/common/ConversionValue";
 
 export default function ResultJourneyCard({ trajet }: IResultCard) {
-  console.log(trajet, "DONNEE TRAJET");
-
   const departureCity =
     trajet.departureCity?.name || "Ville de départ inconnue";
   const arrivalCity =
