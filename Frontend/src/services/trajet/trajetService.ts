@@ -17,7 +17,6 @@ export const usePostTrajet = () => {
       },
       body: JSON.stringify(data),
     });
-
     if (response.ok) {
       return await response.json(); // Récupère la réponse si nécessaire
     } else {
@@ -29,6 +28,11 @@ export const usePostTrajet = () => {
   };
   return postTrajet;
 };
+
+
+
+
+
 // fetch("https://reqbin.com/echo/get/json", {
 //   headers: { Authorization: "Bearer {token}" },
 // })

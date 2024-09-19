@@ -62,24 +62,52 @@ export class TripService {
 
         return `${year}-${mounth}-${day} ${hour}:${minute}:00`;
       };
+      const departureDateTime = dateTimeFormat(
+        tripData.departureDate,
+        tripData.departureTime
+      );
 
-      const trip = this.tripRepository.create({
-        availableSeats: tripData.availableSeats,
-        pricePerSeat: tripData.pricePerSeat,
-        distance: tripData.distance,
-        duration: tripData.duration,
-        departureDateTime: dateTimeFormat(
-          tripData.departureDate,
-          tripData.departureTime
-        ),
-        owner,
-        departureCity: departureCityResult.id,
-        destinationCity: destinationCityResult.id,
-      });
+      //  check if a trip already exists on the same day
+      const existingTripQuery = `
+      SELECT * FROM trip_entity
+      WHERE owner_id = ? 
+      AND departure_city_id = ? 
+      AND DATE(departureDateTime) = DATE(?);
+    `;
 
-      await this.tripRepository.save(trip);
+    
 
-      return { status: 201, message: "Trip created successfully." };
+      const [existingTrips] = await this.tripRepository.query(
+        existingTripQuery,
+        [tripData.owner, tripData.departure_city_id, departureDateTime]
+      );
+
+     
+      if (existingTrips.length > 0) {
+        return {
+          status: 400,
+          message:
+            "You cannot create two trips departing from the same city on the same day.",
+        };
+      }
+      if (existingTripQuery.length < 0) {
+        const trip = this.tripRepository.create({
+          availableSeats: tripData.availableSeats,
+          pricePerSeat: tripData.pricePerSeat,
+          distance: tripData.distance,
+          duration: tripData.duration,
+          departureDateTime: dateTimeFormat(
+            tripData.departureDate,
+            tripData.departureTime
+          ),
+          owner,
+          departureCity: departureCityResult.id,
+          destinationCity: destinationCityResult.id,
+        });
+        await this.tripRepository.save(trip);
+
+        return { status: 201, message: "Trip created successfully." };
+      }
     } catch (error) {
       console.error("Error creating trip:", error);
       return {
@@ -89,6 +117,7 @@ export class TripService {
     }
   }
 
+  // get all trips
   async GetAll(): Promise<any[]> {
     return await this.tripRepository
       .createQueryBuilder("trip")
@@ -107,6 +136,7 @@ export class TripService {
       .getMany();
   }
 
+  // get trips by researche
   async GetFilteredTrip(
     dCity: string,
     aCity: string,
