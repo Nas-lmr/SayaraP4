@@ -18,8 +18,19 @@ export class TripController {
   async create(@Body() tripDto: TripDto) {
     try {
       const data = await this.tripService.create(tripDto);
+      // check is the trip extis if existe send error 
+      if (data.status !== HttpStatus.CREATED) {
+        throw new HttpException(
+          {
+            status: data.status,
+            success: false,
+            message: data.message,
+          },
+          data.status
+        );
+      }
       return {
-        statusCode: HttpStatus.CREATED,
+        status: HttpStatus.CREATED,
         success: true,
         data,
         message: "Trip created successfully",
@@ -28,7 +39,7 @@ export class TripController {
       console.error(error);
       throw new HttpException(
         {
-          statusCode: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+          status: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
           success: false,
           message: error.response?.message || "Failed to create trip",
         },
