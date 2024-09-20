@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import Stripe from 'stripe';
-import { PaymentRequestBody } from '../PaymentRequestBody';
+import { Injectable } from "@nestjs/common";
+import Stripe from "stripe";
+import { PaymentRequestBody } from "../PaymentRequestBody";
 
 @Injectable()
 export class StripeService {
@@ -8,7 +8,7 @@ export class StripeService {
 
   constructor() {
     this.stripe = new Stripe(process.env.API_SECRET_KEY, {
-      apiVersion: '2024-06-20',
+      apiVersion: "2024-06-20",
     });
   }
 
@@ -20,10 +20,11 @@ export class StripeService {
     });
 
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: Math.round(sumAmount * 100), 
+      amount: Math.round(sumAmount * 100),
       currency: paymentRequestBody.currency,
     });
 
-    return paymentIntent;
+    console.log(paymentIntent, "AAAAAAAAAAAAAAAAA");
+    return { clientSecret: paymentIntent.client_secret };
   }
 }
