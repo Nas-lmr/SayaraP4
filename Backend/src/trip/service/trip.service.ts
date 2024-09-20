@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CityEntity } from "src/city/entity/city.entity";
 import { UserEntity } from "src/user/entity/user.entity";
@@ -19,6 +19,7 @@ export class TripService {
     private readonly cityRepository: Repository<CityEntity>
   ) {}
 
+  // creating a new trip ***********************************************************
   async create(
     tripData: TripDto
   ): Promise<{ status: number; message: string }> {
@@ -75,22 +76,21 @@ export class TripService {
       AND DATE(departureDateTime) = DATE(?);
     `;
 
-    
-
       const [existingTrips] = await this.tripRepository.query(
         existingTripQuery,
         [tripData.owner, tripData.departure_city_id, departureDateTime]
       );
 
-     
-      if (existingTrips.length > 0) {
+      if (existingTrips) {
+        
+
         return {
-          status: 400,
+          status: HttpStatus.BAD_REQUEST,
           message:
             "You cannot create two trips departing from the same city on the same day.",
         };
       }
-      if (existingTripQuery.length < 0) {
+      if (!existingTrips) {
         const trip = this.tripRepository.create({
           availableSeats: tripData.availableSeats,
           pricePerSeat: tripData.pricePerSeat,
@@ -117,7 +117,8 @@ export class TripService {
     }
   }
 
-  // get all trips
+
+  // get all trips***********************************************************************************
   async GetAll(): Promise<any[]> {
     return await this.tripRepository
       .createQueryBuilder("trip")
@@ -136,7 +137,7 @@ export class TripService {
       .getMany();
   }
 
-  // get trips by researche
+  // get trips by filtering **********************************************************************
   async GetFilteredTrip(
     dCity: string,
     aCity: string,
@@ -162,3 +163,5 @@ export class TripService {
       .getMany();
   }
 }
+
+
