@@ -7,9 +7,11 @@ import {
 } from '@nestjs/websockets';
 import {Server, Socket} from 'socket.io';
 import {JwtService} from "@nestjs/jwt";
+import {RedisService} from "./redis.service";
+import {Inject} from "@nestjs/common";
 
 interface Payload {
-  username: string;
+  username: any;
   message: string;
   roomId: number;
 }
@@ -20,8 +22,11 @@ interface Payload {
 export class MessageGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   private readonly messages = [];
-  constructor(private jwtService: JwtService) {
-  }
+
+  constructor(
+    @Inject() private jwtService: JwtService,
+    @Inject() private redisService: RedisService
+  ){ }
 
   @WebSocketServer()
   server: Server;
@@ -39,6 +44,10 @@ export class MessageGateway
 
   @SubscribeMessage('message')
   async handleMessage(@MessageBody() data: Payload) {
+    await this.redisService.client.lPush(
+      `roomId: ${data.roomId}`,
+      `${(await this.jwtService.verify(data.username)).username}: ${data.message}`
+    );
     this.messages.push({username: (await this.jwtService.verify(data.username)).username, message: data.message, roomId: data.roomId});
     this.server.emit('message', this.messages);
   }

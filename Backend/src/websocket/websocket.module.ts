@@ -6,13 +6,14 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {TripEntity} from "../trip/entity/trip.entity";
 import {JwtModule} from "@nestjs/jwt";
 import {UserEntity} from "../user/entity/user.entity";
+import {RedisService} from "./redis.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([TripEntity]), TypeOrmModule.forFeature([UserEntity]), JwtModule.register({
     secret: 'your-secret-key', // Vous devez remplacer par votre clé secrète
     signOptions: { expiresIn: '45h' },
   })],
-  providers: [MessageGateway, WebsocketService],
+  providers: [MessageGateway, WebsocketService, RedisService],
   exports: [],
   controllers: [WebsocketController]
 })

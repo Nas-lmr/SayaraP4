@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {TripEntity} from "../trip/entity/trip.entity";
@@ -57,7 +57,10 @@ export class WebsocketService {
     return this._rooms;
   }
 
-  delete(id: number) {
+  getRoom(id: number) {
+    return this._rooms.find(room => room.id === id);
+  }
+  async deleteRoom(id: number) {
     this._rooms = this._rooms.filter((room) => room.id !== id);
   }
 }
