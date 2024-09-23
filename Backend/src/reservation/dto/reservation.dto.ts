@@ -4,5 +4,6 @@ export class ReservationDto {
   passengerId: number;
   tripId: number;
   seatsReserved: number;
+  paymentIntentId: string;
   reservationTime: Date;
 }
