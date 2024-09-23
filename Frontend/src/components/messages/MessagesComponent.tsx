@@ -13,17 +13,15 @@ socket.on('connect', () => {
 export function MessagesComponent() {
   const [messages, setMessages]: any = useState([]);
   const {userData}: any = useUserContext();
-  console.log(userData.token);
   const [activeRoom, setActiveRoom]: any = useState(0);
   const scrollRef: any = useRef(null);
   const [input, setInput] = useState('');
   const handleMessage = (payload: any) => {
-    console.log(payload);
-    setMessages(payload);
+    setMessages(payload.messages);
   }
   const onSubmit = () => {
     if(input !== '') {
-      const payload = {username: userData.token, message: input, roomId: activeRoom};
+      const payload = {message: input, roomId: activeRoom, token: userData.token};
       socket.emit('message', payload);
       setInput('');
     }
@@ -42,6 +40,7 @@ export function MessagesComponent() {
   });
 
   const onChangeRoom = (roomID: number) => {
+    console.log(roomID);
     setActiveRoom(roomID);
   }
   useEffect(() => {
@@ -86,7 +85,7 @@ export function MessagesComponent() {
               .filter((msg: any) => msg.roomId === activeRoom)
               .map((message: any, index: number) => (
                 <div key={index}>
-                  {message.username} : {message.message}
+                  {message.senders} : {message.message}
                 </div>
               ))
           }

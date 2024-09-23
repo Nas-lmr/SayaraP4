@@ -19,7 +19,7 @@ export class WebsocketController {
     };
   }
   @Get(':id')
-  public getOneRooms(@Param('id') id: number): { data: any[]; message: string } {
+  public getOneRooms(@Param('id') id: number): {data: any; message: string;} {
     return {
       message: 'All rooms',
       data: this.websocketService.getRoom(id),

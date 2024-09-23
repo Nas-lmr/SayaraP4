@@ -37,8 +37,8 @@ export function Rooms({selectRoom}: any){
       loadRooms().then(payload => {
         setRooms(payload.data)
         if (payload.data.length > 0) {
-          setActiveRoom(payload.data[0].id)
-          selectRoom(payload.data[0].id)
+          setActiveRoom(payload.data[0].roomId)
+          selectRoom(payload.data[0].roomId)
         }
       })
       socket.off('room', handleRoom)
@@ -56,10 +56,10 @@ export function Rooms({selectRoom}: any){
             sx={{height: '25%', width: '100%', margin: 'auto', pl: '12rem', mb: '5rem'}}
             color="primary"
             key={i}
-            className={activeRoom === room.id ? 'active' : ''}
+            className={activeRoom === room.roomId ? 'active' : ''}
             aria-label="Platform"
           >
-            <ToggleButton value={room.name} onClick={() => onChangeRoom(room.id)}>{room.name}</ToggleButton>
+            <ToggleButton value={room.name} onClick={() => onChangeRoom(room.roomId)}>{room.name}</ToggleButton>
           </ToggleButtonGroup>
         ))
       }

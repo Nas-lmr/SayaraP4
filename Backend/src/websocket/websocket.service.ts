@@ -15,21 +15,29 @@ export class WebsocketService {
       .leftJoinAndSelect('trips.owner', 'users')
       .leftJoinAndSelect('trips.departureCity', 'firstCity')
       .leftJoinAndSelect('trips.destinationCity', 'secondCity')
-      .select(['users.username', 'firstCity.name', 'secondCity.name', 'trips.departureTime', 'trips.id'])
+      .select(['users.username', 'users.id', 'firstCity.name', 'secondCity.name', 'trips.departureTime', 'trips.id', 'trips.departureTime'])
       .execute())));
     let obj: any;
     if(this._rooms.length === 0) {
       for (const trip of trips) {
         if(!this._rooms.includes({
-          id: trip['trips_id'],
+          roomId: trip['trips_id'],
+          owner_id: trip['users_id'],
+          // fill in the traveler_id with a user ID
+          traveler_id: null,
           name: trip['users_username'] + '-' + trip['firstCity_name'] + '_' +
-            trip['secondCity_name'] + '/' + trip['trips_departureTime'],
+            trip['secondCity_name'] + '/' + trip['departureTime'],
+          messages: []
         })){
           obj = {
-            id: trip['trips_id'],
+            roomId: trip['trips_id'],
+            owner_id: trip['users_id'],
+            // fill in the traveler_id with a user ID
+            traveler_id: null,
             name: trip['users_username'] + '-' + trip['firstCity_name'] + '_' +
-              trip['secondCity_name'] + '/' + trip['trips_departureTime'],
-            archived: false
+              trip['secondCity_name'] + '/' + trip['departureTime'],
+            archived: false,
+            messages: []
           };
           this._rooms.push(obj);
           this.copyRoom.push(obj.id);
@@ -39,10 +47,14 @@ export class WebsocketService {
     } else {
       for (const trip of trips) {
         obj = {
-          id: trip['trips_id'],
+          roomId: trip['trips_id'],
+          owner_id: trip['users_id'],
+          // fill in the traveler_id with a user ID
+          traveler_id: null,
           name: trip['users_username'] + '-' + trip['firstCity_name'] + '_' +
-            trip['secondCity_name'] + '/' + trip['trips_departureTime'],
-          archived: false
+            trip['secondCity_name'] + '/' + trip['departureTime'],
+          archived: false,
+          messages: []
         };
         if(!this.copyRoom.includes(obj.id)) {
           this._rooms.push(obj);
@@ -57,10 +69,16 @@ export class WebsocketService {
     return this._rooms;
   }
 
-  getRoom(id: number) {
-    return this._rooms.find(room => room.id === id);
+  async getRoom(id: number) {
+    return await this._rooms.find(room => room.roomId === id);
   }
   async deleteRoom(id: number) {
     this._rooms = this._rooms.filter((room) => room.id !== id);
+  }
+  addMessage(roomId: string, objMe: any) {
+    const room = this.rooms.find(room => room.roomId === roomId);
+    if (room) {
+      room.messages.push({roomId: roomId, senders: objMe.senders, message:  objMe.message});
+    }
   }
 }
