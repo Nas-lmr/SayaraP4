@@ -1,26 +1,51 @@
 import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 import { StripeService } from "../service/stripe.service";
-import { PaymentRequestBody } from "../PaymentRequestBody";
+import { PaymentRequestBodyDto } from "../dto/stripe.paymentRequestBody.dto.";
 import { Response } from "express";
 
 @Controller("payments")
 export class StripeController {
   constructor(private paymentService: StripeService) {}
 
-  // Endpoint to create the Payment Intent
   @Post()
-  createPayments(
+  async createPayments(
     @Res() response: Response,
-    @Body() paymentRequestBody: PaymentRequestBody
+    @Body() paymentRequestBody: PaymentRequestBodyDto
   ) {
-    this.paymentService
-      .createPayment(paymentRequestBody)
-      .then((res) => {
-        response.status(HttpStatus.CREATED).json(res);
-      })
-      .catch((err) => {
-        response.status(HttpStatus.BAD_REQUEST).json(err);
+    try {
+      const result =
+        await this.paymentService.createPayment(paymentRequestBody);
+
+      response.status(HttpStatus.CREATED).json(result);
+    } catch (err) {
+      response.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: err.message || "Payment creation failed",
       });
+    }
+  }
+
+  @Post("refund")
+  async refundPayment(
+    @Res() response: Response,
+    @Body() body: { paymentIntentId: string }
+  ) {
+    const { paymentIntentId } = body;
+
+    try {
+      const refund = await this.paymentService.refundPayment(paymentIntentId);
+      response.status(HttpStatus.OK).json({
+        success: true,
+        message: "Refund processed successfully",
+        refund,
+      });
+    } catch (error) {
+      response.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "Refund failed",
+        error: error.message,
+      });
+    }
   }
 
   //confirm the Payment Intent with a card
@@ -44,7 +69,7 @@ export class StripeController {
   @Post("confirm")
   async confirmPayment(
     @Res() response: Response,
-    @Body() body: { paymentIntentId: string; paymentMethodId: string } // Accept paymentMethodId instead of card details
+    @Body() body: { paymentIntentId: string; paymentMethodId: string }
   ) {
     const { paymentIntentId, paymentMethodId } = body;
 

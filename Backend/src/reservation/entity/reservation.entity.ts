@@ -30,14 +30,17 @@ export class ReservationEntity {
   @Column({ type: "int", nullable: false })
   seatsReserved: number;
 
+  @Column({ type: String, nullable: true })
+  paymentIntentId: String;
+
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   reservationTime: Date;
 
-@BeforeInsert()
+  @BeforeInsert()
   setDefaultReservationStatus() {
     if (!this.reservationStatus) {
       const defaultStatus = new ReservationStatusEntity();
-      defaultStatus.id = 1;  
+      defaultStatus.id = 1;
       this.reservationStatus = defaultStatus;
     }
   }
