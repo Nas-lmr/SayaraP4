@@ -31,6 +31,7 @@ export class ReservationService {
     status: number;
     message: string;
     reservation?: ReservationEntity;
+    clientSecret?: string;
   }> {
     try {
       const client = await this.userRepository.findOneBy({
@@ -114,6 +115,7 @@ export class ReservationService {
         status: 201,
         message: "Your reservation is done and payment is processed",
         reservation,
+        clientSecret: paymentResult.paymentIntent.client_secret,
       };
     } catch (error) {
       console.error(error);
