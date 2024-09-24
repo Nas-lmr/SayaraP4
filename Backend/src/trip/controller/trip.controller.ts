@@ -2,9 +2,10 @@ import {
   Body,
   Controller,
   Get,
-  Post,
-  HttpStatus,
   HttpException,
+  HttpStatus,
+  Param,
+  Post,
   Query,
 } from "@nestjs/common";
 import { TripDto } from "../dto/trip.dto";
@@ -18,7 +19,7 @@ export class TripController {
   async create(@Body() tripDto: TripDto) {
     try {
       const data = await this.tripService.create(tripDto);
-      // check is the trip extis if existe send error 
+      // check is the trip extis if existe send error
       if (data.status !== HttpStatus.CREATED) {
         throw new HttpException(
           {
@@ -104,6 +105,29 @@ export class TripController {
           message: error.response?.message || "Failed to fetch filtered trips",
         },
         error.status || HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  @Get(":id")
+  async getById(@Param("id") id: number) {
+    try {
+      const data = await this.tripService.GetById(id);
+      return {
+        statusCode: HttpStatus.OK,
+        success: true,
+        data,
+        message: "you fetch is success",
+      };
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          success: false,
+          message: " your fetch is not a success",
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }

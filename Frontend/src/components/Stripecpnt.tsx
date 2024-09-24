@@ -7,9 +7,9 @@ interface PaymentFormProps {
 }
 
 interface Product {
-  title: string;
-  price: number;
-  quantity: number;
+  passengerId: number;
+  tripId: number;
+  seatsReserved: number;
 }
 
 export default function PaymentForm({ amount }: PaymentFormProps) {
@@ -19,13 +19,11 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
   const [error, setError] = useState<string | null>(null);
 
   // Définir une liste de produits (comme exemple)
-  const products: Product[] = [
-    { title: "azaz", price: 3, quantity: 2 },
-    { title: "arerer", price: 2, quantity: 1 },
-  ];
-
-  const currency = "eur"; // Tu peux aussi rendre la devise dynamique si nécessaire
-
+  const products: Product = {
+    passengerId: 1,
+    tripId: 2,
+    seatsReserved: 2,
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -37,11 +35,13 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
 
     try {
       // Faire une requête à l'API backend pour créer un PaymentIntent
-      const response = await fetch("http://localhost:3310/payments", {
+      const response = await fetch("http://localhost:3310/reservation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ products, currency }), // Envoyer les produits et la devise
+        body: JSON.stringify(products), // Envoyer les produits et la devise
       });
+
+      console.log(response, "RESPONSE SERVICE FRONT ");
 
       const { clientSecret } = await response.json();
 

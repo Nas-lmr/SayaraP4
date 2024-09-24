@@ -16,6 +16,7 @@ import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
 import TestStripe from "./pages/TestStripe.tsx";
+import ReservationPage from "./pages/reservations/ReservationPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: "/teststripe",
         element: <TestStripe />,
+      },
+      {
+        path: "/reservation/:id",
+        element: <ReservationPage />,
       },
     ],
   },

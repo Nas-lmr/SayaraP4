@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 import { IResultCard } from "../../interfaces/components/trajet/IResultCard";
 import {
+  calculateArrivalDateTime,
   capitalizeFirstLetter,
   formatDuration,
-  calculateArrivalDateTime,
   formatTime,
 } from "../../services/common/ConversionValue";
 
@@ -43,7 +43,10 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
         width: { xs: "90%", sm: "80%", md: "70%", lg: "60%" },
       }}
     >
-      <CardActionArea sx={{ height: "70%", width: "100%", display: "flex" }}>
+      <CardActionArea
+        href={`/reservation/${trajet.id}`}
+        sx={{ height: "70%", width: "100%", display: "flex" }}
+      >
         <Box
           sx={{
             width: { xs: "15%", md: "10%" },

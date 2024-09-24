@@ -82,8 +82,6 @@ export class TripService {
       );
 
       if (existingTrips) {
-        
-
         return {
           status: HttpStatus.BAD_REQUEST,
           message:
@@ -116,7 +114,6 @@ export class TripService {
       };
     }
   }
-
 
   // get all trips***********************************************************************************
   async GetAll(): Promise<any[]> {
@@ -162,6 +159,23 @@ export class TripService {
       .andWhere("DATE(trip.departureDateTime) = :dateTrip", { dateTrip })
       .getMany();
   }
+
+  async GetById(id: number): Promise<any> {
+    return await this.tripRepository
+      .createQueryBuilder("trip")
+      .innerJoinAndSelect("trip.departureCity", "departureCity")
+      .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+      .select([
+        "trip.id",
+        "trip.availableSeats",
+        "trip.pricePerSeat",
+        "trip.departureDateTime",
+        "departureCity.name",
+        "destinationCity.name",
+        "trip.distance",
+        "trip.duration",
+      ])
+      .where("trip.id = :id", { id })
+      .getOne();
+  }
 }
-
-

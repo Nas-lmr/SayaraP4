@@ -1,15 +1,15 @@
 import { Elements } from "@stripe/react-stripe-js";
 import stripePromise from "../config/stripeConfig";
-import Stripecpnt from "./Stripecpnt";
+import PaymentForm from "./forms/PaymentForm";
 
-interface StripeWrapperProps {
-  amount: number;
-}
+// interface StripeWrapperProps {
+//   amount: number;
+// }
 
-const StripeWrapper: React.FC<StripeWrapperProps> = ({ amount }) => {
+const StripeWrapper: React.FC = () => {
   return (
     <Elements stripe={stripePromise}>
-      <Stripecpnt amount={amount} />
+      <PaymentForm />
     </Elements>
   );
 };

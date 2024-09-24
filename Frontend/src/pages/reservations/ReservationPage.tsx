@@ -1,7 +1,6 @@
 import { Container } from "@mui/material";
-import StripeWrapper from "../components/Stripewarpper";
-
-export default function TestStripe() {
+import ReservationContainer from "../../components/trajet/ReservationContainer";
+export default function ReservationPage() {
   return (
     <Container
       disableGutters
@@ -15,7 +14,7 @@ export default function TestStripe() {
         justifyContent: "center",
       }}
     >
-      <StripeWrapper />
+      <ReservationContainer />
     </Container>
   );
 }
