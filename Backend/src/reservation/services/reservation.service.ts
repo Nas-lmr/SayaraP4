@@ -35,6 +35,7 @@ export class ReservationService {
     status: number;
     message: string;
     reservation?: ReservationEntity;
+    clientSecret?: string;
   }> {
     try {
       const client = await this.userRepository.findOneBy({
@@ -103,7 +104,7 @@ export class ReservationService {
         },
       };
 
-      // Create and confirm the payment the funtion in stripe service 
+      // Create and confirm the payment the funtion in stripe service
       const paymentResult = await this.paymentService.createAndConfirmPayment(
         paymentRequestBody,
         paymentMethodId
@@ -128,7 +129,7 @@ export class ReservationService {
       return {
         status: 201,
         message: "Your reservation is done and payment is confirmed",
-        reservation,
+        clientSecret: paymentResult.ClientSecret,
       };
     } catch (error) {
       console.error("Error during reservation:", error);

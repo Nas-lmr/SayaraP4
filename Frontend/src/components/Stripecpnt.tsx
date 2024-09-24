@@ -6,10 +6,11 @@ interface PaymentFormProps {
   amount: number;
 }
 
-interface Product {
-  title: string;
-  price: number;
-  quantity: number;
+interface ReservationDetails {
+  passengerId: number;
+  tripId: number;
+  seatsReserved: number;
+  paymentMethodId: string;
 }
 
 export default function PaymentForm({ amount }: PaymentFormProps) {
@@ -18,54 +19,77 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
   const [isProcessing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Définir une liste de produits (comme exemple)
-  const products: Product[] = [
-    { title: "azaz", price: 3, quantity: 2 },
-    { title: "arerer", price: 2, quantity: 1 },
-  ];
-
-  const currency = "eur"; // Tu peux aussi rendre la devise dynamique si nécessaire
+  const reservationDetails = {
+    passengerId: 1,  
+    tripId: 13,       
+    seatsReserved: 1
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      return;
+      return; 
     }
 
     setProcessing(true);
 
     try {
-      // Faire une requête à l'API backend pour créer un PaymentIntent
-      const response = await fetch("http://localhost:3310/payments", {
+      const cardElement = elements.getElement(CardElement);
+      if (!cardElement) {
+        throw new Error("Card element not found");
+      }
+
+      // Create a PaymentMethod using the CardElement
+      const { paymentMethod, error: stripeError } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+      });
+
+      if (stripeError) {
+        setError(stripeError.message || "An error occurred during payment.");
+        setProcessing(false);
+        return;
+      }
+
+      if (!paymentMethod) {
+        setError("Payment method not created.");
+        setProcessing(false);
+        return;
+      }
+
+      // Add the paymentMethodId to the reservation details
+      const reservationData: ReservationDetails = {
+        ...reservationDetails,
+        paymentMethodId: paymentMethod.id,
+      };
+
+      const response = await fetch("http://localhost:3310/reservation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ products, currency }), // Envoyer les produits et la devise
+        body: JSON.stringify(reservationData),
       });
+
+      if (!response.ok) {
+        const { message } = await response.json();
+        throw new Error(message || "Error processing payment.");
+      }
 
       const { clientSecret } = await response.json();
 
-      const cardElement = elements.getElement(CardElement);
-      if (!cardElement) {
-        throw new Error("Card element not found"); // Message d'erreur en cas de problème
-      }
-
-      // Confirmation du paiement avec Stripe
-      const paymentResult = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement, // Utilise les informations de la carte ici
-        },
-      });
+      // Confirm payment using the clientSecret from the backend
+      const paymentResult = await stripe.confirmCardPayment(clientSecret);
 
       if (paymentResult.error) {
         setError(paymentResult.error.message || "An unknown error occurred.");
       } else {
         if (paymentResult.paymentIntent?.status === "succeeded") {
-          alert("Payment successful!");
+          alert("Payment and reservation successful!");
         }
       }
-    } catch {
-      setError("An error occurred during payment.");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err:any) {
+      setError(err.message || "An error occurred during payment.");
     } finally {
       setProcessing(false);
     }
