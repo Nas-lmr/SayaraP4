@@ -3,12 +3,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 /* -----------------------------------------------------------------*/
-import { ReservationEntity } from "../entity/reservation.entity";
-import { UserEntity } from "../../user/entity/user.entity";
-import { TripEntity } from "../../trip/entity/trip.entity";
-import { ReservationDto } from "../dto/reservation.dto";
-import { ReservationStatusEntity } from "../entity/reservation_status.entity";
 import { StripeService } from "../../stripe/service/stripe.service";
+import { TripEntity } from "../../trip/entity/trip.entity";
+import { UserEntity } from "../../user/entity/user.entity";
+import { ReservationDto } from "../dto/reservation.dto";
+import { ReservationEntity } from "../entity/reservation.entity";
+import { ReservationStatusEntity } from "../entity/reservation_status.entity";
 
 /* -----------------------------------------------------------------*/
 
@@ -26,7 +26,7 @@ export class ReservationService {
     private readonly paymentService: StripeService
   ) {}
 
-  // make reservation 
+  // make reservation
   async create(reservationData: ReservationDto): Promise<{
     status: number;
     message: string;
@@ -113,6 +113,7 @@ export class ReservationService {
       return {
         status: 201,
         message: "Your reservation is done and payment is processed",
+        reservation,
       };
     } catch (error) {
       console.error(error);
