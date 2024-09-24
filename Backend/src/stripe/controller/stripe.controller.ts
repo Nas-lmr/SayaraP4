@@ -7,24 +7,6 @@ import { Response } from "express";
 export class StripeController {
   constructor(private paymentService: StripeService) {}
 
-  @Post()
-  async createPayments(
-    @Res() response: Response,
-    @Body() paymentRequestBody: PaymentRequestBodyDto
-  ) {
-    try {
-      const result =
-        await this.paymentService.createPayment(paymentRequestBody);
-
-      response.status(HttpStatus.CREATED).json(result);
-    } catch (err) {
-      response.status(HttpStatus.BAD_REQUEST).json({
-        success: false,
-        message: err.message || "Payment creation failed",
-      });
-    }
-  }
-
   @Post("refund")
   async refundPayment(
     @Res() response: Response,
@@ -48,47 +30,47 @@ export class StripeController {
     }
   }
 
-  //confirm the Payment Intent with a card
-  // @Post("confirm")
-  // confirmPayment(
+  // @Post()
+  // async createPayments(
   //   @Res() response: Response,
-  //   @Body() body: { paymentIntentId: string; cardDetails: any }
+  //   @Body() paymentRequestBody: PaymentRequestBodyDto
   // ) {
-  //   const { paymentIntentId, cardDetails } = body;
+  //   try {
+  //     const result =
+  //       await this.paymentService.createPayment(paymentRequestBody);
 
-  //   this.paymentService
-  //     .confirmPayment(paymentIntentId, cardDetails)
-  //     .then((res) => {
-  //       response.status(HttpStatus.OK).json(res);
-  //     })
-  //     .catch((err) => {
-  //       response.status(HttpStatus.BAD_REQUEST).json(err);
+  //     response.status(HttpStatus.CREATED).json(result);
+  //   } catch (err) {
+  //     response.status(HttpStatus.BAD_REQUEST).json({
+  //       success: false,
+  //       message: err.message || "Payment creation failed",
   //     });
+  //   }
   // }
 
-  @Post("confirm")
-  async confirmPayment(
-    @Res() response: Response,
-    @Body() body: { paymentIntentId: string; paymentMethodId: string }
-  ) {
-    const { paymentIntentId, paymentMethodId } = body;
+  // @Post("confirm")
+  // async confirmPayment(
+  //   @Res() response: Response,
+  //   @Body() body: { paymentIntentId: string; paymentMethodId: string }
+  // ) {
+  //   const { paymentIntentId, paymentMethodId } = body;
 
-    try {
-      const confirmedPaymentIntent = await this.paymentService.confirmPayment(
-        paymentIntentId,
-        paymentMethodId
-      );
-      response.status(HttpStatus.OK).json({
-        success: true,
-        message: "Payment confirmed successfully",
-        confirmedPaymentIntent,
-      });
-    } catch (error) {
-      response.status(HttpStatus.BAD_REQUEST).json({
-        success: false,
-        message: "Payment confirmation failed",
-        error: error.message,
-      });
-    }
-  }
+  //   try {
+  //     const confirmedPaymentIntent = await this.paymentService.confirmPayment(
+  //       paymentIntentId,
+  //       paymentMethodId
+  //     );
+  //     response.status(HttpStatus.OK).json({
+  //       success: true,
+  //       message: "Payment confirmed successfully",
+  //       confirmedPaymentIntent,
+  //     });
+  //   } catch (error) {
+  //     response.status(HttpStatus.BAD_REQUEST).json({
+  //       success: false,
+  //       message: "Payment confirmation failed",
+  //       error: error.message,
+  //     });
+  //   }
+  // }
 }
