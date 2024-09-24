@@ -49,13 +49,13 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
       if (!cardElement) {
         throw new Error("Card element not found"); // Message d'erreur en cas de problème
       }
-
-      // Confirmation du paiement avec Stripe
       const paymentResult = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement, // Utilise les informations de la carte ici
         },
       });
+
+      // Confirmation du paiement avec Stripe
 
       if (paymentResult.error) {
         setError(paymentResult.error.message || "An unknown error occurred.");

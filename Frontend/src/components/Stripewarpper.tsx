@@ -1,23 +1,16 @@
 import { Elements } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
 import stripePromise from "../config/stripeConfig";
-import PaymentForm from "./forms/PaymentForm";
+import Stripecpnt from "./Stripecpnt";
 
-const StripeWrapper: React.FC = () => {
-  const [clientSecret, setClientSecret] = useState("");
-  useEffect(() => {
-    fetch("http://localhost:3310/reservation")
-      .then((res) => res.json())
+interface StripeWrapperProps {
+  amount: number;
+}
 
-      .then(({ clientSecret }) => setClientSecret(clientSecret));
-  }, []);
-  console.log(clientSecret, "client secret");
+const StripeWrapper: React.FC<StripeWrapperProps> = ({ amount }) => {
   return (
-    <>
-      <Elements stripe={stripePromise} options={{ clientSecret }}>
-        <PaymentForm />
-      </Elements>
-    </>
+    <Elements stripe={stripePromise}>
+      <Stripecpnt amount={amount} />
+    </Elements>
   );
 };
 
