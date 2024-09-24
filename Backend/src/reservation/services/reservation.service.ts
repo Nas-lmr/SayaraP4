@@ -129,7 +129,7 @@ export class ReservationService {
       return {
         status: 201,
         message: "Your reservation is done and payment is confirmed",
-        clientSecret: paymentResult.ClientSecret,
+        clientSecret: paymentResult.client_secret,
       };
     } catch (error) {
       console.error("Error during reservation:", error);

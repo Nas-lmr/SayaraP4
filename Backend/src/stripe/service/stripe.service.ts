@@ -60,13 +60,12 @@ export class StripeService {
     );
 
     return {
-      ClientSecret: confirmedPaymentIntent.client_secret,
+      client_secret: confirmedPaymentIntent.client_secret,
       paymentIntent: confirmedPaymentIntent,
     };
   }
 
   // refund payment method
-
   async refundPayment(paymentIntentId: string): Promise<any> {
     try {
       const refund = await this.stripe.refunds.create({

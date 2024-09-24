@@ -17,7 +17,7 @@ export class ReservationController {
     @Body() reservationDto: ReservationDto & { paymentMethodId: string }
   ) {
     const { paymentMethodId } = reservationDto;
-
+  
     try {
       if (!paymentMethodId) {
         throw new HttpException(
@@ -25,16 +25,23 @@ export class ReservationController {
           HttpStatus.BAD_REQUEST
         );
       }
-
-      return await this.reservationService.create(
+  
+      const result = await this.reservationService.create(
         reservationDto,
         paymentMethodId
       );
+  
+      return {
+        message: result.message,
+        reservation: result.reservation,
+        clientSecret: result.clientSecret, 
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
       }
-
+  
+      // Handle Stripe-specific errors
       if (error.type === "StripeCardError") {
         throw new HttpException(
           "Your card was declined. Please try again.",
@@ -59,4 +66,5 @@ export class ReservationController {
       }
     }
   }
+  
 }

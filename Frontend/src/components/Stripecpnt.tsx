@@ -21,7 +21,7 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
 
   const reservationDetails = {
     passengerId: 1,  
-    tripId: 13,       
+    tripId: 14,       
     seatsReserved: 1
   };
 
@@ -75,8 +75,8 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
         throw new Error(message || "Error processing payment.");
       }
 
-      const { clientSecret } = await response.json();
-
+      const  clientSecret  = await response.json();
+console.log(clientSecret)
       // Confirm payment using the clientSecret from the backend
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
 
