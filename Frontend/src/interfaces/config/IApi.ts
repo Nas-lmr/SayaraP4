@@ -7,5 +7,6 @@ export interface IApi {
     register: string;
     postTrajet: string;
     searchTrajet: string;
+    socketUri: string;
   };
 }

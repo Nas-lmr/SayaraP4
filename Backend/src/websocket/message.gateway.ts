@@ -11,19 +11,11 @@ import {JwtService} from "@nestjs/jwt";
 import {RedisService} from "./redis.service";
 import {Inject} from "@nestjs/common";
 import {WebsocketService} from "./websocket.service";
-import {InjectRepository} from "@nestjs/typeorm";
-import {TripEntity} from "../trip/entity/trip.entity";
-import {Repository} from "typeorm";
 
 interface Payload {
   roomId: string;
   token: string;
   message: string;
-}
-
-interface IGatewayUser {
-  roomId: string;
-  token: string;
 }
 
 @WebSocketGateway({
@@ -34,7 +26,6 @@ export class MessageGateway
 
   constructor(
     @Inject() private jwtService: JwtService,
-    @InjectRepository(TripEntity) private tripRepository: Repository<TripEntity>,
     @Inject() private roomsService: WebsocketService,
     @Inject() private redisService: RedisService
   ){ }
@@ -55,29 +46,26 @@ export class MessageGateway
 
   @SubscribeMessage('joinRoom')
   async handleJoinRoom(
-    @MessageBody() data: IGatewayUser,
-    @ConnectedSocket() client: Socket
+    @MessageBody() data: { roomId: string; token: string },
+    @ConnectedSocket() client: Socket,
   ) {
     const {roomId, token} = data;
-    const room: any = this.roomsService.getRoom(parseInt(roomId));
+    this.roomsService.rooms;
+    const room = await this.roomsService.getRoom(parseInt(roomId));
+
     if (!room) {
       return client.emit('error', 'Room not found');
     }
-    try {
-      const decoded = this.jwtService.verify(token);
+    const decoded = this.jwtService.verify(token, {secret: 'your-secret-key'});
       const id = decoded.id;
       if (id === room.owner_id || room.traveler_id === id) {
         client.join(roomId);
-        client.emit('roomJoined', roomId);
+        return this.server.emit('joinRoom', room);
       } else {
-        client.emit('error', 'Unauthorized access');
+        return client.emit('error', 'Unauthorized');
       }
-    } catch (e) {
-      client.emit('error', 'Authentication error');
-    }
   }
-
-  @SubscribeMessage('message')
+  @SubscribeMessage('sendMessage')
   async handleMessage(
     @MessageBody() data: Payload
   ) {
@@ -87,15 +75,14 @@ export class MessageGateway
       `${decoded.username}: ${data.message}`
     );
     const { roomId } = data;
-    console.log(roomId);
+    this.roomsService.rooms;
     const room = await this.roomsService.getRoom(parseInt(roomId));
-    console.log(room);
 
     this.roomsService.addMessage(roomId, {senders: decoded.username, message: data.message});
 
     if (!room) {
       return this.server.emit('error', 'Room not found');
     }
-    this.server.to(roomId).emit('message', room);
+    this.server.to(roomId).emit('newMessage', room);
   }
 }
