@@ -82,8 +82,6 @@ export class TripService {
       );
 
       if (existingTrips) {
-        
-
         return {
           status: HttpStatus.BAD_REQUEST,
           message:
@@ -116,7 +114,6 @@ export class TripService {
       };
     }
   }
-
 
   // get all trips***********************************************************************************
   async GetAll(): Promise<any[]> {
@@ -163,5 +160,3 @@ export class TripService {
       .getMany();
   }
 }
-
-
