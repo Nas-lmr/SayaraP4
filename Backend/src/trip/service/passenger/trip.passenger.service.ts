@@ -32,7 +32,6 @@ export class TripPassengerService {
         "trip.id AS tripId",
         "departureCity.name AS departureCity",
         "destinationCity.name AS destinationCity",
-        "trip.availableSeats AS availableSeats",
         "trip.pricePerSeat AS pricePerSeat",
         "trip.departureDateTime AS departureDateTime",
         "trip.distance AS distance",
