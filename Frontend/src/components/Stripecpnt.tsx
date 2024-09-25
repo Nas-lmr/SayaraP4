@@ -1,29 +1,43 @@
-import { Box } from "@mui/material";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React, { useState } from "react";
+import { Box, TextField, Typography } from "@mui/material";
+import {
+  CardElement,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
+import { IInfoTrajetId } from "../interfaces/services/IInfoTrajet";
+import { IStripeProduct } from "../interfaces/services/IStripeProduct";
+import { trajetInfo } from "../services/trajet/trajetService";
 
 interface PaymentFormProps {
-  amount: number;
+  amount: number | null;
 }
 
-interface ReservationDetails {
-  passengerId: number;
-  tripId: number;
-  seatsReserved: number;
-  paymentMethodId: string;
-}
-
-export default function PaymentForm({ amount }: PaymentFormProps) {
+export default function Stripecpnt({ amount }: PaymentFormProps) {
+  const { id } = useParams<{ id: string | undefined }>(); // Récupération de l'ID du trajet à partir de l'URL
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null); // Pour stocker les infos du trajet
+  const [seatsReserved, setSeatsReserved] = useState<number>(1);
+  const { decodedToken } = useUserContext();
 
-  const reservationDetails = {
-    passengerId: 1,
-    tripId: 13,
-    seatsReserved: 1,
-  };
+  useEffect(() => {
+    const fetchTrajetId = async () => {
+      const trajetId = id ?? null;
+      try {
+        const response = await trajetInfo({ id: trajetId });
+        setTrajet(response.data); // Récupère les données du trajet
+      } catch (error) {
+        console.error("Erreur lors de la récupération du trajet:", error);
+      }
+    };
+    fetchTrajetId();
+  }, [id]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -35,7 +49,7 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
     setProcessing(true);
 
     try {
-      const cardElement = elements.getElement(CardElement);
+      const cardElement = elements.getElement(PaymentElement);
       if (!cardElement) {
         throw new Error("Card element not found");
       }
@@ -60,8 +74,10 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
       }
 
       // Add the paymentMethodId to the reservation details
-      const reservationData: ReservationDetails = {
-        ...reservationDetails,
+      const reservationData: IStripeProduct = {
+        passengerId: decodedToken?.id ?? null, // Récupère l'ID réel de l'utilisateur
+        tripId: id || "", // Utilise l'ID du trajet
+        seatsReserved: seatsReserved, // Utilisation de l'état pour les places réservées
         paymentMethodId: paymentMethod.id,
       };
 
@@ -71,12 +87,15 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
         body: JSON.stringify(reservationData),
       });
 
+      console.log(response, "RESPONSE");
+
       if (!response.ok) {
         const { message } = await response.json();
         throw new Error(message || "Error processing payment.");
       }
 
       const { clientSecret } = await response.json();
+      console.log(clientSecret, "CLIENT SECRET FRONT");
 
       // Confirm payment using the clientSecret from the backend
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
@@ -110,23 +129,38 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
         justifyContent: "space-between",
       }}
     >
-      <Box sx={{ height: "50%", pt: "5rem" }}>
-        <CardElement
-          options={{
-            style: {
-              base: {
-                color: "purple",
-                "::placeholder": {
-                  color: "purple",
-                  lineHeight: "1.5rem",
-                },
+      <Typography>Ville départ: {trajet?.departureCity.name}</Typography>
+      <Typography>Ville arrivée: {trajet?.destinationCity.name}</Typography>
+      <Typography>Prix par siège: {trajet?.pricePerSeat}</Typography>
+      <Typography>Places disponibles: {trajet?.availableSeats}</Typography>
+      <TextField
+        label="Nombre de places réservées"
+        type="number"
+        value={seatsReserved}
+        onChange={(e) => setSeatsReserved(Number(e.target.value))}
+        sx={{ marginBottom: 2 }}
+      />
+
+      <CardElement
+        options={{
+          style: {
+            base: {
+              fontSize: "16px",
+              color: "#424770",
+              "::placeholder": {
+                color: "#aab7c4",
               },
+              padding: "10px 12px", // Ajout d'espacement interne
             },
-          }}
-        />
-      </Box>
+            invalid: {
+              color: "#9e2146",
+            },
+          },
+        }}
+      />
+
       <button type="submit" disabled={isProcessing || !stripe}>
-        {isProcessing ? "Processing..." : `Pay ${amount / 100} €`}
+        {isProcessing ? "Processing..." : `Pay ${amount * seatsReserved} €`}
       </button>
       {error && <div>{error}</div>}
     </Box>

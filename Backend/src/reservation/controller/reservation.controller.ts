@@ -1,9 +1,9 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
   HttpException,
   HttpStatus,
+  Post,
 } from "@nestjs/common";
 import { ReservationDto } from "../dto/reservation.dto";
 import { ReservationService } from "../services/reservation.service";
@@ -26,15 +26,23 @@ export class ReservationController {
         );
       }
 
-      return await this.reservationService.create(
+      const result = await this.reservationService.create(
         reservationDto,
         paymentMethodId
       );
+      console.log(result.clientSecret, "CLIENT KEY");
+
+      return {
+        message: result.message,
+        reservation: result.reservation,
+        clientSecret: result.clientSecret, // Include the client secret here
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
       }
 
+      // Handle Stripe-specific errors
       if (error.type === "StripeCardError") {
         throw new HttpException(
           "Your card was declined. Please try again.",

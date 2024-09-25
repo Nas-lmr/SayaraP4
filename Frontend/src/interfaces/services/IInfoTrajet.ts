@@ -3,6 +3,7 @@ export interface IInfoTrajet {
 }
 
 export interface IInfoTrajetId {
+  id: string | null;
   departureCity: {
     name: string;
   };

@@ -15,7 +15,7 @@ export default function TestStripe() {
         justifyContent: "center",
       }}
     >
-      <StripeWrapper amount={100} />
+      <StripeWrapper amount={200} />;
     </Container>
   );
 }

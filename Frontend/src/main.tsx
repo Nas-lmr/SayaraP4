@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import InfosTrajet from "./components/trajet/InfosTrajet.tsx";
 import { UserContextProvider } from "./context/UserContext.tsx";
 import "./index.css";
 import MainLayout from "./layouts/MainLayout.tsx";
@@ -13,10 +14,10 @@ import ProfilPage from "./pages/ProfilPage.tsx";
 import ConfirmationTrajetPage from "./pages/reservations/ConfirmationTrajetPage.tsx";
 import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
+import ReservationPage from "./pages/reservations/ReservationPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
 import TestStripe from "./pages/TestStripe.tsx";
-import ReservationPage from "./pages/reservations/ReservationPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,11 @@ const router = createBrowserRouter([
         element: <TestStripe />,
       },
       {
-        path: "/reservation/:id",
+        path: "/reservation/:id/infos-trajet",
+        element: <InfosTrajet />,
+      },
+      {
+        path: "/reservation/:id/confirmation",
         element: <ReservationPage />,
       },
     ],

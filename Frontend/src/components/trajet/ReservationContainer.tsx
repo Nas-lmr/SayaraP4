@@ -1,8 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IInfoTrajetId } from "../../interfaces/services/IInfoTrajet";
 import { trajetInfo } from "../../services/trajet/trajetService";
+import StripeWrapper from "../Stripewarpper";
 
 export default function ReservationContainer() {
   const { id } = useParams<{ id: string | undefined }>();
@@ -23,10 +24,11 @@ export default function ReservationContainer() {
 
   return (
     <Box>
-      <Typography>ville depart:{trajet?.departureCity.name}</Typography>
+      {/* <Typography>ville depart:{trajet?.departureCity.name}</Typography>
       <Typography>ville arrivee:{trajet?.destinationCity.name}</Typography>
       <Typography>price:{trajet?.pricePerSeat}</Typography>
-      <Typography>places dispo:{trajet?.availableSeats}</Typography>
+      <Typography>places dispo:{trajet?.availableSeats}</Typography> */}
+      <StripeWrapper amount={trajet?.pricePerSeat ?? null} />
     </Box>
   );
 }
