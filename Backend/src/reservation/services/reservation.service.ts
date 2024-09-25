@@ -122,6 +122,7 @@ export class ReservationService {
 
       await this.reservationRepository.save(reservation);
 
+
       // Update available seats in the trip
       trip.availableSeats -= reservationData.seatsReserved;
       await this.tripRepository.save(trip);

@@ -75,10 +75,10 @@ export default function PaymentForm({ amount }: PaymentFormProps) {
         throw new Error(message || "Error processing payment.");
       }
 
-      const  clientSecret  = await response.json();
-console.log(clientSecret)
-      // Confirm payment using the clientSecret from the backend
+      const  {clientSecret}  = await response.json();
+
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
+console.log("Payment Result:", paymentResult);
 
       if (paymentResult.error) {
         setError(paymentResult.error.message || "An unknown error occurred.");
