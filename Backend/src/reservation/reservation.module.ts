@@ -6,11 +6,10 @@ import { TripEntity } from "../trip/entity/trip.entity";
 import { UserEntity } from "../user/entity/user.entity";
 import { ReservationStatusEntity } from "./entity/reservation_status.entity";
 import { ReservationEntity } from "./entity/reservation.entity";
-import { TripModule } from "src/trip/trip.module";
-import { UserModule } from "src/user/user.module";
+import { StripeService } from "src/stripe/service/stripe.service";
 
 @Module({
-  providers: [ReservationService],
+  providers: [ReservationService,StripeService],
   controllers: [ReservationController],
   imports: [
     TypeOrmModule.forFeature([

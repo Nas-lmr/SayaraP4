@@ -10,12 +10,12 @@ import NotificationPage from "./pages/NotificationPage.tsx";
 import LoginPage from "./pages/profil/LoginPage.tsx";
 import RegisterPage from "./pages/profil/RegisterPage.tsx";
 import ProfilPage from "./pages/ProfilPage.tsx";
+import ConfirmationTrajetPage from "./pages/reservations/ConfirmationTrajetPage.tsx";
+import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
-
-import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
-import ConfirmationTrajetPage from "./pages/reservations/ConfirmationTrajetPage.tsx";
+import TestStripe from "./pages/TestStripe.tsx";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "/trajet/nouveau-trajet/confirmation",
         element: <ConfirmationTrajetPage />,
+      },
+      {
+        path: "/teststripe",
+        element: <TestStripe />,
       },
     ],
   },
