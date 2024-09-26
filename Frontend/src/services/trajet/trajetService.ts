@@ -86,7 +86,7 @@ export const trajetInfo = async (params: IInfoTrajet) => {
   try {
     const response = await fetch(
       // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
-      `http://localhost:3310/trip/${id}`,
+      `http://localhost:3310/trip/one/${id}`,
       {
         method: "GET",
         headers: {

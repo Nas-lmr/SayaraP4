@@ -1,14 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 /* -----------------------------------------------------------------*/
-import { StripeService } from "../../stripe/service/stripe.service";
-import { TripEntity } from "../../trip/entity/trip.entity";
-import { UserEntity } from "../../user/entity/user.entity";
-import { ReservationDto } from "../dto/reservation.dto";
 import { ReservationEntity } from "../entity/reservation.entity";
+import { UserEntity } from "../../user/entity/user.entity";
+import { TripEntity } from "../../trip/entity/trip.entity";
+import { ReservationDto } from "../dto/reservation.dto";
 import { ReservationStatusEntity } from "../entity/reservation_status.entity";
+import { StripeService } from "../../stripe/service/stripe.service";
 
 /* -----------------------------------------------------------------*/
 
@@ -27,22 +27,18 @@ export class ReservationService {
   ) {}
 
   // make reservation
-
-  async create(
-    reservationData: ReservationDto,
-    paymentMethodId: string
-  ): Promise<{
+  async create(reservationData: ReservationDto): Promise<{
     status: number;
     message: string;
     reservation?: ReservationEntity;
-    clientSecret?: string;
+    clientSecret?: any;
   }> {
     try {
       const client = await this.userRepository.findOneBy({
         id: reservationData.passengerId,
       });
       if (!client) {
-        throw new HttpException("Passenger not found.", HttpStatus.BAD_REQUEST);
+        return { status: 400, message: "There is no passengerId" };
       }
 
       const trip = await this.tripRepository
@@ -61,33 +57,24 @@ export class ReservationService {
         .getOne();
 
       if (!trip) {
-        throw new HttpException("Trip not found.", HttpStatus.BAD_REQUEST);
+        return { status: 400, message: "There is no tripId" };
+      }
+      // Check available seats
+
+      if (trip.availableSeats == 0) {
+        return { status: 400, message: "No available seats for this trip" };
+      }
+      if (reservationData.seatsReserved > trip.availableSeats) {
+        return { status: 400, message: "Not enough available seats" };
       }
 
-      // check the seats
-      if (
-        trip.availableSeats === 0 ||
-        reservationData.seatsReserved > trip.availableSeats
-      ) {
-        throw new HttpException(
-          "Not enough available seats.",
-          HttpStatus.BAD_REQUEST
-        );
-      }
-
-      // reservation status en attente by default
       const reservStatus = await this.reservationStsRepository.findOneBy({
         id: reservationData.reservationStatus,
       });
       if (!reservStatus) {
-        throw new HttpException(
-          "Reservation status not found.",
-          HttpStatus.BAD_REQUEST
-        );
+        return { status: 400, message: "There is no reservation-statusId" };
       }
-
-      // payment request data
-
+      // Prepare payment request data
       const paymentRequestBody = {
         products: [
           {
@@ -104,13 +91,13 @@ export class ReservationService {
         },
       };
 
-      // Create and confirm the payment the funtion in stripe service
-      const paymentResult = await this.paymentService.createAndConfirmPayment(
-        paymentRequestBody,
-        paymentMethodId
-      );
+      // Create the payment
+      const paymentResult =
+        await this.paymentService.createPayment(paymentRequestBody);
 
-      // Create the reservation with the confirmed payment intent ID
+      console.log("Client Secret:", paymentResult.clientSecret);
+
+      // Create the reservation with the payment intent ID
       const reservation = this.reservationRepository.create({
         reservationStatus: reservStatus,
         passengerId: client,
@@ -128,20 +115,18 @@ export class ReservationService {
 
       return {
         status: 201,
-        message: "Your reservation is done and payment is confirmed",
-        clientSecret: paymentResult.ClientSecret,
+        message: "Your reservation is done and payment is processed",
+        reservation,
+        clientSecret: {
+          client_secret: paymentResult.clientSecret,
+        },
       };
     } catch (error) {
-      console.error("Error during reservation:", error);
-
-      if (error instanceof HttpException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        "An error occurred while making a reservation and confirming payment. Please try again later.",
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      console.error(error);
+      return {
+        status: 500,
+        message: "An error occurred while making a reservation",
+      };
     }
   }
 }

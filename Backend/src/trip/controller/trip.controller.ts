@@ -109,7 +109,7 @@ export class TripController {
     }
   }
 
-  @Get(":id")
+  @Get("one/:id")
   async getById(@Param("id") id: number) {
     try {
       const data = await this.tripService.GetById(id);

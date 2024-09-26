@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import ReservationContainer from "../../components/trajet/ReservationContainer";
+import TestPaymentIntent from "../../components/Stripewarpper";
 export default function ReservationPage() {
   return (
     <Container
@@ -14,7 +14,7 @@ export default function ReservationPage() {
         justifyContent: "center",
       }}
     >
-      <ReservationContainer />
+      <TestPaymentIntent />
     </Container>
   );
 }

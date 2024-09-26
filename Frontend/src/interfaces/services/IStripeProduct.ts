@@ -1,6 +1,9 @@
+import { IInfoTrajetId } from "./IInfoTrajet";
+
 export interface IStripeProduct {
-  passengerId: string | null;
-  tripId: string;
+  onclick: () => void;
   seatsReserved: number;
-  paymentMethodId: string | null;
+  setSeatsReserved: (seats: number) => void;
+  tripId: string;
+  trajet: IInfoTrajetId | null;
 }

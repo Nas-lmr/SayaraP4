@@ -2,35 +2,30 @@ import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
 import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
-
-import { Box, Button, Card, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
-import { IInfoTrajetId } from "../../interfaces/services/IInfoTrajet";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
+import { IStripeProduct } from "../../interfaces/services/IStripeProduct";
 import {
   calculateArrivalDateTime,
   capitalizeFirstLetter,
   formatDuration,
   formatTime,
 } from "../../services/common/ConversionValue";
-import { trajetInfo } from "../../services/trajet/trajetService";
 
-export default function InfosTrajet() {
-  const { id } = useParams<{ id: string | undefined }>();
-  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null);
-
-  useEffect(() => {
-    const fetchTrajetId = async () => {
-      const trajetId = id ?? null;
-      try {
-        const response = await trajetInfo({ id: trajetId });
-        setTrajet(response.data);
-      } catch {
-        console.error("pas de données");
-      }
-    };
-    fetchTrajetId();
-  }, [id]);
+export default function InfosTrajet({
+  onclick,
+  seatsReserved,
+  setSeatsReserved,
+  trajet,
+}: IStripeProduct) {
+  const handleSeatsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSeats = Number(e.target.value);
+    // Valider l'entrée (par exemple, non-négatif, ne pas dépasser les places disponibles)
+    if (newSeats >= 1 && newSeats <= (trajet?.availableSeats ?? 1)) {
+      setSeatsReserved(newSeats);
+    } else {
+      // Optionnel : gérer les entrées non valides
+    }
+  };
 
   const departureDateTime = new Date(trajet?.departureDateTime ?? "");
   const durationInSeconds = trajet?.duration; // La durée est en secondes
@@ -44,84 +39,6 @@ export default function InfosTrajet() {
   // Formater l'heure de départ et l'heure d'arrivée
   const formattedDepartureTime = formatTime(departureDateTime);
   const formattedArrivalTime = formatTime(arrivalDateTime);
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    setProcessing(true);
-
-    try {
-      const cardElement = elements.getElement(CardElement);
-      if (!cardElement) {
-        throw new Error("Card element not found");
-      }
-
-      // Create a PaymentMethod using the CardElement
-      const { paymentMethod, error: stripeError } =
-        await stripe.createPaymentMethod({
-          type: "card",
-          card: cardElement,
-        });
-
-      if (stripeError) {
-        setError(stripeError.message || "An error occurred during payment.");
-        setProcessing(false);
-        return;
-      }
-
-      if (!paymentMethod) {
-        setError("Payment method not created.");
-        setProcessing(false);
-        return;
-      }
-
-      // Add the paymentMethodId to the reservation details
-      const reservationData: IStripeProduct = {
-        passengerId: decodedToken?.id ?? null, // Récupère l'ID réel de l'utilisateur
-        tripId: id || "", // Utilise l'ID du trajet
-        seatsReserved: seatsReserved, // Utilisation de l'état pour les places réservées
-        paymentMethodId: paymentMethod.id,
-      };
-
-      const response = await fetch("http://localhost:3310/reservation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reservationData),
-      });
-
-      console.log(response, "RESPONSE");
-
-      if (!response.ok) {
-        const { message } = await response.json();
-        throw new Error(message || "Error processing payment.");
-      }
-
-      const { clientSecret } = await response.json();
-      console.log(clientSecret, "CLIENT SECRET FRONT");
-
-      // Confirm payment using the clientSecret from the backend
-      const paymentResult = await stripe.confirmCardPayment(clientSecret);
-
-      // Confirmation du paiement avec Stripe
-
-      if (paymentResult.error) {
-        setError(paymentResult.error.message || "An unknown error occurred.");
-      } else {
-        if (paymentResult.paymentIntent?.status === "succeeded") {
-          alert("Payment and reservation successful!");
-        }
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(err.message || "An error occurred during payment.");
-    } finally {
-      setProcessing(false);
-    }
-  };
 
   return (
     <Box
@@ -374,32 +291,27 @@ export default function InfosTrajet() {
           pr: "1rem",
           backgroundColor: "white",
         }}
-      ></Box>
+      >
+        <TextField
+          label="Nombre de places réservées"
+          type="number"
+          value={seatsReserved}
+          onChange={handleSeatsChange}
+          sx={{ marginBottom: 2 }}
+        />
+      </Box>
       <Button
         variant="contained"
+        onClick={onclick}
         sx={{
           width: { xs: "20rem", md: "30rem" },
           height: { xs: "5vh" },
           backgroundColor: "#321F47",
-
           fontFamily: "Montserrat",
           borderRadius: "0.5rem",
         }}
       >
-        <NavLink
-          to={`/reservation/${trajet?.id}/confirmation`}
-          style={{
-            textDecoration: "none",
-            color: "#FDC55E",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          Réserver
-        </NavLink>
+        Réserver
       </Button>
     </Box>
   );
