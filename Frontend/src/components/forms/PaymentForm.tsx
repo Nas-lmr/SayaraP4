@@ -364,7 +364,7 @@ export default function PaymentForm({
             >
               Prix total à payer
               <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                {trajet?.pricePerSeat ?? 0 * seatsReserved}
+                {trajet?.pricePerSeat * seatsReserved}
               </span>
             </Typography>
             <EuroRoundedIcon
@@ -409,7 +409,7 @@ export default function PaymentForm({
             {isProcessing ? (
               <CircularProgress size={30} sx={{ color: "white" }} />
             ) : (
-              `Payez ${trajet?.pricePerSeat ?? 0 * seatsReserved}`
+              `Payez ${trajet?.pricePerSeat * seatsReserved}`
             )}
             <EuroRoundedIcon
               sx={{
