@@ -95,8 +95,6 @@ export class ReservationService {
       const paymentResult =
         await this.paymentService.createPayment(paymentRequestBody);
 
-      console.log("Client Secret:", paymentResult.clientSecret);
-
       // Create the reservation with the payment intent ID
       const reservation = this.reservationRepository.create({
         reservationStatus: reservStatus,
@@ -108,7 +106,6 @@ export class ReservationService {
       });
 
       await this.reservationRepository.save(reservation);
-
 
       // Update available seats in the trip
       trip.availableSeats -= reservationData.seatsReserved;

@@ -40,7 +40,6 @@ export class StripeService {
         departure_time: departureTime,
       },
     });
-    console.log(paymentIntent.client_secret);
 
     return {
       clientSecret: paymentIntent.client_secret,
