@@ -16,7 +16,7 @@ import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
 import TestStripe from "./pages/TestStripe.tsx";
-
+import ReservationHistoricPage from "./pages/profil/ReservationHistoricPage.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -70,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/teststripe",
         element: <TestStripe />,
+      },
+      {
+        path: "/reservationhistoric",
+        element: <ReservationHistoricPage />,
       },
     ],
   },
