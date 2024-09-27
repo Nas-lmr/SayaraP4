@@ -8,9 +8,9 @@ import {
 } from '@nestjs/websockets';
 import {Server, Socket} from 'socket.io';
 import {JwtService} from "@nestjs/jwt";
-import {RedisService} from "./redis.service";
+import {RedisService} from "../services/redis.service";
 import {Inject} from "@nestjs/common";
-import {WebsocketService} from "./websocket.service";
+import {WebsocketService} from "../services/websocket.service";
 
 interface Payload {
   roomId: string;
@@ -61,8 +61,6 @@ export class MessageGateway
       if (id === room.owner_id || room.traveler_id === id) {
         client.join(roomId);
         return this.server.emit('joinRoom', room);
-      } else {
-        return client.emit('error', 'Unauthorized');
       }
   }
   @SubscribeMessage('sendMessage')

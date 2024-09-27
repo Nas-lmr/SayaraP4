@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WebsocketController } from './websocket.controller';
+import { WebsocketController } from '../../controllers/websocket.controller';
 
 describe('WebsocketController', () => {
   let controller: WebsocketController;

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MessageGateway } from './message.gateway';
+import { MessageGateway } from '../../gateway/message.gateway';
 
 describe('WebsocketGateway', () => {
   let gateway: MessageGateway;
