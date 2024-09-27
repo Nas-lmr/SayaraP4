@@ -93,7 +93,10 @@ export default function TestPaymentIntent() {
 
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <PaymentForm clientSecret={clientSecret} />{" "}
+          <PaymentForm
+            clientSecret={clientSecret}
+            seatsReserved={seatsReserved}
+          />{" "}
         </Elements>
       )}
     </>

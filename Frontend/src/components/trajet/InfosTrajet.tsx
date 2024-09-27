@@ -2,7 +2,15 @@ import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
 import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
-import { Box, Button, Card, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import { IStripeProduct } from "../../interfaces/services/IStripeProduct";
 import {
   calculateArrivalDateTime,
@@ -17,7 +25,7 @@ export default function InfosTrajet({
   setSeatsReserved,
   trajet,
 }: IStripeProduct) {
-  const handleSeatsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSeatsChange = (e: SelectChangeEvent<number>) => {
     const newSeats = Number(e.target.value);
     // Valider l'entrée (par exemple, non-négatif, ne pas dépasser les places disponibles)
     if (newSeats >= 1 && newSeats <= (trajet?.availableSeats ?? 1)) {
@@ -26,7 +34,7 @@ export default function InfosTrajet({
       // Optionnel : gérer les entrées non valides
     }
   };
-
+  const availableSeats = trajet?.availableSeats ?? 0;
   const departureDateTime = new Date(trajet?.departureDateTime ?? "");
   const durationInSeconds = trajet?.duration; // La durée est en secondes
 
@@ -46,12 +54,11 @@ export default function InfosTrajet({
         height: "100vh",
         width: "100vw",
         pt: "4rem",
-        pb: "3rem",
+        pb: "4rem",
         backgroundColor: "#F4F4F4",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-around",
       }}
     >
       <Typography
@@ -61,24 +68,26 @@ export default function InfosTrajet({
           color: "#321F47",
           fontFamily: "Montserrat",
           fontWeight: 400,
+          pt: "1rem",
         }}
       >
         Infos du trajet
       </Typography>
       <Box
         sx={{
-          width: "100%",
-          height: "35%",
+          width: { xs: "100%", sm: "35rem", md: "45rem" },
+          height: { xs: "45%", md: "70%" },
+          pt: { md: "1rem" },
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
         }}
       >
         <Card
           elevation={0}
           sx={{
-            height: { xs: "50%", sm: "15vh", md: "18vh", lg: "20vh" },
-            width: { xs: "100%", sm: "80%", md: "70%", lg: "60%" },
+            height: { xs: "30%", sm: "15vh", md: "18vh", lg: "20vh" },
+            width: "100%",
             display: "flex",
             p: "0.5rem",
           }}
@@ -210,7 +219,7 @@ export default function InfosTrajet({
         <Box
           sx={{
             width: "100%",
-            height: "20%",
+            height: "10%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -247,7 +256,7 @@ export default function InfosTrajet({
         <Box
           sx={{
             width: "100%",
-            height: "20%",
+            height: "10%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -279,34 +288,90 @@ export default function InfosTrajet({
             }}
           />
         </Box>
+        <Box
+          sx={{
+            width: "100%",
+            height: "15%",
+            backgroundColor: "white",
+            display: "flex",
+            alignItems: "center",
+            pl: "1rem",
+            pr: "1rem",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { xs: "1rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 400,
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            Choisis un nombre de places
+            <Select
+              variant="outlined"
+              value={seatsReserved}
+              onChange={handleSeatsChange}
+              sx={{
+                height: "4vh",
+                width: { xs: "20%", sm: "10%" },
+                display: "flex",
+                justifyContent: "center",
+                "&:before": {
+                  borderBottomColor: "#321F47",
+                },
+                "&:after": {
+                  borderBottomColor: "#321F47",
+                },
+                "& .MuiSelect-select": {
+                  color: "#321F47",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#321F47", // Couleur de la bordure par défaut
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#321F47", // Couleur de la bordure au hover
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#321F47", // Couleur de la bordure quand le champ est focus
+                },
+              }}
+            >
+              {Array.from({ length: availableSeats }, (_, index) => (
+                <MenuItem key={index + 1} value={index + 1}>
+                  {index + 1}
+                </MenuItem>
+              ))}
+            </Select>
+          </Typography>
+        </Box>
       </Box>
       <Box
         sx={{
-          width: "100%",
-          height: "35%",
+          width: { xs: "100%", sm: "35rem", md: "45rem" },
+          height: { xs: "35%", sm: "40%", md: "50%" },
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           pl: "1rem",
           pr: "1rem",
+          mt: { lg: "0.5rem" },
           backgroundColor: "white",
         }}
-      >
-        <TextField
-          label="Nombre de places réservées"
-          type="number"
-          value={seatsReserved}
-          onChange={handleSeatsChange}
-          sx={{ marginBottom: 2 }}
-        />
-      </Box>
+      ></Box>
       <Button
         variant="contained"
         onClick={onclick}
         sx={{
           width: { xs: "20rem", md: "30rem" },
           height: { xs: "5vh" },
+          mt: "0.5rem",
           backgroundColor: "#321F47",
+          color: "#FDC55E",
           fontFamily: "Montserrat",
           borderRadius: "0.5rem",
         }}

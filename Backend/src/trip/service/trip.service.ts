@@ -25,6 +25,7 @@ export class TripService {
   ): Promise<{ status: number; message: string }> {
     try {
       const owner = await this.userRepository.findOneBy({ id: tripData.owner });
+
       if (!owner) {
         return { status: 400, message: "Owner not found." };
       }
