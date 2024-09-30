@@ -3,6 +3,7 @@ import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneR
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
+import NavDesktop from "./NavDesktop";
 import logo from "/assets/images/Sayara-logo.png";
 
 export default function Header() {
@@ -25,7 +26,7 @@ export default function Header() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "flex-start",
+            alignItems: { xs: "flex-start", md: "center" },
             height: "100%",
           }}
         >
@@ -50,7 +51,7 @@ export default function Header() {
                   : "",
               borderRadius:
                 pathname === "/notifications" ? activeStyle.borderRadius : "",
-              display: !userData ? "none" : "",
+              display: { xs: !userData ? "none" : "", md: "none" },
             }}
           >
             <NotificationsNoneRoundedIcon
@@ -72,6 +73,7 @@ export default function Header() {
                  <NotificationsActiveRoundedIcon/>
             </Badge> */}
           </Button>
+          <NavDesktop />
         </Toolbar>
       </AppBar>
     </Box>
