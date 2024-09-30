@@ -12,32 +12,21 @@ export class StripeService {
     });
   }
 
-  async createAndConfirmPayment(
-    paymentRequestBody: PaymentRequestBodyDto,
-    paymentMethodId: string
-  ): Promise<any> {
-
-
+  async createPayment(paymentRequestBody: PaymentRequestBodyDto): Promise<any> {
     let sumAmount = 0;
 
-    paymentRequestBody.products.forEach(
-      (product: { price: number; quantity: number }) => {
-        sumAmount += product.price * product.quantity;
-      }
-    );
+    paymentRequestBody.products.forEach((product) => {
+      sumAmount += product.price * product.quantity;
+    });
 
+    // Create or retrieve a customer in Stripe
     const customer = await this.stripe.customers.create({
       name: paymentRequestBody.customer.name,
       email: paymentRequestBody.customer.email,
     });
+    const departureTime = paymentRequestBody.products[0].date.toISOString();
 
-    // Attach the payment method to the customer
-    await this.stripe.paymentMethods.attach(paymentMethodId, {
-      customer: customer.id,
-    });
-
-
-    // Create the Payment Intent
+    // Create a Payment Intent and associate it with the customer
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: Math.round(sumAmount * 100), // Convert to cents
       currency: paymentRequestBody.currency,
@@ -48,24 +37,22 @@ export class StripeService {
         customer_email: paymentRequestBody.customer.email,
         product_1_name: paymentRequestBody.products[0].title,
         product_1_quantity: paymentRequestBody.products[0].quantity,
+        departure_time: departureTime,
       },
     });
 
-    //  Confirm the payment
-    const confirmedPaymentIntent = await this.stripe.paymentIntents.confirm(
-      paymentIntent.id,
-      {
-        payment_method: paymentMethodId,
-      }
-    );
-
     return {
-      client_secret: confirmedPaymentIntent.client_secret,
-      paymentIntent: confirmedPaymentIntent,
+      clientSecret: paymentIntent.client_secret,
+      paymentIntent: paymentIntent,
     };
   }
 
-  // refund payment method
+  async getPaymentSecret(paymentIntentId: string): Promise<any> {
+    const paymentIntent =
+      await this.stripe.paymentIntents.retrieve(paymentIntentId);
+    return paymentIntent.client_secret;
+  }
+
   async refundPayment(paymentIntentId: string): Promise<any> {
     try {
       const refund = await this.stripe.refunds.create({
@@ -77,18 +64,17 @@ export class StripeService {
     }
   }
 
-  
-  // async confirmPayment(
-  //   paymentIntentId: string,
-  //   paymentMethodId: string
-  // ): Promise<any> {
-  //   const confirmedPaymentIntent = await this.stripe.paymentIntents.confirm(
-  //     paymentIntentId,
-  //     {
-  //       payment_method: paymentMethodId,
-  //     }
-  //   );
+  async confirmPayment(
+    paymentIntentId: string,
+    paymentMethodId: string
+  ): Promise<any> {
+    const confirmedPaymentIntent = await this.stripe.paymentIntents.confirm(
+      paymentIntentId,
+      {
+        payment_method: paymentMethodId,
+      }
+    );
 
-  //   return confirmedPaymentIntent;
-  // }
+    return confirmedPaymentIntent;
+  }
 }
