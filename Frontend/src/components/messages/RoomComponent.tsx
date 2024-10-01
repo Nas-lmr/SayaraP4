@@ -1,35 +1,33 @@
-import { Box, List, ListItem, Typography } from "@mui/material";
+import { Box, List, ListItem } from "@mui/material";
 import {useEffect} from "react";
 
-function RoomComponent({room, messages, myRef, myRefObject}: {room: any; messages: any[], myRef: any, myRefObject: any}) {
+function RoomComponent({messages, myRef}: {messages: any[], myRef: any}) {
 
   useEffect(() => {
-    myRef.current?.scrollIntoView(myRefObject);
+    myRef.current?.scrollIntoView({behavior: 'smooth'});
   }, [messages]);
   return (
     <Box>
-        <Typography variant="h4" align='center'>Room{room.roomId}</Typography>
-        <Box mt={2}>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            height: '25vh',
-            overflowY: 'scroll'
-          }}>
-            <Box>
-
-              {
-                messages.map((message, index) => (
-                  <List key={index}>
+      <Box mt={2}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          height: '25vh',
+          overflowY: 'scroll'
+        }}>
+          <Box>
+            {
+              messages !== undefined ? messages.filter(message => message !== undefined).map((message: any, index: number) => (
+                   <List key={index}>
                     <ListItem>{message.senders} : {message.message}</ListItem>
                     <div ref={myRef} id="my-section"></div>
                   </List>
-                ))
-              }
-            </Box>
+              )) : null
+            }
           </Box>
         </Box>
+      </Box>
     </Box>
   );
 }

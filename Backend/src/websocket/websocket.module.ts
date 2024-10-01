@@ -11,7 +11,6 @@ import {ReservationEntity} from "../reservation/entity/reservation.entity";
 import {DataInsertedMicroService} from "./services/microServices/DataInsertedMicroService";
 import {QueryWebSocketMicroService} from "./services/microServices/QueryWebSocketMicroService.service";
 import {AbstractWebSocketService} from "./abstract-websocket.service";
-import {WebsocketOwnerController} from "./controllers/websocket-owner.controller";
 
 @Module({
   imports: [
@@ -24,7 +23,7 @@ import {WebsocketOwnerController} from "./controllers/websocket-owner.controller
     secret: 'your-secret-key', // Vous devez remplacer par votre clé secrète
     signOptions: { expiresIn: '45h' },
   })],
-  controllers: [WebsocketController, WebsocketOwnerController],
+  controllers: [WebsocketController],
   providers: [
     MessageGateway,
     AbstractWebSocketService,

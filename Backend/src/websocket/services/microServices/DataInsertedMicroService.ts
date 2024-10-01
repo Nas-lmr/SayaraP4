@@ -7,9 +7,8 @@ export class DataInsertedMicroService {
   verifyRoomNotIncludedData(reservation: any, rooms: any[]) {
     return !rooms.includes({
       roomId: reservation['reservation_id'],
-      owner_id: reservation['users_id'],
+      users: [reservation['users_id'], reservation['passenger_id']],
       // fill in the traveler_id with a user ID
-      traveler_id: reservation['passenger_id'],
       name: reservation['users_username'] + '-' + reservation['firstCity_name'] + '_' +
         reservation['secondCity_name'],
       messages: []
@@ -27,7 +26,7 @@ export class DataInsertedMicroService {
       roomId: reservation['reservation_id'],
       owner_id: reservation['users_id'],
       // fill in the traveler_id with a user ID
-      traveler_id: reservation['passenger_id'],
+      users: [reservation['users_id'], reservation['passenger_id']],
       name: reservation['users_username'] + '-' + reservation['firstCity_name'] + '_' +
         reservation['secondCity_name'],
       archived: false,

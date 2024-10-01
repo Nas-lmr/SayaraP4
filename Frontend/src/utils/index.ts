@@ -62,3 +62,4 @@ export const getRoute = async (
 
   return { routeCoordinate, distance, duration };
 };
+export const replaceRoomName = (name: string) => name.split('-')[1].replace('_', ' ');

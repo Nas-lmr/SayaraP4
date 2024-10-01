@@ -6,11 +6,11 @@ import {
   WebSocketGateway,
   WebSocketServer
 } from '@nestjs/websockets';
-import {Server, Socket} from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import { RedisService } from "../services/redis.service";
+import { Inject } from "@nestjs/common";
+import { WebsocketService } from "../services/websocket.service";
 import {JwtService} from "@nestjs/jwt";
-import {RedisService} from "../services/redis.service";
-import {Inject} from "@nestjs/common";
-import {WebsocketService} from "../services/websocket.service";
 
 interface Payload {
   roomId: string;
@@ -25,13 +25,14 @@ export class MessageGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
-    @Inject() private jwtService: JwtService,
     @Inject() private roomsService: WebsocketService,
+    @Inject() private jwtService: JwtService,
     @Inject() private redisService: RedisService
-  ){ }
+  ) { }
 
   @WebSocketServer()
   server: Server;
+
   afterInit() {
     console.log('WebSocket server initialized');
   }
@@ -49,38 +50,90 @@ export class MessageGateway
     @MessageBody() data: { roomId: string; token: string },
     @ConnectedSocket() client: Socket,
   ) {
-    const {roomId, token} = data;
-    this.roomsService.rooms;
+    const { roomId, token } = data;
+    const decoded = this.jwtService.verify(token, { secret: 'your-secret-key' });
     const room = await this.roomsService.getRoom(parseInt(roomId));
 
     if (!room) {
       return client.emit('error', 'Room not found');
     }
-    const decoded = this.jwtService.verify(token, {secret: 'your-secret-key'});
-      const id = decoded.id;
-      if (id === room.owner_id || room.traveler_id === id) {
-        client.join(roomId);
+
+    try {
+      if (room.users.includes(decoded.id)) {
+        client.join(room);
         return this.server.emit('joinRoom', room);
+      } else {
+        return client.emit('error', 'Unauthorized access');
       }
+    } catch (error) {
+      return client.emit('error', 'Invalid token');
+    }
   }
+
   @SubscribeMessage('sendMessage')
   async handleMessage(
-    @MessageBody() data: Payload
+    @MessageBody() data: Payload,
+    @ConnectedSocket() client: Socket,
   ) {
-    let decoded = this.jwtService.verify(data.token);
-    await this.redisService.client.lPush(
-      `roomId: ${data.roomId}`,
-      `${decoded.username}: ${data.message}`
-    );
-    const { roomId } = data;
-    this.roomsService.rooms;
-    const room = await this.roomsService.getRoom(parseInt(roomId));
+    const { roomId, token, message } = data;
 
-    this.roomsService.addMessage(roomId, {senders: decoded.username, message: data.message});
+    try {
+      const decoded = this.jwtService.verify(token, { secret: 'your-secret-key' });
 
-    if (!room) {
-      return this.server.emit('error', 'Room not found');
+      const room = await this.roomsService.getRoom(parseInt(roomId));
+
+      if (!room) {
+        return client.emit('error', 'Room not found');
+      }
+
+      if (room.users.includes(decoded.id)) {
+        const newMessage = {
+          senders: decoded.username,
+          message: message,
+        };
+        // Sauvegarder le message dans Redis ou une autre base de données
+        await this.redisService.client.lPush(
+          `roomId:${roomId}`,
+          JSON.stringify(newMessage)
+        );
+
+        // Add message to room
+        this.roomsService.addMessage(roomId, newMessage);
+
+        // Émettre le message à tous les membres de la salle
+        this.server.to(room).emit('newMessage', {...room});
+      } else {
+        return client.emit('error', 'Unauthorized access');
+      }
+    } catch (error) {
+      return client.emit('error', []);
     }
-    this.server.to(roomId).emit('newMessage', room);
+  }
+
+  @SubscribeMessage('getMessages')
+  async handleGetMessages(
+    @MessageBody() data: { roomId: string; token: string },
+    @ConnectedSocket() client: Socket,
+  ) {
+    const { roomId, token } = data;
+
+    try {
+      const decoded = this.jwtService.verify(token, { secret: 'your-secret-key' });
+      const userId = decoded.id;
+
+      const room = await this.roomsService.getRoom(parseInt(roomId));
+
+      if (!room) {
+        return client.emit('error', 'Room not found');
+      }
+      if (room.users.includes(userId)) {
+        await this.redisService.client.lRange(`roomId:${room.roomId}`, 0, -1);
+        client.emit('receiveMessages', room);
+      } else {
+        return client.emit('error', 'Unauthorized access');
+      }
+    } catch (error) {
+      return client.emit('error', 'Invalid token');
+    }
   }
 }

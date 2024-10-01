@@ -2,13 +2,15 @@ import {Inject} from "@nestjs/common";
 import {DataInsertedMicroService} from "./services/microServices/DataInsertedMicroService";
 import {QueryWebSocketMicroService} from "./services/microServices/QueryWebSocketMicroService.service";
 import {rowDataRoomToArray} from "./utils/websocket.util";
+import {JwtService} from "@nestjs/jwt";
 
 export class AbstractWebSocketService {
-  protected _rooms = [];
+  protected _rooms: any = [];
   protected copyRoom = [];
 
   constructor(
     @Inject() protected readonly dataInsertedMicroService: DataInsertedMicroService,
+    @Inject() protected readonly jwtService: JwtService,
     @Inject() protected readonly queryWebSocketMicroService: QueryWebSocketMicroService
   ) {}
 

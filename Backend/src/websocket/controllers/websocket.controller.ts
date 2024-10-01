@@ -1,4 +1,4 @@
-import {Controller, Delete, Get, HttpStatus, Inject, Param, Res} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpStatus, Inject, Param, Post, Res} from '@nestjs/common';
 import {WebsocketService} from "../services/websocket.service";
 import {MessageGateway} from "../gateway/message.gateway";
 import {RedisService} from "../services/redis.service";
@@ -28,7 +28,10 @@ export class WebsocketController {
       return res.status(HttpStatus.NOT_FOUND).json({status: res.statusCode, message: 'Room not found'});
     }
   }
-
+  @Post('userId')
+  async findUser(@Body() data: {token: string}) {
+    return this.websocketService.findUser(data);
+  }
   @Delete(':id')
   async deleteRoom(@Param('id') id: string, @Res() res: Response) {
     //TODO verify ID
