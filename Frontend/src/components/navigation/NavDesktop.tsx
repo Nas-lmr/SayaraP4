@@ -1,14 +1,14 @@
 import { AccountCircle, ExpandLess, ExpandMore } from "@mui/icons-material";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import { Box, IconButton, Typography } from "@mui/material";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
 import MenuDesktop from "./MenuDesktop";
 
 export default function NavDesktop() {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleClickProfile = (event) => {
+  const handleClickProfile = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseProfile = () => {
@@ -46,6 +46,7 @@ export default function NavDesktop() {
         </Typography>
       </NavLink>
       <IconButton
+        disableRipple
         onClick={handleClickProfile}
         aria-label="profile"
         edge="start"
@@ -53,7 +54,6 @@ export default function NavDesktop() {
           pr: 0,
           height: "3rem",
           width: "5rem",
-          // display: isLargeScreen || isMediumScreen ? "none" : "",
           display: { xs: "none", md: "flex" },
         }}
       >
