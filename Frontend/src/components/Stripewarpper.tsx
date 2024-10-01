@@ -14,7 +14,7 @@ export default function TestPaymentIntent() {
   const [errorMessage, setErrorMessage] = useState("");
   const [seatsReserved, setSeatsReserved] = useState<number>(1);
   const { decodedToken } = useUserContext();
-  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null); // Stockage des données du trajet
+  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null); 
 
   const { id } = useParams<{ id: string | undefined }>();
 
@@ -29,7 +29,6 @@ export default function TestPaymentIntent() {
       try {
         const response = await trajetInfo({ id: id ?? "" });
         setTrajet(response.data); // Récupération des données du trajet
-        console.log(response.data, "RESPONSE");
       } catch (error) {
         console.error("Erreur lors de la récupération du trajet :", error);
       }
@@ -39,7 +38,7 @@ export default function TestPaymentIntent() {
 
   const createReservationAndFetchClientSecret = async () => {
     setIsLoading(true);
-    setErrorMessage(""); // Réinitialiser les erreurs
+    setErrorMessage(""); 
     try {
       const response = await fetch("http://localhost:3310/reservation", {
         method: "POST",
@@ -54,7 +53,7 @@ export default function TestPaymentIntent() {
       const data = await response.json();
 
       if (data.client_secret) {
-        setClientSecret(data.client_secret); // Récupérer le client_secret
+        setClientSecret(data.client_secret); 
       } else {
         setErrorMessage(
           data.message ||
