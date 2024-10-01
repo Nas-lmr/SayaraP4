@@ -33,7 +33,7 @@ export default function PaymentForm({
   const elements = useElements();
   const [isProcessing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null);
+  const [trajet, setTrajet] = useState<IInfoTrajetId|null >(null);
   const { id } = useParams<{ id: string | undefined }>();
 
   const departureDateTime = new Date(trajet?.departureDateTime ?? "");
@@ -84,25 +84,17 @@ export default function PaymentForm({
       const paymentResult = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:5173", 
+          return_url: "http://localhost:5173/reservation/1/infos-trajet",
         },
-        clientSecret, 
+        clientSecret,
       });
 
       if (paymentResult.error) {
         setError(paymentResult.error.message || "An unknown error occurred.");
-      } else if (paymentResult.paymentIntent) {
-        if (paymentResult.paymentIntent.status === "succeeded") {
-          alert("Payment successful!");
-        } else {
-          setError("Payment did not succeed.");
-        }
       }
-
-      console.log(paymentResult, "Payment result");
     } catch (error) {
       setError("An error occurred during payment.");
-      console.error(error)
+      console.error(error);
     } finally {
       setProcessing(false);
     }
