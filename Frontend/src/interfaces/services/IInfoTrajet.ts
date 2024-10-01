@@ -10,7 +10,7 @@ export interface IInfoTrajetId {
   destinationCity: {
     name: string;
   };
-  pricePerSeat: number;
+  pricePerSeat: number ;
   distance: number;
   duration: number;
   departureDateTime: string;
