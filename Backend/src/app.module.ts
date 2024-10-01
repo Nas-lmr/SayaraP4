@@ -10,6 +10,7 @@ import { TripModule } from "./trip/trip.module";
 import { AuthModule } from "./auth/auth.module";
 import { ReservationModule } from "./reservation/reservation.module";
 import { StripeModule } from "./stripe/stripe.module";
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { StripeModule } from "./stripe/stripe.module";
     AuthModule,
     ReservationModule,
     StripeModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
