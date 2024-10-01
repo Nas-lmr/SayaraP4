@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 import { fetchOwnerTripReservationHistoric } from "../../services/user/OwnerTrip";
 import OwnerReservationHistoricCard from "../cards/OwnerReservationHistoricCard";
@@ -9,10 +10,11 @@ export default function OwnerReservationHistoricContainer() {
   const [error, setError] = useState(null);
   const { decodedToken } = useUserContext();
   const id = decodedToken?.id;
+  const tripId = useParams();
 
   useEffect(() => {
-    if (id) {
-      fetchOwnerTripReservationHistoric(id)
+    if (id && tripId) {
+      fetchOwnerTripReservationHistoric(id, tripId.id)
         .then((response) => {
           if (response.success) {
             setReservations(response.data);
@@ -25,7 +27,7 @@ export default function OwnerReservationHistoricContainer() {
           console.error(err);
         });
     }
-  }, [id]);
+  }, [id, tripId]);
 
   return (
     <Box
@@ -54,7 +56,7 @@ export default function OwnerReservationHistoricContainer() {
           fontFamily: "Montserrat",
         }}
       >
-        Historique de mes trajets
+        Réservations du trajet
       </Typography>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {reservations.length > 0 ? (

@@ -16,7 +16,6 @@ export default function OwnerTripContainer() {
         .then((response) => {
           if (response.success) {
             setInformations(response.data);
-            console.log(response.data, "INFORMATION");
           } else {
             setError(response.error);
           }

@@ -101,7 +101,7 @@ export class TripOwnerService {
     }
   }
 
-  async getTripsByOwnerId(userId: number): Promise<any[]> {
+  async getTripsByOwnerId(userId: number): Promise<TripEntity[]> {
     return await this.tripRepository
       .createQueryBuilder("trip")
       .leftJoinAndSelect("trip.owner", "owner")
@@ -118,7 +118,7 @@ export class TripOwnerService {
         "trip.distance",
         "trip.duration",
       ])
-      .where("trip.owner = :userId", { userId })
+      .where("owner.id = :userId", { userId })
       .getMany(); // Utiliser getMany() pour obtenir plusieurs voyages
   }
 }

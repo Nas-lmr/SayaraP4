@@ -84,7 +84,7 @@ const router = createBrowserRouter([
         element: <OwnerTripHistoricPage />,
       },
       {
-        path: "/trajet/mes-trajets/historique",
+        path: "/trajet/mes-trajets/historique/:id",
         element: <OwnerTripReservationHistoricPage />,
       },
     ],

@@ -9,6 +9,7 @@ import {
   formatDuration,
   formatTime,
 } from "../../services/common/ConversionValue";
+import { useNavigate } from "react-router-dom";
 
 interface Trip {
   duration: string;
@@ -39,6 +40,12 @@ export default function OwnerTripCard({
   );
   const ArrivalTimeFormated = formatTime(ArrivalTime);
 
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/trajet/mes-trajets/historique/${informations.id}`); // Rediriger vers la page avec l'ID du voyage
+  };
+
   return (
     <Card
       sx={{
@@ -50,6 +57,7 @@ export default function OwnerTripCard({
       }}
     >
       <CardActionArea
+        onClick={handleCardClick}
         sx={{
           height: "70%",
           width: "100%",

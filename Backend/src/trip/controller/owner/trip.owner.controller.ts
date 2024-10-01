@@ -49,12 +49,13 @@ export class TripOwnerController {
     }
   }
 
-  @Get("/owner/:id")
+  @Get(":id")
   async getTripsByOwnerId(@Param("id") id: number) {
     try {
       const data = await this.ownerTrips.getTripsByOwnerId(id);
 
-      if (data.length === 0) {
+      // Vérifiez si data est défini et s'il a des éléments
+      if (!data || data.length === 0) {
         return {
           statusCode: HttpStatus.NOT_FOUND,
           success: false,
