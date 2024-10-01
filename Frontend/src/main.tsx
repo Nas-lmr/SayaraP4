@@ -9,14 +9,16 @@ import BookingPage from "./pages/BookingPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import NotificationPage from "./pages/NotificationPage.tsx";
 import LoginPage from "./pages/profil/LoginPage.tsx";
+import OwnerTripHistoricPage from "./pages/profil/OwnerTripHistoricPage.tsx";
 import RegisterPage from "./pages/profil/RegisterPage.tsx";
+import ReservationHistoricPage from "./pages/profil/ReservationHistoricPage.tsx";
 import ProfilPage from "./pages/ProfilPage.tsx";
 import ConfirmationTrajetPage from "./pages/reservations/ConfirmationTrajetPage.tsx";
 import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
-import ReservationHistoricPage from "./pages/profil/ReservationHistoricPage.tsx";
+import OwnerTripReservationHistoricPage from "./pages/profil/OwnerTripReservationHistoricPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -74,8 +76,16 @@ const router = createBrowserRouter([
         element: <TestPaymentIntent />,
       },
       {
-        path: "/reservationhistoric",
+        path: "/reservation/historique",
         element: <ReservationHistoricPage />,
+      },
+      {
+        path: "/trajet/mes-trajets",
+        element: <OwnerTripHistoricPage />,
+      },
+      {
+        path: "/trajet/mes-trajets/historique",
+        element: <OwnerTripReservationHistoricPage />,
       },
     ],
   },

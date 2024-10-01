@@ -1,21 +1,22 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
-import { fetchPassengerReservationHistoric } from "../../services/user/ReservationHistoric";
-import HistoricReservationCard from "../cards/HistoricReservationPassengerCard";
+import { fetchOwnerTrip } from "../../services/user/OwnerTrip";
+import OwnerTripCard from "../cards/OwnerTripCard";
 
-export default function PassengerHistoricContainer() {
-  const [reservations, setReservations] = useState([]);
+export default function OwnerTripContainer() {
+  const [informations, setInformations] = useState([]);
   const [error, setError] = useState(null);
   const { decodedToken } = useUserContext();
   const id = decodedToken?.id;
 
   useEffect(() => {
     if (id) {
-      fetchPassengerReservationHistoric(id)
+      fetchOwnerTrip(id)
         .then((response) => {
           if (response.success) {
-            setReservations(response.data);
+            setInformations(response.data);
+            console.log(response.data, "INFORMATION");
           } else {
             setError(response.error);
           }
@@ -53,26 +54,26 @@ export default function PassengerHistoricContainer() {
           fontFamily: "Montserrat",
         }}
       >
-        Historique de mes réservations
+        Historique de mes trajets
       </Typography>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {reservations.length > 0 ? (
-        reservations &&
-        reservations.map((reservation, index) => (
+      {informations.length > 0 ? (
+        informations.map((information, index) => (
           <Box
+            key={index}
             sx={{
-              height: { xs: "30%", sm: "100%", md: "40%" },
+              height: { xs: "15%", sm: "100%", md: "40%" },
               width: "100%",
               display: "flex",
               justifyContent: "center",
               mt: "1rem",
             }}
           >
-            <HistoricReservationCard key={index} reservation={reservation} />
+            <OwnerTripCard key={index} informations={information} />
           </Box>
         ))
       ) : (
-        <p>No reservations found</p>
+        <p>No trips found</p>
       )}
     </Box>
   );

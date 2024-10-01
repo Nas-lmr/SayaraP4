@@ -80,14 +80,19 @@ export default function ProfilSection() {
           />
         </NavLink>
 
-        
-        <NavLink to="/reservationhistoric" style={{ textDecoration: "none" }}>
+        <NavLink
+          to="/reservation/historique"
+          style={{ textDecoration: "none" }}
+        >
           <ProfilBtn
             label="Historique des réservations"
             onclick={() => console.log("salut")}
           />
         </NavLink>
-        <NavLink to="/" style={{ textDecoration: "none" }}>
+        <NavLink
+          to="/trajet/mes-trajets/historique"
+          style={{ textDecoration: "none" }}
+        >
           <ProfilBtn
             label="Historique des trajets"
             onclick={() => console.log("salut")}

@@ -1,5 +1,4 @@
 import { PersonRounded } from "@mui/icons-material";
-import DirectionsCarRoundedIcon from "@mui/icons-material/DirectionsCarRounded";
 import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
@@ -46,7 +45,7 @@ interface Reservation {
 interface HistoricReservationCardProps {
   reservation: Reservation;
 }
-export default function HistoricReservationCard({
+export default function OwnerReservationHistoricCard({
   reservation,
 }: HistoricReservationCardProps) {
   const duretionTime = reservation.trip.duration;
@@ -61,6 +60,7 @@ export default function HistoricReservationCard({
     parsedDurationTime
   );
   const ArrivalTimeFormated = formatTime(ArrivalTime);
+
   return (
     <Card
       sx={{
@@ -250,14 +250,17 @@ export default function HistoricReservationCard({
             fontSize: "0.9rem",
             fontFamily: "Montserrat",
             color: "#321F47",
-            fontWeight: 500,
+            fontWeight: 400,
             display: "flex",
             alignItems: "center",
             gap: "0.5rem",
           }}
         >
-          {<DirectionsCarRoundedIcon />} Conducteur:{" "}
-          {reservation.trip.ownerName}
+          Réservé par:
+          <span style={{ fontWeight: 500 }}>
+            {" "}
+            {reservation.passenger.username}
+          </span>
         </Typography>
         <Button
           endIcon={<KeyboardArrowRightRoundedIcon />}

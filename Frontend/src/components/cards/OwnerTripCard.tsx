@@ -1,17 +1,8 @@
 import { PersonRounded } from "@mui/icons-material";
-import DirectionsCarRoundedIcon from "@mui/icons-material/DirectionsCarRounded";
 import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
 import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Box, Card, CardActionArea, Typography } from "@mui/material";
 import {
   calculateArrivalDateTime,
   capitalizeFirstLetter,
@@ -19,38 +10,24 @@ import {
   formatTime,
 } from "../../services/common/ConversionValue";
 
-interface Passenger {
-  id: number;
-  username: string;
-  email: string;
-}
-
 interface Trip {
   duration: string;
   id: number;
-  ownerName: string;
-  departureCity: string;
-  destinationCity: string;
+  availableSeats: number;
+  departureCity: { name: string };
+  destinationCity: { name: string };
   pricePerSeat: number;
   departureDateTime: string;
 }
 
-interface Reservation {
-  reservationId: number;
-  passenger: Passenger;
-  trip: Trip;
-  seatsReserved: number;
-  reservationTime: string;
-}
-
 interface HistoricReservationCardProps {
-  reservation: Reservation;
+  informations: Trip;
 }
-export default function HistoricReservationCard({
-  reservation,
+export default function OwnerTripCard({
+  informations,
 }: HistoricReservationCardProps) {
-  const duretionTime = reservation.trip.duration;
-  const departureTime = new Date(reservation.trip.departureDateTime);
+  const duretionTime = informations.duration;
+  const departureTime = new Date(informations.departureDateTime);
   const parsedDurationTime =
     typeof duretionTime === "string" ? parseFloat(duretionTime) : duretionTime;
 
@@ -61,23 +38,33 @@ export default function HistoricReservationCard({
     parsedDurationTime
   );
   const ArrivalTimeFormated = formatTime(ArrivalTime);
+
   return (
     <Card
       sx={{
         height: { xs: "100%", sm: "100%", md: "17vh", lg: "20vh" },
         width: { xs: "100%", sm: "100%", md: "90%", lg: "60%" },
         mt: "1.5rem",
+        display: "flex",
+        alignItems: "center",
       }}
     >
-      <CardActionArea sx={{ height: "70%", width: "100%", display: "flex" }}>
+      <CardActionArea
+        sx={{
+          height: "70%",
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Box
           sx={{
             width: { xs: "15%", md: "20%" },
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: { sm: "center" },
-            justifyContent: "space-around",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <Typography
@@ -179,7 +166,7 @@ export default function HistoricReservationCard({
                 fontWeight: 500,
               }}
             >
-              {capitalizeFirstLetter(reservation.trip.departureCity)}
+              {capitalizeFirstLetter(informations.departureCity.name || "")}
             </Typography>
             <Typography
               sx={{
@@ -189,7 +176,7 @@ export default function HistoricReservationCard({
                 fontWeight: 500,
               }}
             >
-              {capitalizeFirstLetter(reservation.trip.destinationCity)}
+              {capitalizeFirstLetter(informations.destinationCity.name || "")}
             </Typography>
           </Box>
           <Box
@@ -202,7 +189,7 @@ export default function HistoricReservationCard({
             {" "}
             <Typography
               sx={{
-                fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                fontSize: { xs: "1.rem", sm: "1.5rem" },
                 fontFamily: "Montserrat",
                 color: "#321F47",
                 fontWeight: 500,
@@ -210,7 +197,8 @@ export default function HistoricReservationCard({
                 alignItems: "center",
               }}
             >
-              {reservation.seatsReserved} <PersonRounded />
+              {informations.availableSeats > 1 ? "Places" : "Place"}
+              {informations.availableSeats} <PersonRounded />
             </Typography>
             <Typography
               sx={{
@@ -222,7 +210,7 @@ export default function HistoricReservationCard({
                 alignItems: "center",
               }}
             >
-              {reservation.trip.pricePerSeat * reservation.seatsReserved}
+              {informations.pricePerSeat}
               <EuroRoundedIcon
                 sx={{
                   fontSize: "1rem",
@@ -233,48 +221,6 @@ export default function HistoricReservationCard({
           </Box>
         </Box>
       </CardActionArea>
-      <Divider />
-      <Box
-        sx={{
-          pl: "0.5rem",
-          pr: "0.5rem",
-          height: "30%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography
-          sx={{
-            width: "70%",
-            fontSize: "0.9rem",
-            fontFamily: "Montserrat",
-            color: "#321F47",
-            fontWeight: 500,
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          {<DirectionsCarRoundedIcon />} Conducteur:{" "}
-          {reservation.trip.ownerName}
-        </Typography>
-        <Button
-          endIcon={<KeyboardArrowRightRoundedIcon />}
-          sx={{
-            width: { xs: "35%", sm: "25%", md: "20%" },
-            height: "100%",
-            p: 0,
-            fontSize: "0.9rem",
-            fontFamily: "Montserrat",
-            color: "#321F47",
-            textTransform: "none",
-            fontWeight: 400,
-          }}
-        >
-          Voir profil
-        </Button>
-      </Box>
     </Card>
   );
 }

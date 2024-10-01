@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
-import { fetchPassengerReservationHistoric } from "../../services/user/ReservationHistoric";
-import HistoricReservationCard from "../cards/HistoricReservationPassengerCard";
+import { fetchOwnerTripReservationHistoric } from "../../services/user/OwnerTrip";
+import OwnerReservationHistoricCard from "../cards/OwnerReservationHistoricCard";
 
-export default function PassengerHistoricContainer() {
+export default function OwnerReservationHistoricContainer() {
   const [reservations, setReservations] = useState([]);
   const [error, setError] = useState(null);
   const { decodedToken } = useUserContext();
@@ -12,10 +12,11 @@ export default function PassengerHistoricContainer() {
 
   useEffect(() => {
     if (id) {
-      fetchPassengerReservationHistoric(id)
+      fetchOwnerTripReservationHistoric(id)
         .then((response) => {
           if (response.success) {
             setReservations(response.data);
+            console.log(response.data, "RESERVATION");
           } else {
             setError(response.error);
           }
@@ -53,13 +54,13 @@ export default function PassengerHistoricContainer() {
           fontFamily: "Montserrat",
         }}
       >
-        Historique de mes réservations
+        Historique de mes trajets
       </Typography>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {reservations.length > 0 ? (
-        reservations &&
         reservations.map((reservation, index) => (
           <Box
+            key={index}
             sx={{
               height: { xs: "30%", sm: "100%", md: "40%" },
               width: "100%",
@@ -68,7 +69,10 @@ export default function PassengerHistoricContainer() {
               mt: "1rem",
             }}
           >
-            <HistoricReservationCard key={index} reservation={reservation} />
+            <OwnerReservationHistoricCard
+              key={index}
+              reservation={reservation}
+            />
           </Box>
         ))
       ) : (

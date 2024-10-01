@@ -44,7 +44,11 @@ export default function BottomNavbar() {
         <BottomNavigationAction
           component={NavLink}
           to="/"
-          label="Accueil"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Accueil
+            </span>
+          }
           icon={<HomeRoundedIcon fontSize="large" />}
           sx={{
             minWidth: 50,
@@ -59,9 +63,15 @@ export default function BottomNavbar() {
         <BottomNavigationAction
           component={NavLink}
           to="/trajet"
-          label="Trajets"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Trajets
+            </span>
+          }
           icon={<CalendarMonthRoundedIcon fontSize="large" />}
           sx={{
+            fontFamily: "Montserrat",
+            fontWeight: 500,
             minWidth: 50,
             maxWidth: 70,
             color:
@@ -93,7 +103,11 @@ export default function BottomNavbar() {
         <BottomNavigationAction
           component={NavLink}
           to="/messagerie"
-          label="Messages"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Messages
+            </span>
+          }
           icon={
             <Badge
               variant="dot"
@@ -119,7 +133,11 @@ export default function BottomNavbar() {
         <BottomNavigationAction
           component={NavLink}
           to="/profil"
-          label="Profil"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Profil
+            </span>
+          }
           icon={<PersonRoundedIcon fontSize="large" />}
           sx={{
             minWidth: 50,

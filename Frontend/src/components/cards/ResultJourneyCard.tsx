@@ -48,7 +48,10 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
         to={`/reservation/${trajet.id}/infos-trajet`}
         style={{ textDecoration: "none" }}
       >
-        <CardActionArea sx={{ height: "70%", width: "100%", display: "flex" }}>
+        <CardActionArea
+          disableRipple
+          sx={{ height: "70%", width: "100%", display: "flex" }}
+        >
           <Box
             sx={{
               width: { xs: "15%", md: "10%" },
