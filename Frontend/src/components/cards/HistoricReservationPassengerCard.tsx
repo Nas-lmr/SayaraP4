@@ -16,6 +16,7 @@ import {
   formatDuration,
   calculateArrivalDateTime,
   formatTime,
+  capitalizeFirstLetter
 } from "../../services/common/ConversionValue";
 
 
@@ -54,7 +55,6 @@ export default function HistoricReservationCard({
   const parsedDurationTime =
     typeof duretionTime === "string" ? parseFloat(duretionTime) : duretionTime;
 
-  console.log(reservation, "TTTTTTTTTTTTTTTTT");
 
   const formattedDuretionTime = formatDuration(parsedDurationTime);
   const formattedDepartureTime = formatTime(departureTime);
@@ -66,8 +66,8 @@ const ArrivalTimeFormated = formatTime(ArrivalTime)
   return (
     <Card
       sx={{
-        height: { xs: "13vh", sm: "15vh", md: "18vh", lg: "20vh" },
-        width: { xs: "90%", sm: "80%", md: "70%", lg: "60%" },
+        height: { xs: "100%", sm: "100%", md: "17vh", lg: "20vh" },
+        width: { xs: "100%", sm: "100%", md: "90%", lg: "60%" },
         mt:"1.5rem", 
       
       }}
@@ -182,7 +182,7 @@ const ArrivalTimeFormated = formatTime(ArrivalTime)
                 fontWeight: 500,
               }}
             >
-              {reservation.trip.departureCity}
+              { capitalizeFirstLetter(reservation.trip.departureCity)}
             </Typography>
             <Typography
               sx={{
@@ -192,7 +192,7 @@ const ArrivalTimeFormated = formatTime(ArrivalTime)
                 fontWeight: 500,
               }}
             >
-              {reservation.trip.destinationCity}
+              {capitalizeFirstLetter(reservation.trip.destinationCity) }
             </Typography>
           </Box>
           <Box

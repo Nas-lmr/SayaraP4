@@ -33,7 +33,7 @@ export default function PaymentForm({
   const elements = useElements();
   const [isProcessing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [trajet, setTrajet] = useState<IInfoTrajetId|null >(null);
+  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null);
   const { id } = useParams<{ id: string | undefined }>();
 
   const departureDateTime = new Date(trajet?.departureDateTime ?? "");
@@ -84,7 +84,7 @@ export default function PaymentForm({
       const paymentResult = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:5173/reservation/1/infos-trajet",
+          return_url: "http://localhost:5173",
         },
         clientSecret,
       });
@@ -359,9 +359,11 @@ export default function PaymentForm({
               }}
             >
               Prix total à payer
-              <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                {trajet?.pricePerSeat * seatsReserved}
-              </span>
+              {trajet?.pricePerSeat !== undefined && (
+                <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+                  {(trajet.pricePerSeat * seatsReserved).toFixed(2)}
+                </span>
+              )}
             </Typography>
             <EuroRoundedIcon
               sx={{
@@ -405,8 +407,9 @@ export default function PaymentForm({
             {isProcessing ? (
               <CircularProgress size={30} sx={{ color: "white" }} />
             ) : (
-              `Payez ${trajet?.pricePerSeat * seatsReserved}`
+              `Payez ${(trajet?.pricePerSeat ?? 0) * seatsReserved}`
             )}
+
             <EuroRoundedIcon
               sx={{
                 fontSize: "1.3rem",
