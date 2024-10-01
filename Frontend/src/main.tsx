@@ -16,6 +16,7 @@ import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
+import ReservationHistoricPage from "./pages/profil/ReservationHistoricPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "/reservation/:id/infos-trajet",
         element: <TestPaymentIntent />,
+      },
+      {
+        path: "/reservationhistoric",
+        element: <ReservationHistoricPage />,
       },
     ],
   },

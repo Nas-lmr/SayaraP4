@@ -65,9 +65,9 @@ export default function ProfilSection() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "space-evenly",
           width: "90%",
-          height: "50%",
+          height: "40%",
         }}
       >
         <NavLink
@@ -80,7 +80,8 @@ export default function ProfilSection() {
           />
         </NavLink>
 
-        <NavLink to="/" style={{ textDecoration: "none" }}>
+        
+        <NavLink to="/reservationhistoric" style={{ textDecoration: "none" }}>
           <ProfilBtn
             label="Historique des réservations"
             onclick={() => console.log("salut")}
@@ -93,18 +94,18 @@ export default function ProfilSection() {
           />
         </NavLink>
 
-        <NavLink to="/" style={{ textDecoration: "none" }}>
+        {/* <NavLink to="/" style={{ textDecoration: "none" }}>
           <ProfilBtn
             label="Mes moyens de paiements"
             onclick={() => console.log("salut")}
           />
-        </NavLink>
-        <NavLink to="/" style={{ textDecoration: "none" }}>
+        </NavLink> */}
+        {/* <NavLink to="/" style={{ textDecoration: "none" }}>
           <ProfilBtn
             label="Services et connexion"
             onclick={() => console.log("salut")}
           />
-        </NavLink>
+        </NavLink> */}
       </Box>
     </Box>
   );
