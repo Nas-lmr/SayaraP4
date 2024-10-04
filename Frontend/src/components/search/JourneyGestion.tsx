@@ -44,7 +44,7 @@ export default function JourneyGestion() {
         />
         <SearchPageBtn
           label="Mes trajets"
-          onclick={() => navigate("/")}
+          onclick={() => navigate("/trajet/mes-trajets")}
           type="button"
         />
         <SearchPageBtn

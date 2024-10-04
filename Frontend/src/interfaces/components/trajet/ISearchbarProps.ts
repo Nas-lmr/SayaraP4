@@ -8,4 +8,6 @@ export interface ISearchbarProps {
   passengers: number;
   setPassengers: (count: number) => void;
   onSearch: () => void;
+  availableSeats: number;
+  setAvailableSeats: (value: number) => void;
 }
