@@ -16,6 +16,9 @@ export default function ResultPage() {
   const [arrivalCity, setArrivalCity] = useState<string>("");
   const [travelDate, setTravelDate] = useState<Date | null>(null);
   const [passengers, setPassengers] = useState<number>(1);
+  const [availableSeats, setAvailableSeats] = useState<number>(1);
+
+  console.log(results, "REEEEEEEEEEEE");
 
   const navigate = useNavigate();
   const handleSearch = async () => {
@@ -70,6 +73,8 @@ export default function ResultPage() {
         passengers={passengers}
         setPassengers={setPassengers}
         onSearch={handleSearch}
+        availableSeats={availableSeats}
+        setAvailableSeats={setAvailableSeats}
       />
       <Searchbar
         departureCity={departureCity}
@@ -81,6 +86,8 @@ export default function ResultPage() {
         passengers={passengers}
         setPassengers={setPassengers}
         onSearch={handleSearch}
+        availableSeats={availableSeats}
+        setAvailableSeats={setAvailableSeats}
       />
       {results ? (
         <ResultJourneyContainer results={results.data} />

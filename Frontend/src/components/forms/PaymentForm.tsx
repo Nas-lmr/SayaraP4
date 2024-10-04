@@ -19,6 +19,7 @@ import {
   formatTime,
 } from "../../services/common/ConversionValue";
 import { trajetInfo } from "../../services/trajet/trajetService";
+import TrajetSnackbar from "../trajet/TrajetSnackbar";
 
 interface PaymentFormProps {
   clientSecret: string;
@@ -35,6 +36,11 @@ export default function PaymentForm({
   const [error, setError] = useState<string | null>(null);
   const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null);
   const { id } = useParams<{ id: string | undefined }>();
+  const [snackOpen, setSnackOpen] = useState(false); // Gère l'ouverture du Snackbar
+  const [snackMessage, setSnackMessage] = useState(""); // Message du Snackbar
+  const [snackSeverity, setSnackSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const departureDateTime = new Date(trajet?.departureDateTime ?? "");
   const durationInSeconds = trajet?.duration; // La durée est en secondes
@@ -76,7 +82,10 @@ export default function PaymentForm({
       // First submit the elements
       const submitResult = await elements.submit();
       if (submitResult.error) {
-        setError(error);
+        setError(submitResult.error.message || "Erreur lors de la soumission.");
+        setSnackSeverity("error"); // Afficher en tant qu'erreur
+        setSnackMessage(submitResult.error.message || "Erreur de paiement.");
+        setSnackOpen(true); // Ouvrir le snackbar pour montrer l'erreur
         return;
       }
 
@@ -90,11 +99,23 @@ export default function PaymentForm({
       });
 
       if (paymentResult.error) {
-        setError(paymentResult.error.message || "An unknown error occurred.");
+        setError(paymentResult.error.message || "Une erreur est survenue.");
+        setSnackSeverity("error");
+        setSnackMessage(
+          paymentResult.error.message || "Erreur lors du paiement."
+        );
+        setSnackOpen(true);
+      } else {
+        // Paiement réussi, affiche le Snackbar
+        setSnackSeverity("success");
+        setSnackMessage("Le paiement a été effectué avec succès !");
+        setSnackOpen(true);
       }
     } catch (error) {
-      setError("An error occurred during payment.");
       console.error(error);
+      setSnackSeverity("error");
+      setSnackMessage("Une erreur est survenue pendant le paiement.");
+      setSnackOpen(true);
     } finally {
       setProcessing(false);
     }
@@ -388,6 +409,7 @@ export default function PaymentForm({
           }}
         >
           <PaymentElement />
+          {error}
           <Button
             type="submit"
             disabled={isProcessing || !stripe}
@@ -419,6 +441,12 @@ export default function PaymentForm({
           </Button>
         </Box>
       </Box>
+      <TrajetSnackbar
+        snackOpen={snackOpen}
+        message={snackMessage}
+        onClose={() => setSnackOpen(false)}
+        severity={snackSeverity}
+      />
     </Box>
   );
 }

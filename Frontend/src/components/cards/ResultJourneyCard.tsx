@@ -45,8 +45,17 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
       }}
     >
       <NavLink
-        to={`/reservation/${trajet.id}/infos-trajet`}
-        style={{ textDecoration: "none" }}
+        to={
+          trajet.availableSeats > 0
+            ? `/trajet/reservation/${trajet.id}/infos-trajet`
+            : ""
+        }
+        style={{
+          textDecoration: "none",
+          pointerEvents: trajet.availableSeats > 0 ? "auto" : "none", // Désactiver le lien si aucun siège n'est disponible
+          opacity: trajet.availableSeats > 0 ? 1 : 0.5, // Modifier l'opacité pour indiquer un état désactivé
+          cursor: trajet.availableSeats > 0 ? "pointer" : "not-allowed", // Indiquer à l'utilisateur que le lien est désactivé
+        }}
       >
         <CardActionArea
           disableRipple
@@ -159,9 +168,31 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
                   fontFamily: "Montserrat",
                   color: "#321F47",
                   fontWeight: 500,
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
                 {capitalizeFirstLetter(departureCity)}
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "0.2rem", // espace entre les cercles
+                  }}
+                >
+                  {Array.from({ length: trajet.availableSeats }).map(
+                    (_, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          backgroundColor: "#6AE35F",
+                          borderRadius: "50%",
+                          width: "0.8rem", // taille du cercle
+                          height: "0.8rem",
+                        }}
+                      />
+                    )
+                  )}
+                </Box>
               </Typography>
               <Typography
                 sx={{

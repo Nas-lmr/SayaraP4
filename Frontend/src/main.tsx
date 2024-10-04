@@ -72,11 +72,11 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/reservation/:id/infos-trajet",
+        path: "/trajet/reservation/:id/infos-trajet",
         element: <TestPaymentIntent />,
       },
       {
-        path: "/reservation/historique",
+        path: "/trajet/reservation/historique",
         element: <ReservationHistoricPage />,
       },
       {

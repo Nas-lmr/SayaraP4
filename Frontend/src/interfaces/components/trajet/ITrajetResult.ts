@@ -7,4 +7,5 @@ export interface ITrajetResult {
   pricePerSeat: number;
   distance: number;
   duration: number;
+  availableSeats: number;
 }

@@ -9,11 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Reservation } from "../../interfaces/components/IHistoric";
-import {
-  calculateArrivalDateTime,
-  formatDuration,
-  formatTime,
-} from "../../services/common/ConversionValue";
+import { formatTime } from "../../services/common/ConversionValue";
 
 interface HistoricReservationCardProps {
   reservation: Reservation;
@@ -24,17 +20,8 @@ export default function OwnerReservationHistoricCard({
   index,
 }: HistoricReservationCardProps) {
   const departureTime = new Date(reservation.trip.departureDateTime);
-  const duretionTime = reservation.trip.duration;
-  const parsedDurationTime =
-    typeof duretionTime === "string" ? parseFloat(duretionTime) : duretionTime;
 
-  const formattedDuretionTime = formatDuration(parsedDurationTime);
   const formattedDepartureTime = formatTime(departureTime);
-  const ArrivalTime = calculateArrivalDateTime(
-    departureTime,
-    parsedDurationTime
-  );
-  const ArrivalTimeFormated = formatTime(ArrivalTime);
 
   return (
     <>

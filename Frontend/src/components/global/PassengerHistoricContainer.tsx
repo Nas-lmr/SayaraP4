@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
 import { fetchPassengerReservationHistoric } from "../../services/user/ReservationHistoric";
+import ReturnPreviousBtn from "../buttons/ReturnPreviousBtn";
 import HistoricReservationCard from "../cards/HistoricReservationPassengerCard";
 
 export default function PassengerHistoricContainer() {
@@ -44,17 +45,26 @@ export default function PassengerHistoricContainer() {
         "scrollbar-width": "none", // Cache la scrollbar pour Firefox
       }}
     >
-      {" "}
-      <Typography
-        variant="h4"
+      <Box
         sx={{
-          fontWeight: 500,
-          textAlign: "center",
-          fontFamily: "Montserrat",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        Historique de mes réservations
-      </Typography>
+        <ReturnPreviousBtn />
+        <Typography
+          textAlign="center"
+          variant="h1"
+          sx={{
+            fontSize: { xs: "1.4rem", sm: "1.7rem", md: "1.8rem" },
+            fontWeight: 500,
+            fontFamily: "Montserrat",
+          }}
+        >
+          Historique des réservations
+        </Typography>
+      </Box>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {reservations.length > 0 ? (
         reservations &&

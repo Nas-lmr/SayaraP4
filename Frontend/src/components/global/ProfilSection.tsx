@@ -81,7 +81,7 @@ export default function ProfilSection() {
         </NavLink>
 
         <NavLink
-          to="/reservation/historique"
+          to="/trajet/reservation/historique"
           style={{ textDecoration: "none" }}
         >
           <ProfilBtn
