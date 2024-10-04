@@ -10,7 +10,7 @@ export default function TrajetSnackbar({
   return (
     <Snackbar
       open={snackOpen}
-      autoHideDuration={6000}
+      autoHideDuration={8000}
       onClose={onClose}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
     >

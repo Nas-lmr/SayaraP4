@@ -44,7 +44,11 @@ export default function BottomNavbar() {
         <BottomNavigationAction
           component={NavLink}
           to="/"
-          label="Accueil"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Accueil
+            </span>
+          }
           icon={<HomeRoundedIcon fontSize="large" />}
           sx={{
             minWidth: 50,
@@ -59,41 +63,39 @@ export default function BottomNavbar() {
         <BottomNavigationAction
           component={NavLink}
           to="/trajet"
-          label="Trajets"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Trajets
+            </span>
+          }
           icon={<CalendarMonthRoundedIcon fontSize="large" />}
           sx={{
+            fontFamily: "Montserrat",
+            fontWeight: 500,
             minWidth: 50,
             maxWidth: 70,
-            color:
-              pathname === "/trajet" ||
-              pathname === "/trajet/resultats" ||
-              pathname === "/trajet/nouveau-trajet"
-                ? activeStyle.color
-                : "#321F47",
-            backgroundColor:
-              pathname === "/trajet" ||
-              pathname === "/trajet/resultats" ||
-              pathname === "/trajet/nouveau-trajet"
-                ? activeStyle.backgroundColor
-                : "",
-            borderRadius:
-              pathname === "/trajet" ||
-              pathname === "/trajet/resultats" ||
-              pathname === "/trajet/nouveau-trajet"
-                ? activeStyle.borderRadius
-                : "",
-            height:
-              pathname === "/trajet" ||
-              pathname === "/trajet/resultats" ||
-              pathname === "/trajet/nouveau-trajet"
-                ? activeStyle.height
-                : "100%",
+            color: pathname.startsWith("/trajet")
+              ? activeStyle.color
+              : "#321F47",
+            backgroundColor: pathname.startsWith("/trajet")
+              ? activeStyle.backgroundColor
+              : "",
+            borderRadius: pathname.startsWith("/trajet")
+              ? activeStyle.borderRadius
+              : "",
+            height: pathname.startsWith("/trajet")
+              ? activeStyle.height
+              : "100%",
           }}
         />
         <BottomNavigationAction
           component={NavLink}
           to="/messagerie"
-          label="Messages"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Messages
+            </span>
+          }
           icon={
             <Badge
               variant="dot"
@@ -108,18 +110,28 @@ export default function BottomNavbar() {
           sx={{
             minWidth: 50,
             maxWidth: 70,
-            color: pathname === "/messagerie" ? activeStyle.color : "#321F47",
-            backgroundColor:
-              pathname === "/messagerie" ? activeStyle.backgroundColor : "",
-            borderRadius:
-              pathname === "/messagerie" ? activeStyle.borderRadius : "",
-            height: pathname === "/messagerie" ? activeStyle.height : "100%",
+            color: pathname.startsWith("/messagerie")
+              ? activeStyle.color
+              : "#321F47",
+            backgroundColor: pathname.startsWith("/messagerie")
+              ? activeStyle.backgroundColor
+              : "",
+            borderRadius: pathname.startsWith("/messagerie")
+              ? activeStyle.borderRadius
+              : "",
+            height: pathname.startsWith("/messagerie")
+              ? activeStyle.height
+              : "100%",
           }}
         />
         <BottomNavigationAction
           component={NavLink}
           to="/profil"
-          label="Profil"
+          label={
+            <span style={{ fontFamily: "Montserrat", fontWeight: 500 }}>
+              Profil
+            </span>
+          }
           icon={<PersonRoundedIcon fontSize="large" />}
           sx={{
             minWidth: 50,
