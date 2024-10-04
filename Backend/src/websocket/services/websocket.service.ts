@@ -10,17 +10,17 @@ export class WebsocketService {
 
   async getRoomsData(userId: number|undefined = undefined) {
     return !userId ?
-      this.reservationRepository.createQueryBuilder('r')
-        .leftJoinAndSelect('r.tripId', 'trips')
-        .leftJoinAndSelect('r.passengerId', 'passenger')
+      this.reservationRepository.createQueryBuilder('reservation')
+        .leftJoinAndSelect('reservation.tripId', 'trips')
+        .leftJoinAndSelect('reservation.passengerId', 'passenger')
         .leftJoinAndSelect('trips.owner', 'owner')
-        .where('r.seatsReserved < trips.availableSeats')
+        // .where('reservation.seatsReserved <= trips.availableSeats')
         .getMany() :
-      this.reservationRepository.createQueryBuilder('r')
-        .leftJoinAndSelect('r.tripId', 'trips')
-        .leftJoinAndSelect('r.passengerId', 'passenger')
+      this.reservationRepository.createQueryBuilder('reservation')
+        .leftJoinAndSelect('reservation.tripId', 'trips')
+        .leftJoinAndSelect('reservation.passengerId', 'passenger')
         .leftJoinAndSelect('trips.owner', 'owner')
-        .where('r.seatsReserved < trips.availableSeats')
+        .where('reservation.seatsReserved < trips.availableSeats')
         .andWhere('owner.id = :userId', {userId})
         .orWhere('passenger.id = :userId', {userId})
         .getMany();
