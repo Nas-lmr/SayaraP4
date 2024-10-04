@@ -1,11 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ReservationEntity } from "../entity/reservation.entity";
 import { Repository } from "typeorm";
-import { UserEntity } from "src/user/entity/user.entity";
-import { TripEntity } from "src/trip/entity/trip.entity";
+
+/* -----------------------------------------------------------------*/
+import { ReservationEntity } from "../entity/reservation.entity";
+import { UserEntity } from "../../user/entity/user.entity";
+import { TripEntity } from "../../trip/entity/trip.entity";
 import { ReservationDto } from "../dto/reservation.dto";
 import { ReservationStatusEntity } from "../entity/reservation_status.entity";
+import { StripeService } from "../../stripe/service/stripe.service";
+
+/* -----------------------------------------------------------------*/
 
 @Injectable()
 export class ReservationService {
@@ -17,43 +22,109 @@ export class ReservationService {
     @InjectRepository(TripEntity)
     private readonly tripRepository: Repository<TripEntity>,
     @InjectRepository(ReservationStatusEntity)
-    private readonly reservationStsRepository:Repository<ReservationStatusEntity>
+    private readonly reservationStsRepository: Repository<ReservationStatusEntity>,
+    private readonly paymentService: StripeService
   ) {}
 
-  async create(reservationData: ReservationDto):Promise<{status:number;message:string}>{
+  // make reservation
+  async create(reservationData: ReservationDto): Promise<{
+    status: number;
+    message: string;
+    reservation?: ReservationEntity;
+    clientSecret?: any;
+  }> {
+    try {
+      const client = await this.userRepository.findOneBy({
+        id: reservationData.passengerId,
+      });
+      if (!client) {
+        return { status: 400, message: "There is no passengerId" };
+      }
 
-    try{
-        const client = await this.userRepository.findOneBy({id:reservationData.passengerId})
-        if(!client){
-            return{status:400,message:"there no passengerId"}
-        }
-        const trip = await this.tripRepository.findOneBy({id:reservationData.tripId})
-        if(!trip){
-            return {status:400, message: "there no tripId"}
-        }
+      const trip = await this.tripRepository
+        .createQueryBuilder("trip")
+        .innerJoinAndSelect("trip.departureCity", "departureCity")
+        .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+        .select([
+          "trip.id",
+          "trip.availableSeats",
+          "trip.pricePerSeat",
+          "trip.departureDateTime",
+          "departureCity.name",
+          "destinationCity.name",
+        ])
+        .where("trip.id = :id", { id: reservationData.tripId })
+        .getOne();
 
-        const reservStatus = await this.reservationStsRepository.findOneBy({id:reservationData.reservationStatus})
-        if(!reservStatus){
-            return {status:400, message: "there no reservation-statusId"}
+      if (!trip) {
+        return { status: 400, message: "There is no tripId" };
+      }
+      // Check available seats
 
-        }
-        const reservation = this.reservationRepository.create({
-            reservationStatus:reservStatus,
-            passengerId:client,
-            tripId:trip,
-            seatsReserved:reservationData.seatsReserved,
-            reservationTime:reservationData.reservationTime
+      if (trip.availableSeats == 0) {
+        return { status: 400, message: "No available seats for this trip" };
+      }
+      if (reservationData.seatsReserved > trip.availableSeats) {
+        return { status: 400, message: "Not enough available seats" };
+      }
 
+      const reservStatus = await this.reservationStsRepository.findOneBy({
+        id: reservationData.reservationStatus,
+      });
+      if (!reservStatus) {
+        return { status: 400, message: "There is no reservation-statusId" };
+      }
+      // Prepare payment request data
+      const paymentRequestBody = {
+        products: [
+          {
+            title: `Trip from ${trip.departureCity.name} to ${trip.destinationCity.name}`,
+            price: trip.pricePerSeat,
+            quantity: reservationData.seatsReserved,
+            date: trip.departureDateTime,
+          },
+        ],
+        currency: "eur",
+        customer: {
+          name: client.username,
+          email: client.email,
+        },
+      };
 
-        });
-        await this.reservationRepository.save(reservation)
-        return{status:201,message:'your reservation is done'}
-    }catch(error){
-        console.error(error)
-        return{
-            status:500,
-            message:"an error while making a reservation"
-        }
+      // Create the payment
+      const paymentResult =
+        await this.paymentService.createPayment(paymentRequestBody);
+
+      // Create the reservation with the payment intent ID
+      const reservation = this.reservationRepository.create({
+        reservationStatus: reservStatus,
+        passengerId: client,
+        tripId: trip,
+        seatsReserved: reservationData.seatsReserved,
+        reservationTime: reservationData.reservationTime,
+        paymentIntentId: paymentResult.paymentIntent.id,
+      });
+
+      await this.reservationRepository.save(reservation);
+
+      // Update available seats in the trip
+      trip.availableSeats -= reservationData.seatsReserved;
+      await this.tripRepository.save(trip);
+
+      return {
+        status: 201,
+        message: "Your reservation is done and payment is processed",
+        reservation,
+        clientSecret: {
+          client_secret: paymentResult.clientSecret,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        status: 500,
+        message: "An error occurred while making a reservation",
+      };
     }
-  };
+  }
 }

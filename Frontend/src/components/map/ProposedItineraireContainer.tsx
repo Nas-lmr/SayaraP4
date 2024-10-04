@@ -47,11 +47,11 @@ export default function ProposedItineraireContainer({
         distance={distance}
         duration={duration}
       />
-      <ItineraireCard
+      {/* <ItineraireCard
         onCheckboxChange={handleCardCheckboxChange}
         distance={distance}
         duration={duration}
-      />
+      /> */}
     </Box>
   );
 }

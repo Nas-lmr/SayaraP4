@@ -1,4 +1,10 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+} from "@nestjs/common";
 import { ReservationDto } from "../dto/reservation.dto";
 import { ReservationService } from "../services/reservation.service";
 
@@ -8,6 +14,11 @@ export class ReservationController {
 
   @Post()
   async create(@Body() reservationDto: ReservationDto) {
-    return await this.reservationService.create(reservationDto);
+    try {
+      const result = await this.reservationService.create(reservationDto);
+      return result.clientSecret;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CityEntity } from "src/city/entity/city.entity";
-import { UserEntity } from "src/user/entity/user.entity";
+import { CityEntity } from "../../city/entity/city.entity";
+import { UserEntity } from "../../user/entity/user.entity";
 import { Repository } from "typeorm";
 import { TripDto } from "../dto/trip.dto";
 import { TripEntity } from "../entity/trip.entity";
@@ -19,11 +19,13 @@ export class TripService {
     private readonly cityRepository: Repository<CityEntity>
   ) {}
 
+  // creating a new trip ***********************************************************
   async create(
     tripData: TripDto
   ): Promise<{ status: number; message: string }> {
     try {
       const owner = await this.userRepository.findOneBy({ id: tripData.owner });
+
       if (!owner) {
         return { status: 400, message: "Owner not found." };
       }
@@ -62,24 +64,49 @@ export class TripService {
 
         return `${year}-${mounth}-${day} ${hour}:${minute}:00`;
       };
+      const departureDateTime = dateTimeFormat(
+        tripData.departureDate,
+        tripData.departureTime
+      );
 
-      const trip = this.tripRepository.create({
-        availableSeats: tripData.availableSeats,
-        pricePerSeat: tripData.pricePerSeat,
-        distance: tripData.distance,
-        duration: tripData.duration,
-        departureDateTime: dateTimeFormat(
-          tripData.departureDate,
-          tripData.departureTime
-        ),
-        owner,
-        departureCity: departureCityResult.id,
-        destinationCity: destinationCityResult.id,
-      });
+      //  check if a trip already exists on the same day
+      const existingTripQuery = `
+      SELECT * FROM trip_entity
+      WHERE owner_id = ? 
+      AND departure_city_id = ? 
+      AND DATE(departureDateTime) = DATE(?);
+    `;
 
-      await this.tripRepository.save(trip);
+      const [existingTrips] = await this.tripRepository.query(
+        existingTripQuery,
+        [tripData.owner, tripData.departure_city_id, departureDateTime]
+      );
 
-      return { status: 201, message: "Trip created successfully." };
+      if (existingTrips) {
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message:
+            "You cannot create two trips departing from the same city on the same day.",
+        };
+      }
+      if (!existingTrips) {
+        const trip = this.tripRepository.create({
+          availableSeats: tripData.availableSeats,
+          pricePerSeat: tripData.pricePerSeat,
+          distance: tripData.distance,
+          duration: tripData.duration,
+          departureDateTime: dateTimeFormat(
+            tripData.departureDate,
+            tripData.departureTime
+          ),
+          owner,
+          departureCity: departureCityResult.id,
+          destinationCity: destinationCityResult.id,
+        });
+        await this.tripRepository.save(trip);
+
+        return { status: 201, message: "Trip created successfully." };
+      }
     } catch (error) {
       console.error("Error creating trip:", error);
       return {
@@ -89,6 +116,7 @@ export class TripService {
     }
   }
 
+  // get all trips***********************************************************************************
   async GetAll(): Promise<any[]> {
     return await this.tripRepository
       .createQueryBuilder("trip")
@@ -107,6 +135,7 @@ export class TripService {
       .getMany();
   }
 
+  // get trips by filtering **********************************************************************
   async GetFilteredTrip(
     dCity: string,
     aCity: string,
@@ -130,5 +159,24 @@ export class TripService {
       .andWhere("destinationCity.name = :aCity", { aCity })
       .andWhere("DATE(trip.departureDateTime) = :dateTrip", { dateTrip })
       .getMany();
+  }
+
+  async GetById(id: number): Promise<any> {
+    return await this.tripRepository
+      .createQueryBuilder("trip")
+      .innerJoinAndSelect("trip.departureCity", "departureCity")
+      .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+      .select([
+        "trip.id",
+        "trip.availableSeats",
+        "trip.pricePerSeat",
+        "trip.departureDateTime",
+        "departureCity.name",
+        "destinationCity.name",
+        "trip.distance",
+        "trip.duration",
+      ])
+      .where("trip.id = :id", { id })
+      .getOne();
   }
 }

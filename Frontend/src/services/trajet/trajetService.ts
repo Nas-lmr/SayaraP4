@@ -1,35 +1,47 @@
 import { ApiConfig } from "../../config/apiConfig";
+import { IInfoTrajet } from "../../interfaces/services/IInfoTrajet";
 // import { useUserContext } from "../../context/UserContext";
 import { IPostTrajet } from "../../interfaces/services/IPostTrajet";
 import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
-
 export const usePostTrajet = () => {
   // const { userData } = useUserContext();
 
   const postTrajet = async (data: IPostTrajet) => {
-    // const token = userData?.token;
-    // console.log(token, "TOKEN");
+    try {
+      // const token = userData?.token;
+      // console.log(token, "TOKEN");
 
-    const response = await fetch(ApiConfig.private.postTrajet, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+      const response = await fetch(ApiConfig.private.postTrajet, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (response.ok) {
-      return await response.json(); // Récupère la réponse si nécessaire
-    } else {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.message || "Erreur lors de la création du trajet"
+      if (response.ok) {
+        console.log(response, "testtest");
+        return await response.json(); // Récupère la réponse si nécessaire
+      } else {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Erreur lors de la création du trajet"
+        );
+      }
+    } catch (error) {
+      console.error(
+        "An error occurred while creating the trip:",
+        (error as Error).message
       );
+      // Optionally return an error object or rethrow it
+      throw error;
     }
   };
+
   return postTrajet;
 };
+
 // fetch("https://reqbin.com/echo/get/json", {
 //   headers: { Authorization: "Bearer {token}" },
 // })
@@ -45,6 +57,36 @@ export const searchTrajet = async (params: ISearchTrajet) => {
     const response = await fetch(
       // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
       `http://localhost:3310/trip/filtre?dCity=${departureCity}&aCity=${arrivalCity}&dDate=${travelDate}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Erreur HTTP : ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    console.log(data, "DATAAAAA");
+
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la recherche:", error);
+    throw new Error(`Erreur lors de la recherche: ${(error as Error).message}`);
+  }
+};
+
+export const trajetInfo = async (params: IInfoTrajet) => {
+  const { id } = params;
+  try {
+    const response = await fetch(
+      // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
+      `http://localhost:3310/trip/one/${id}`,
       {
         method: "GET",
         headers: {

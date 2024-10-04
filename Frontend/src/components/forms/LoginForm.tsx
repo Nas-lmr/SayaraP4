@@ -29,7 +29,7 @@ export default function LoginForm() {
     if (response.success) {
       login({ ...response.user });
       console.info("Connecté");
-      navigate("/profil");
+      navigate("/");
       console.info("Connexion réussie");
     } else {
       navigate("/login");

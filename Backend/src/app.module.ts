@@ -8,6 +8,7 @@ import { UserModule } from "./user/user.module";
 import { CityModule } from "./city/city.module";
 import { TripModule } from "./trip/trip.module";
 import { AuthModule } from "./auth/auth.module";
+import { StripeModule } from "./stripe/stripe.module";
 import {WebsocketModule} from "./websocket/websocket.module";
 import { ReservationModule } from './reservation/reservation.module';
 
@@ -22,6 +23,7 @@ import { ReservationModule } from './reservation/reservation.module';
     TripModule,
     AuthModule,
     ReservationModule,
+    StripeModule,
     WebsocketModule,
   ],
   controllers: [AppController],
