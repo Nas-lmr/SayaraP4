@@ -1,55 +1,30 @@
-import { PersonRounded } from "@mui/icons-material";
+import { ExpandMore, PersonRounded } from "@mui/icons-material";
 import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
-import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
-  Button,
-  Card,
-  CardActionArea,
   Divider,
   Typography,
 } from "@mui/material";
+import { Reservation } from "../../interfaces/components/IHistoric";
 import {
   calculateArrivalDateTime,
-  capitalizeFirstLetter,
   formatDuration,
   formatTime,
 } from "../../services/common/ConversionValue";
 
-interface Passenger {
-  id: number;
-  username: string;
-  email: string;
-}
-
-interface Trip {
-  duration: string;
-  id: number;
-  ownerName: string;
-  departureCity: string;
-  destinationCity: string;
-  pricePerSeat: number;
-  departureDateTime: string;
-}
-
-interface Reservation {
-  reservationId: number;
-  passenger: Passenger;
-  trip: Trip;
-  seatsReserved: number;
-  reservationTime: string;
-}
-
 interface HistoricReservationCardProps {
   reservation: Reservation;
+  index: number;
 }
 export default function OwnerReservationHistoricCard({
   reservation,
+  index,
 }: HistoricReservationCardProps) {
-  const duretionTime = reservation.trip.duration;
   const departureTime = new Date(reservation.trip.departureDateTime);
+  const duretionTime = reservation.trip.duration;
   const parsedDurationTime =
     typeof duretionTime === "string" ? parseFloat(duretionTime) : duretionTime;
 
@@ -62,222 +37,78 @@ export default function OwnerReservationHistoricCard({
   const ArrivalTimeFormated = formatTime(ArrivalTime);
 
   return (
-    <Card
-      sx={{
-        height: { xs: "100%", sm: "100%", md: "17vh", lg: "20vh" },
-        width: { xs: "100%", sm: "100%", md: "90%", lg: "60%" },
-        mt: "1.5rem",
-      }}
-    >
-      <CardActionArea sx={{ height: "70%", width: "100%", display: "flex" }}>
-        <Box
-          sx={{
-            width: { xs: "15%", md: "20%" },
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: { sm: "center" },
-            justifyContent: "space-around",
-          }}
+    <>
+      <Accordion sx={{ width: { xs: "90%", sm: "90%", md: "90%" } }}>
+        <AccordionSummary
+          expandIcon={<ExpandMore />}
+          sx={{ fontFamily: "Montserrat", color: "#321F47", fontWeight: 500 }}
         >
-          <Typography
-            sx={{
-              fontSize: { xs: "0.8rem", sm: "1rem" },
-              fontFamily: "Montserrat",
-              color: "#321F47",
-              fontWeight: 500,
-            }}
-          >
-            {formattedDepartureTime}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: { xs: "0.6rem", sm: "0.8rem" },
-              fontFamily: "Montserrat",
-              color: "#7E7E7E",
-              fontWeight: 500,
-              pl: { xs: "0.5rem", sm: "1rem" },
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            {formattedDuretionTime}
-            <QueryBuilderRoundedIcon
-              sx={{
-                color: "#7E7E7E",
-                fontSize: { xs: "0.6rem", sm: "0.8rem" },
-                fontFamily: "Montserrat",
-                fontWeight: 600,
-              }}
-            />
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: { xs: "0.8rem", sm: "1rem" },
-              fontFamily: "Montserrat",
-              color: "#321F47",
-              fontWeight: 500,
-            }}
-          >
-            {ArrivalTimeFormated}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: "7%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <TripOriginRoundedIcon
-            sx={{
-              fontSize: { xs: "0.8rem", sm: "1rem" },
-              color: "#321F47",
-            }}
-          />
-          <Box
-            sx={{
-              height: "50%",
-              width: 5,
-              backgroundColor: "#321F47",
-              borderRadius: "0.5rem",
-            }}
-          />
-          <TripOriginRoundedIcon
-            sx={{
-              fontSize: { xs: "0.8rem", sm: "1rem" },
-              color: "#321F47",
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: "60%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box
-            sx={{
-              width: "60%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-around",
-            }}
-          >
-            <Typography
-              sx={{
-                height: "50%",
-                fontSize: { xs: "0.8rem", sm: "1rem" },
-                fontFamily: "Montserrat",
-                color: "#321F47",
-                fontWeight: 500,
-              }}
-            >
-              {capitalizeFirstLetter(reservation.trip.departureCity)}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: "0.8rem", sm: "1rem" },
-                fontFamily: "Montserrat",
-                color: "#321F47",
-                fontWeight: 500,
-              }}
-            >
-              {capitalizeFirstLetter(reservation.trip.destinationCity)}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-around",
-            }}
-          >
-            {" "}
-            <Typography
-              sx={{
-                fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                fontFamily: "Montserrat",
-                color: "#321F47",
-                fontWeight: 500,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              {reservation.seatsReserved} <PersonRounded />
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                fontFamily: "Montserrat",
-                color: "#321F47",
-                fontWeight: 500,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              {reservation.trip.pricePerSeat * reservation.seatsReserved}
-              <EuroRoundedIcon
-                sx={{
-                  fontSize: "1rem",
-                  color: "#321F47",
-                }}
-              />
-            </Typography>
-          </Box>
-        </Box>
-      </CardActionArea>
-      <Divider />
-      <Box
-        sx={{
-          pl: "0.5rem",
-          pr: "0.5rem",
-          height: "30%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography
-          sx={{
-            width: "70%",
-            fontSize: "0.9rem",
-            fontFamily: "Montserrat",
-            color: "#321F47",
-            fontWeight: 400,
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          Réservé par:
-          <span style={{ fontWeight: 500 }}>
-            {" "}
+          {" "}
+          Réservation n°{index} :{" "}
+          <span style={{ fontWeight: 400, marginLeft: "0.5rem" }}>
             {reservation.passenger.username}
           </span>
-        </Typography>
-        <Button
-          endIcon={<KeyboardArrowRightRoundedIcon />}
-          sx={{
-            width: { xs: "35%", sm: "25%", md: "20%" },
-            height: "100%",
-            p: 0,
-            fontSize: "0.9rem",
-            fontFamily: "Montserrat",
-            color: "#321F47",
-            textTransform: "none",
-            fontWeight: 400,
-          }}
-        >
-          Voir profil
-        </Button>
-      </Box>
-    </Card>
+        </AccordionSummary>
+        <Divider />
+        <AccordionDetails>
+          <Box sx={{ width: "100%", display: "flex" }}>
+            <Typography
+              sx={{
+                width: "50%",
+                fontFamily: "Montserrat",
+                color: "#321F47",
+                fontWeight: 500,
+              }}
+            >
+              Départ à :{" "}
+              <span style={{ fontWeight: 400 }}>{formattedDepartureTime}</span>
+            </Typography>
+            <Typography
+              sx={{
+                width: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                fontFamily: "Montserrat",
+                color: "#321F47",
+                fontWeight: 500,
+              }}
+            >
+              Pour :{" "}
+              <span style={{ fontWeight: 400, marginLeft: "0.5rem" }}>
+                {reservation.seatsReserved}
+              </span>{" "}
+              <PersonRounded sx={{ fontSize: "1.2rem" }} />
+            </Typography>
+          </Box>
+          <Box sx={{ width: "100%", display: "flex", mt: "1rem" }}>
+            <Typography
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontFamily: "Montserrat",
+                color: "#321F47",
+                fontWeight: 500,
+              }}
+            >
+              Prix total:{" "}
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: 600,
+                  fontSize: "1.2rem",
+                }}
+              >
+                {reservation.seatsReserved * reservation.trip.pricePerSeat}
+                <EuroRoundedIcon sx={{ fontSize: "1.2rem" }} />
+              </span>
+            </Typography>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }

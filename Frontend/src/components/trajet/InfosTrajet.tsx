@@ -356,13 +356,61 @@ export default function InfosTrajet({
           height: { xs: "35%", sm: "40%", md: "50%" },
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          flexDirection: "column",
+          justifyContent: "space-around",
           pl: "1rem",
           pr: "1rem",
           mt: { lg: "0.5rem" },
           backgroundColor: "white",
         }}
-      ></Box>
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "35rem", md: "45rem" },
+            height: { xs: "90%", sm: "40%", md: "50%" },
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+
+            pl: "1rem",
+            pr: "1rem",
+            mt: { lg: "0.5rem" },
+            backgroundColor: "white",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { xs: "1.1rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 500,
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            Informations :
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: { xs: "1rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 400,
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              pt: "1rem",
+            }}
+          >
+            Bonjour, nous partirons de la Gare de La Part-Dieu et le lieu de
+            dépose sera à la gare du Nord. Nous ferons des pauses si besoin,
+            merci d'être ponctuel.
+          </Typography>
+        </Box>
+      </Box>
       <Button
         variant="contained"
         onClick={onclick}

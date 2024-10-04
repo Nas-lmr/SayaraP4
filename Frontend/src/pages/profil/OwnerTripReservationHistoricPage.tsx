@@ -8,7 +8,7 @@ export default function OwnerTripReservationHistoricPage() {
       maxWidth={false}
       sx={{
         height: "100vh",
-        mt: "4rem",
+        pt: "4rem",
         backgroundColor: "#F4F4F4",
         display: "flex",
         justifyContent: "center",

@@ -89,28 +89,12 @@ export default function ProfilSection() {
             onclick={() => console.log("salut")}
           />
         </NavLink>
-        <NavLink
-          to="/trajet/mes-trajets/historique"
-          style={{ textDecoration: "none" }}
-        >
+        <NavLink to="/trajet/mes-trajets" style={{ textDecoration: "none" }}>
           <ProfilBtn
             label="Historique des trajets"
             onclick={() => console.log("salut")}
           />
         </NavLink>
-
-        {/* <NavLink to="/" style={{ textDecoration: "none" }}>
-          <ProfilBtn
-            label="Mes moyens de paiements"
-            onclick={() => console.log("salut")}
-          />
-        </NavLink> */}
-        {/* <NavLink to="/" style={{ textDecoration: "none" }}>
-          <ProfilBtn
-            label="Services et connexion"
-            onclick={() => console.log("salut")}
-          />
-        </NavLink> */}
       </Box>
     </Box>
   );

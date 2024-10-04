@@ -1,15 +1,14 @@
-import { PersonRounded } from "@mui/icons-material";
-import EuroRoundedIcon from "@mui/icons-material/EuroRounded";
-import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
-import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
+import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
+import TrendingFlatRoundedIcon from "@mui/icons-material/TrendingFlatRounded";
 import { Box, Card, CardActionArea, Typography } from "@mui/material";
-import {
-  calculateArrivalDateTime,
-  capitalizeFirstLetter,
-  formatDuration,
-  formatTime,
-} from "../../services/common/ConversionValue";
 import { useNavigate } from "react-router-dom";
+import HommeHeureux from "../../assets/images/HommeHeureux.png";
+import HommeVoiture from "../../assets/images/HommeVoitureMoyen.png";
+import {
+  capitalizeFirstLetter,
+  formatDateDisplay,
+} from "../../services/common/ConversionValue";
 
 interface Trip {
   duration: string;
@@ -27,18 +26,7 @@ interface HistoricReservationCardProps {
 export default function OwnerTripCard({
   informations,
 }: HistoricReservationCardProps) {
-  const duretionTime = informations.duration;
   const departureTime = new Date(informations.departureDateTime);
-  const parsedDurationTime =
-    typeof duretionTime === "string" ? parseFloat(duretionTime) : duretionTime;
-
-  const formattedDuretionTime = formatDuration(parsedDurationTime);
-  const formattedDepartureTime = formatTime(departureTime);
-  const ArrivalTime = calculateArrivalDateTime(
-    departureTime,
-    parsedDurationTime
-  );
-  const ArrivalTimeFormated = formatTime(ArrivalTime);
 
   const navigate = useNavigate();
 
@@ -49,23 +37,158 @@ export default function OwnerTripCard({
   return (
     <Card
       sx={{
-        height: { xs: "100%", sm: "100%", md: "17vh", lg: "20vh" },
+        height: { xs: "100%", sm: "90%", md: "17vh", lg: "20vh" },
         width: { xs: "100%", sm: "100%", md: "90%", lg: "60%" },
-        mt: "1.5rem",
-        display: "flex",
-        alignItems: "center",
+        backgroundImage: {
+          sm:
+            informations.availableSeats === 0
+              ? `url(${HommeHeureux})`
+              : informations.availableSeats > 0 &&
+                informations.availableSeats <= 3
+              ? `url(${HommeVoiture})`
+              : "",
+        },
+        backgroundSize: { sm: "33%", md: "30%", lg: "40%" },
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <CardActionArea
         onClick={handleCardClick}
         sx={{
-          height: "70%",
+          height: "100%",
           width: "100%",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
         }}
       >
         <Box
+          sx={{
+            pt: { xs: "0.5rem", sm: 0 },
+
+            display: "flex",
+            justifyContent: { xs: "space-between", sm: "space-around" },
+            flexDirection: "column",
+            pl: "0.5rem",
+            height: "100%",
+            width: "50%",
+          }}
+        >
+          <Typography
+            sx={{
+              display: "flex",
+
+              fontSize: { xs: "0.9rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 500,
+            }}
+          >
+            Date :
+            <span style={{ fontWeight: 400, marginLeft: "0.5rem" }}>
+              {formatDateDisplay(departureTime)}
+            </span>
+          </Typography>
+          <Typography
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: { xs: "0.9rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 500,
+            }}
+          >
+            Trajet:{" "}
+            <span
+              style={{
+                fontWeight: 400,
+                display: "flex",
+                alignItems: "center",
+                marginLeft: "0.5rem",
+              }}
+            >
+              {" "}
+              {capitalizeFirstLetter(informations.departureCity.name || "")}
+              <TrendingFlatRoundedIcon
+                sx={{ color: "#321F47" }}
+                fontSize="large"
+              />
+              {capitalizeFirstLetter(informations.destinationCity.name || "")}
+            </span>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            pt: { xs: "0.5rem", sm: 0 },
+            pb: { xs: "0.5rem", sm: 0 },
+            pr: "0.5rem",
+            display: "flex",
+            justifyContent: { xs: "space-between", sm: "space-around" },
+            flexDirection: "column",
+            alignItems: "flex-end",
+            height: "100%",
+            width: "45%",
+          }}
+        >
+          <Typography
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: { xs: "0.9rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 500,
+            }}
+          >
+            {informations.availableSeats === 0 ? (
+              <span
+                style={{
+                  fontWeight: 600,
+                  color: "green",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                COMPLET{" "}
+                {
+                  <ThumbUpAltRoundedIcon
+                    sx={{ ml: "0.2rem", fontSize: "1rem" }}
+                  />
+                }
+              </span>
+            ) : (
+              <>
+                Place dispo :{" "}
+                <span style={{ fontWeight: 400, marginLeft: "0.5rem" }}>
+                  {informations.availableSeats}
+                </span>
+              </>
+            )}
+          </Typography>
+
+          <Typography
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: { xs: "0.9rem", sm: "1rem" },
+              fontFamily: "Montserrat",
+              color: "#321F47",
+              fontWeight: 500,
+            }}
+          >
+            Plus d'infos{" "}
+            {<ArrowForwardIosRoundedIcon sx={{ fontSize: "1rem" }} />}
+          </Typography>
+        </Box>
+      </CardActionArea>
+    </Card>
+  );
+}
+
+{
+  /* <Box
           sx={{
             width: { xs: "15%", md: "20%" },
             height: "100%",
@@ -227,8 +350,5 @@ export default function OwnerTripCard({
               />
             </Typography>
           </Box>
-        </Box>
-      </CardActionArea>
-    </Card>
-  );
+        </Box> */
 }

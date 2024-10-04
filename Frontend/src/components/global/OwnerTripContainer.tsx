@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
 import { fetchOwnerTrip } from "../../services/user/OwnerTrip";
+import ReturnPreviousBtn from "../buttons/ReturnPreviousBtn";
 import OwnerTripCard from "../cards/OwnerTripCard";
 
 export default function OwnerTripContainer() {
@@ -44,10 +45,10 @@ export default function OwnerTripContainer() {
         "scrollbar-width": "none", // Cache la scrollbar pour Firefox
       }}
     >
-      {" "}
       <Typography
-        variant="h4"
+        variant="h1"
         sx={{
+          fontSize: { xs: "1.4rem", sm: "1.5rem", md: "2rem" },
           fontWeight: 500,
           textAlign: "center",
           fontFamily: "Montserrat",
@@ -55,6 +56,15 @@ export default function OwnerTripContainer() {
       >
         Historique de mes trajets
       </Typography>
+      <Box
+        sx={{
+          width: "100%",
+          height: "7%",
+          pt: "0.5rem",
+        }}
+      >
+        <ReturnPreviousBtn />
+      </Box>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {informations.length > 0 ? (
         informations.map((information, index) => (
