@@ -1,30 +1,11 @@
-import {Box, Container, Typography} from "@mui/material";
+import {Container, Typography} from "@mui/material";
 import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
-import {TchatErrorComponent, RoomComponent, FormComponent, SelectedRoomComponent} from "../components/messages";
+import {TchatErrorComponent} from "../components/chat/TchatErrorComponent";
 import {useRoom} from "../hooks/messages/useRoom";
+import {PageMessageComponent} from "../components/chat/PageMessageComponent";
 
 export default function TchatPage() {
-  const {
-    roomId,
-    error,
-    reservation,
-    messages,
-    newMessage,
-    setNewMessage,
-    userData,
-    userId,
-    myRef,
-    activeReservation,
-    setActiveReservation,
-    handleChangeRoom,
-    loadReservation,
-    loadRoom,
-    loadMessage,
-    handleSendMessage
-  } = useRoom();
-  loadReservation();
-  loadRoom();
-  loadMessage();
+  const {userData, error} = useRoom();
 
   return (
     <Container
@@ -51,31 +32,7 @@ export default function TchatPage() {
           ) : (
             <>
               {error && <TchatErrorComponent error={error} />}
-              { !error ?
-                <SelectedRoomComponent
-                  activeReservation={activeReservation}
-                  setActiveReservation={setActiveReservation}
-                  reservation={reservation}
-                  handleChangeRoom={(id: number) => handleChangeRoom(id)}
-                  myRef={myRef}
-                  userId={userId.id}
-                /> : null
-              }
-              {
-                roomId !== null && !error ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                    }}
-                    mb={5}
-                  >
-                    <RoomComponent myRef={myRef} messages={messages}/>
-                    <FormComponent newMessage={newMessage} onChangeCallback={(elmnt: any) => setNewMessage(elmnt.target.value)} onClickCallback={handleSendMessage}/>
-                  </Box>
-                ) : (<Typography variant="h6">Pas de room sélectionner</Typography>)
-              }
+              {!error ? (<PageMessageComponent />) : (<Typography variant="h6">Pas de room sélectionner</Typography>)}
             </>
           )
       }

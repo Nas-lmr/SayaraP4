@@ -42,8 +42,8 @@ export const getRoute = async (
     {
       params: {
         api_key: apiKey,
-        start: `${coords1[1]},${coords1[0]}`, // longitude,latitude
-        end: `${coords2[1]},${coords2[0]}`, // longitude,latitude
+        start: `${coords1[1]},${coords1[0]}`, // longitude, latitude
+        end: `${coords2[1]},${coords2[0]}`, // longitude, latitude
       },
     }
   );

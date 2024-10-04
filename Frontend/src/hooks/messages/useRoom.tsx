@@ -1,10 +1,12 @@
 import {useEffect, useRef, useState} from "react";
 import {
+  socket,
   offError,
   offNewMessage,
   onError,
   onNewMessage,
-  sendMessage, socket
+  sendMessage,
+  onLeaveRoom, sendLeaveRoom, offLeaveRoom,
 } from "../../services/messages/socket/socketService";
 import { useUserContext } from "../../context/UserContext.tsx";
 import { jwtDecode } from "jwt-decode";
@@ -14,14 +16,16 @@ export const useRoom = () => {
   const [room, setRoom]: any = useState([]);
   const [activeReservation, setActiveReservation] = useState<boolean>(false);
   const [roomId, setRoomId]: any = useState<number | null>(null);
+  const [prevRoomId, setPrevRoomId] = useState<number | null>(null);
   const [reservation, setReservation]: any[] = useState([]);
+  const [userLeavedRoom, setUserLeavedRoom] = useState<number | null>(null);
   const [messages, setMessages]: any[] = useState([]);
   const [newMessage, setNewMessage]: any = useState('');
   const {userData} = useUserContext();
   const [error, setError]: any = useState(null);
   const myRef = useRef<HTMLElement | any>(null);
   let roomObj: any = room[0];
-  let userId: any = userData !== null && jwtDecode(userData?.token);
+  let user: any = userData !== null && jwtDecode(userData?.token);
 
   const handleMessage: any = ({message}: any) => {
     setMessages((prevMessages: any[]) => [...prevMessages, message]);
@@ -36,7 +40,6 @@ export const useRoom = () => {
   }
 
   const handleSendMessage = () => {
-    console.log(roomObj, 'roomObj');
     if (newMessage.trim() !== '' && userData?.token !== undefined) {
       sendMessage(roomObj.roomId, newMessage, userData?.token);
       setNewMessage('');
@@ -59,10 +62,22 @@ export const useRoom = () => {
     }, []);
   }
 
+  const handleLeaveRoom = (room: any) => {
+    setUserLeavedRoom(room.data);
+    if(userLeavedRoom !== null) console.log('user leave id', userLeavedRoom);
+  }
+
   const handleChangeRoom = (id: number): void => {
     setRoomId(id);
+    if(roomId !== null && roomId !== id) {
+      setPrevRoomId(roomId);
+    }
+    if(prevRoomId !== null) {
+      sendLeaveRoom({roomId: prevRoomId.toString(), userId: user.id});
+      onLeaveRoom(handleLeaveRoom);
+    }
   };
-  const roomIdNotNull = () => roomId !== null;
+  const roomIdNotNull = (id: number) => roomId !== null || roomId !== id;
 
   const loadRoom = () => {
     useEffect(() => {
@@ -74,7 +89,7 @@ export const useRoom = () => {
       const sendMessage = ({message}: any) => {
         setMessages((prevMessages: any[]) => [...prevMessages, message])
       };
-      if(roomIdNotNull()) {
+      if(roomIdNotNull(roomId)) {
         socket.emit('joinRoom',{ roomId: roomId.toString(), token: userData?.token })
         socket.on('joinRoom', handleJoinRoom);
         socket.on('newMessage', sendMessage);
@@ -82,19 +97,20 @@ export const useRoom = () => {
       onError((err: any) => {
         setError(err);
       });
-
+      console.log(roomId);
       return () => {
         offNewMessage(({message}: any) => {
           setMessages((prevMessages: any[]) => [...prevMessages, message])
         });
         offError(onError);
+        if(prevRoomId !== null) offLeaveRoom(handleLeaveRoom);
       }
     });
   }
   const scrollMessage = () => {
-    useEffect(() => {
-      myRef.current?.scrollIntoView({behavior: 'smooth'});
-    }, [messages]);
+    // useEffect(() => {
+    //   myRef.current?.scrollIntoView({behavior: 'smooth'});
+    // }, [messages]);
   }
   return {
     roomId,
@@ -103,10 +119,11 @@ export const useRoom = () => {
     reservation,
     messages,
     myRef,
-    userId,
+    user,
     newMessage,
     setNewMessage,
     userData,
+    userLeavedRoom,
     activeReservation,
     setActiveReservation,
     handleChangeRoom,

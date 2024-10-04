@@ -1,38 +1,28 @@
 import {Injectable} from '@nestjs/common';
-import {AbstractWebSocketService} from "../abstract-websocket.service";
+import {InjectRepository} from "@nestjs/typeorm";
+import {ReservationEntity} from "../../reservation/entity/reservation.entity";
+import {Repository} from "typeorm";
 
 @Injectable()
-export class WebsocketService extends AbstractWebSocketService {
+export class WebsocketService {
 
+  constructor(@InjectRepository(ReservationEntity) private reservationRepository: Repository<ReservationEntity>) {}
 
-  addMessage(roomId: string, objMe: any) {
-    const room = this.rooms.find(room => room.roomId === roomId);
-    if (room) {
-      room.messages.push({senders: objMe.senders, message: objMe.message});
-    }
-  }
-
-  getRoomByUserId(userId: number) {
-    this.initRooms().then();
-    return this._rooms.filter((room: any) => room.users.includes(userId));
-  }
-
-  get rooms(): any[] {
-    this.initRooms().then();
-    return this._rooms;
-  }
-
-  async findUser(data: {token: string}) {
-    return this.jwtService.verify(data.token);
-  }
-
-  async getRoom(roomId: number) {
-    return this._rooms.find((room: any) => room.roomId === roomId);
-  }
-
-  async deleteRoom(id: number) {
-    let beforeLength = this._rooms.length;
-    this._rooms = this._rooms.filter((room: any) => room.roomId !== id);
-    return this._rooms.length < beforeLength;
+  async getRoomsData(userId: number|undefined = undefined) {
+    return !userId ?
+      this.reservationRepository.createQueryBuilder('r')
+        .leftJoinAndSelect('r.tripId', 'trips')
+        .leftJoinAndSelect('r.passengerId', 'passenger')
+        .leftJoinAndSelect('trips.owner', 'owner')
+        .where('r.seatsReserved < trips.availableSeats')
+        .getMany() :
+      this.reservationRepository.createQueryBuilder('r')
+        .leftJoinAndSelect('r.tripId', 'trips')
+        .leftJoinAndSelect('r.passengerId', 'passenger')
+        .leftJoinAndSelect('trips.owner', 'owner')
+        .where('r.seatsReserved < trips.availableSeats')
+        .andWhere('owner.id = :userId', {userId})
+        .orWhere('passenger.id = :userId', {userId})
+        .getMany();
   }
 }

@@ -6,11 +6,10 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {TripEntity} from "../trip/entity/trip.entity";
 import {JwtModule} from "@nestjs/jwt";
 import {UserEntity} from "../user/entity/user.entity";
-import {RedisService} from "./services/redis.service";
+// import {RedisService} from "./services/redis.service";
 import {ReservationEntity} from "../reservation/entity/reservation.entity";
 import {DataInsertedMicroService} from "./services/microServices/DataInsertedMicroService";
 import {QueryWebSocketMicroService} from "./services/microServices/QueryWebSocketMicroService.service";
-import {AbstractWebSocketService} from "./abstract-websocket.service";
 
 @Module({
   imports: [
@@ -26,11 +25,10 @@ import {AbstractWebSocketService} from "./abstract-websocket.service";
   controllers: [WebsocketController],
   providers: [
     MessageGateway,
-    AbstractWebSocketService,
     DataInsertedMicroService,
     QueryWebSocketMicroService,
     WebsocketService,
-    RedisService,
+    // RedisService,
   ]
 })
 export class WebsocketModule {}
