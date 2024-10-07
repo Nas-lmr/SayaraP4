@@ -11,7 +11,6 @@ export class AuthController {
       loginUser.email,
       loginUser.password
     );
-    console.log(user, "USER");
 
     return this.authService.login(user);
   }

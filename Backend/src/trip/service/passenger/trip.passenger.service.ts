@@ -65,7 +65,7 @@ export class TripPassengerService {
         },
         trip: {
           id: reservation.tripId,
-          ownerName: reservation.ownerName, 
+          ownerName: reservation.ownerName,
           departureCity: reservation.departureCity,
           destinationCity: reservation.destinationCity,
           pricePerSeat: reservation.pricePerSeat,
