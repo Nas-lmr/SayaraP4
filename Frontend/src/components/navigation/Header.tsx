@@ -30,12 +30,14 @@ export default function Header() {
             height: "100%",
           }}
         >
-          <Box
-            component="img"
-            src={logo}
-            alt="Logo Sayara"
-            sx={{ height: "90%", zIndex: 1000 }}
-          />
+          <NavLink to="/" style={{ height: "100%" }}>
+            <Box
+              component="img"
+              src={logo}
+              alt="Logo Sayara"
+              sx={{ height: "95%", zIndex: 1000 }}
+            />
+          </NavLink>
           <Button
             component={NavLink}
             to="/notifications"

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+  BadRequestException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TripEntity } from "../../entity/trip.entity";
 import { Repository } from "typeorm";
@@ -17,14 +22,13 @@ export class TripPassengerService {
   ) {}
 
   async getPassengerTrips(userId: number): Promise<any[]> {
-   
-
     try {
       const reservations = await this.reservationRepository
         .createQueryBuilder("reservation")
         .leftJoinAndSelect("reservation.tripId", "trip")
         .leftJoinAndSelect("trip.departureCity", "departureCity")
         .leftJoinAndSelect("trip.destinationCity", "destinationCity")
+        .leftJoinAndSelect("trip.owner", "owner")
         .leftJoinAndSelect("reservation.passengerId", "passenger")
         .where("reservation.passengerId = :userId", { userId })
         .select([
@@ -33,6 +37,7 @@ export class TripPassengerService {
           "passenger.username AS username",
           "passenger.email AS email",
           "trip.id AS tripId",
+          "owner.username AS ownerName",
           "departureCity.name AS departureCity",
           "destinationCity.name AS destinationCity",
           "trip.pricePerSeat AS pricePerSeat",
@@ -60,6 +65,7 @@ export class TripPassengerService {
         },
         trip: {
           id: reservation.tripId,
+          ownerName: reservation.ownerName,
           departureCity: reservation.departureCity,
           destinationCity: reservation.destinationCity,
           pricePerSeat: reservation.pricePerSeat,
@@ -74,7 +80,7 @@ export class TripPassengerService {
       return data;
     } catch (error) {
       // Log the error for debugging purposes
-      console.error('Error fetching passenger trips:', error);
+      console.error("Error fetching passenger trips:", error);
 
       // Differentiate between types of errors
       if (error instanceof NotFoundException) {
@@ -84,7 +90,7 @@ export class TripPassengerService {
       // Handle other types of errors
       throw new InternalServerErrorException({
         statusCode: 500,
-        message: 'An error occurred while fetching passenger trips',
+        message: "An error occurred while fetching passenger trips",
       });
     }
   }

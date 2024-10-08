@@ -8,9 +8,13 @@ import { UserModule } from "./user/user.module";
 import { CityModule } from "./city/city.module";
 import { TripModule } from "./trip/trip.module";
 import { AuthModule } from "./auth/auth.module";
-import { ReservationModule } from "./reservation/reservation.module";
 import { StripeModule } from "./stripe/stripe.module";
+<<<<<<< HEAD
 import { NotificationModule } from './notification/notification.module';
+=======
+import {WebsocketModule} from "./websocket/websocket.module";
+import { ReservationModule } from './reservation/reservation.module';
+>>>>>>> dev
 
 @Module({
   imports: [
@@ -24,7 +28,11 @@ import { NotificationModule } from './notification/notification.module';
     AuthModule,
     ReservationModule,
     StripeModule,
+<<<<<<< HEAD
     NotificationModule,
+=======
+    WebsocketModule,
+>>>>>>> dev
   ],
   controllers: [AppController],
   providers: [AppService],

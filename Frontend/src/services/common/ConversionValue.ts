@@ -31,10 +31,15 @@ export const formatTimeForDisplay = (time: Date | null): string => {
 
   return `${hours} h ${minutes}`;
 };
-
+//POUR RECHERCHE VERS LE BACK
 export const formatDate = (date: Date | null): string | null => {
   if (!date) return null;
   return format(date, "yyyy-MM-dd");
+};
+//POUR AFFICHAGE FRONT
+export const formatDateDisplay = (date: Date | null): string | null => {
+  if (!date) return null;
+  return format(date, "dd/MM/yyyy");
 };
 
 //CALCUL DE L HEURER D ARRIVEE D UN TRAJET
