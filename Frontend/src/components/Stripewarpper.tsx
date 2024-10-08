@@ -45,12 +45,15 @@ export default function TestPaymentIntent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
       });
+console.log(response);
 
       if (!response.ok) {
         throw new Error("La réponse du réseau n'était pas correcte.");
       }
 
       const data = await response.json();
+console.log(data,"front ");
+console.log(data.client_secret);
 
       if (data.client_secret) {
         setClientSecret(data.client_secret); 

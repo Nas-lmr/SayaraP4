@@ -1,16 +1,13 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-
-/* -----------------------------------------------------------------*/
-import { ReservationEntity } from "../entity/reservation.entity";
-import { UserEntity } from "../../user/entity/user.entity";
-import { TripEntity } from "../../trip/entity/trip.entity";
-import { ReservationDto } from "../dto/reservation.dto";
-import { ReservationStatusEntity } from "../entity/reservation_status.entity";
-import { StripeService } from "../../stripe/service/stripe.service";
-
-/* -----------------------------------------------------------------*/
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ReservationEntity } from '../entity/reservation.entity';
+import { UserEntity } from '../../user/entity/user.entity';
+import { TripEntity } from '../../trip/entity/trip.entity';
+import { ReservationDto } from '../dto/reservation.dto';
+import { ReservationStatusEntity } from '../entity/reservation_status.entity';
+import { StripeService } from '../../stripe/service/stripe.service';
+import { NotificationService } from '../../notification/service/notification.service'; 
 
 @Injectable()
 export class ReservationService {
@@ -22,11 +19,11 @@ export class ReservationService {
     @InjectRepository(TripEntity)
     private readonly tripRepository: Repository<TripEntity>,
     @InjectRepository(ReservationStatusEntity)
-    private readonly reservationStsRepository: Repository<ReservationStatusEntity>,
-    private readonly paymentService: StripeService
+    private readonly reservationStatusRepository: Repository<ReservationStatusEntity>,
+    private readonly paymentService: StripeService,
+    private readonly notificationService: NotificationService
   ) {}
 
-  // make reservation
   async create(reservationData: ReservationDto): Promise<{
     status: number;
     message: string;
@@ -38,43 +35,43 @@ export class ReservationService {
         id: reservationData.passengerId,
       });
       if (!client) {
-        return { status: 400, message: "There is no passengerId" };
+        throw new HttpException('Passenger not found', HttpStatus.BAD_REQUEST);
       }
 
       const trip = await this.tripRepository
-        .createQueryBuilder("trip")
-        .innerJoinAndSelect("trip.departureCity", "departureCity")
-        .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+        .createQueryBuilder('trip')
+        .innerJoinAndSelect('trip.departureCity', 'departureCity')
+        .innerJoinAndSelect('trip.destinationCity', 'destinationCity')
         .select([
-          "trip.id",
-          "trip.availableSeats",
-          "trip.pricePerSeat",
-          "trip.departureDateTime",
-          "departureCity.name",
-          "destinationCity.name",
+          'trip.id',
+          'trip.availableSeats',
+          'trip.pricePerSeat',
+          'trip.departureDateTime',
+          'departureCity.name',
+          'destinationCity.name',
         ])
-        .where("trip.id = :id", { id: reservationData.tripId })
+        .where('trip.id = :id', { id: reservationData.tripId })
         .getOne();
 
       if (!trip) {
-        return { status: 400, message: "There is no tripId" };
+        throw new HttpException('Trip not found', HttpStatus.NOT_FOUND);
       }
-      // Check available seats
 
-      if (trip.availableSeats == 0) {
-        return { status: 400, message: "No available seats for this trip" };
+      if (trip.availableSeats === 0) {
+        throw new HttpException('No available seats', HttpStatus.BAD_REQUEST);
       }
+
       if (reservationData.seatsReserved > trip.availableSeats) {
-        return { status: 400, message: "Not enough available seats" };
+        throw new HttpException('Not enough available seats', HttpStatus.BAD_REQUEST);
       }
 
-      const reservStatus = await this.reservationStsRepository.findOneBy({
+      const reservStatus = await this.reservationStatusRepository.findOneBy({
         id: reservationData.reservationStatus,
       });
       if (!reservStatus) {
-        return { status: 400, message: "There is no reservation-statusId" };
+        throw new HttpException('Invalid reservation status', HttpStatus.BAD_REQUEST);
       }
-      // Prepare payment request data
+
       const paymentRequestBody = {
         products: [
           {
@@ -84,18 +81,15 @@ export class ReservationService {
             date: trip.departureDateTime,
           },
         ],
-        currency: "eur",
+        currency: 'eur',
         customer: {
           name: client.username,
           email: client.email,
         },
       };
 
-      // Create the payment
-      const paymentResult =
-        await this.paymentService.createPayment(paymentRequestBody);
+      const paymentResult = await this.paymentService.createPayment(paymentRequestBody);
 
-      // Create the reservation with the payment intent ID
       const reservation = this.reservationRepository.create({
         reservationStatus: reservStatus,
         passengerId: client,
@@ -107,24 +101,26 @@ export class ReservationService {
 
       await this.reservationRepository.save(reservation);
 
-      // Update available seats in the trip
       trip.availableSeats -= reservationData.seatsReserved;
       await this.tripRepository.save(trip);
 
+      await this.notificationService.notifyTripOwner(reservation)
+
       return {
-        status: 201,
-        message: "Your reservation is done and payment is processed",
+        status: HttpStatus.CREATED,
+        message: 'Reservation successful and payment processed',
         reservation,
         clientSecret: {
           client_secret: paymentResult.clientSecret,
         },
       };
     } catch (error) {
-      console.error(error);
-      return {
-        status: 500,
-        message: "An error occurred while making a reservation",
-      };
+      console.error('Error while creating reservation:', error);
+
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

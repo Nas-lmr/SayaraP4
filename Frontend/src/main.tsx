@@ -16,6 +16,7 @@ import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
+import TestsEvents from "./pages/Tets.tsx"
 
 const router = createBrowserRouter([
   {
@@ -72,8 +73,13 @@ const router = createBrowserRouter([
         path: "/reservation/:id/infos-trajet",
         element: <TestPaymentIntent />,
       },
+     
     ],
   },
+  {
+    path: "/sse",
+    element:<TestsEvents/>
+  }
 ]);
 
 const rootElement = document.getElementById("root");

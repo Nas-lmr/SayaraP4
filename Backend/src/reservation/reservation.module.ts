@@ -7,9 +7,12 @@ import { UserEntity } from "../user/entity/user.entity";
 import { ReservationStatusEntity } from "./entity/reservation_status.entity";
 import { ReservationEntity } from "./entity/reservation.entity";
 import { StripeService } from "src/stripe/service/stripe.service";
+import { NotificationService } from "src/notification/service/notification.service";
+import { NotificationEntity } from "src/notification/entity/notification.entity";
+import { NotificationTypeEntity } from "src/notification/entity/notificatioType.entity";
 
 @Module({
-  providers: [ReservationService,StripeService],
+  providers: [ReservationService,StripeService,NotificationService],
   controllers: [ReservationController],
   imports: [
     TypeOrmModule.forFeature([
@@ -17,6 +20,8 @@ import { StripeService } from "src/stripe/service/stripe.service";
       TripEntity,
       UserEntity,
       ReservationStatusEntity,
+      NotificationTypeEntity,
+      NotificationEntity
     ]),
   ],
 })
