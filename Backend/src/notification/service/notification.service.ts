@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectRepository } from "@nestjs/typeorm";
+import { ReservationEntity } from "src/reservation/entity/reservation.entity";
+import { TripEntity } from "src/trip/entity/trip.entity";
+import { UserEntity } from "src/user/entity/user.entity";
 import { Repository } from "typeorm";
 import { NotificationEntity } from "../entity/notification.entity";
 import { NotificationTypeEntity } from "../entity/notificatioType.entity";
-import { TripEntity } from "src/trip/entity/trip.entity";
-import { ReservationEntity } from "src/reservation/entity/reservation.entity";
-import { UserEntity } from "src/user/entity/user.entity";
-import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class NotificationService {
@@ -44,7 +44,7 @@ export class NotificationService {
 
     const tripOwnerId = trip.owner.id;
     const notificationContent = {
-      message: `Nouvelle demande de réservation de ${passenger.username} pour votre voyage. ${new Date().toLocaleTimeString()}`,
+      message: `Demande de réservation de ${passenger.username} à ${new Date().toLocaleTimeString()}`,
       tripId: trip.id,
       passengerId: passenger.id,
       ownerId: tripOwnerId,
@@ -76,13 +76,13 @@ export class NotificationService {
       notificationId,
     });
   }
-  
+  //fonction post pour màj notification comme lu
   async markNotificationsAsSeen(
     ownerId: number,
     notificationId: number
   ): Promise<void> {
     await this.notificationRepository.update(
-      {id:notificationId, owner: { id: ownerId }, seen: false },
+      { id: notificationId, owner: { id: ownerId }, seen: false },
       { seen: true }
     );
   }
@@ -93,6 +93,7 @@ export class NotificationService {
   ): Promise<NotificationEntity[]> {
     return this.notificationRepository.find({
       where: { owner: { id: ownerId }, seen: false },
+      relations: ["user", "owner"],
       order: { id: "DESC" },
     });
   }
@@ -106,6 +107,7 @@ export class NotificationService {
 
     const seenNotifications = await this.notificationRepository.find({
       where: { owner: { id: ownerId }, seen: true },
+      relations: ["user", "owner"],
       order: { id: "DESC" },
     });
 
