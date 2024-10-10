@@ -18,7 +18,7 @@ export default function ResultPage() {
   const [passengers, setPassengers] = useState<number>(1);
   const [availableSeats, setAvailableSeats] = useState<number>(1);
 
-  console.log(results, "REEEEEEEEEEEE");
+  
 
   const navigate = useNavigate();
   const handleSearch = async () => {

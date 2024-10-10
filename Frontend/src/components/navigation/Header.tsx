@@ -23,7 +23,7 @@ export default function Header() {
   const ownerId = decodedToken?.id;
   useEffect(() => {
     const eventSource = new EventSource(
-      `http://localhost:3310/notifications/sse/${ownerId}`
+      `${import.meta.env.VITE_BACKEND_URL}/notifications/sse/${ownerId}`
     );
 
     eventSource.onmessage = function ({ data }) {

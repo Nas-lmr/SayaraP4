@@ -13,6 +13,14 @@ import { fetchAndSaveCity } from "../../services/ville/VilleService";
 import { getRoute } from "../../utils";
 import FitBounds from "./FitBounds";
 
+import { Icon } from "leaflet";
+import markerIcon from "../../assets/images/marker-icon.png";
+
+const icon = new Icon({
+  iconUrl: markerIcon,
+  iconAnchor: [10, 50], // point of the icon which will correspond to marker's location
+  // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+});
 type Coordinates = [number, number];
 
 const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
@@ -92,7 +100,7 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
 
       {/* Marker for the first city */}
       {coords1 && (
-        <Marker position={coords1}>
+        <Marker position={coords1} icon={icon}>
           <Popup>
             {villeDepart ? `City: ${villeDepart}` : `Coordinates: ${coords1}`}
           </Popup>
@@ -101,7 +109,7 @@ const RoadMap: React.FC<IRoadMap> = ({ onRouteData }) => {
 
       {/* Marker for the second city */}
       {coords2 && (
-        <Marker position={coords2}>
+        <Marker position={coords2} icon={icon}>
           <Popup>
             {villeArrive ? `City: ${villeArrive}` : `Coordinates: ${coords2}`}
           </Popup>

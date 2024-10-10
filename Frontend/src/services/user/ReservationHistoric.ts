@@ -2,12 +2,15 @@ export const fetchPassengerReservationHistoric = async (
   id: string | undefined
 ) => {
   try {
-    const response = await fetch(`http://localhost:3310/passengerTrips/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/passengerTrips/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const responseData = await response.json();
 

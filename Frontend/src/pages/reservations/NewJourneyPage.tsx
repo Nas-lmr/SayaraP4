@@ -2,6 +2,7 @@ import { Container } from "@mui/material";
 import FormTrip from "../../components/forms/FormTrip";
 import InfoProfilNotLogged from "../../components/global/InfoProfilNotLogged";
 import { useUserContext } from "../../context/UserContext";
+import Img from "../../assets/images/TrajetImg.png";
 
 export default function NewJourneyPage() {
   const { userData } = useUserContext();
@@ -23,7 +24,7 @@ export default function NewJourneyPage() {
       {!userData ? (
         <InfoProfilNotLogged
           text=" Pour créer un trajet tu dois te connecter ou bien crées un compte!"
-          image="../../src/assets/images/TrajetImg.png"
+          image={Img}
           alt="Homme réfléchisant à côté d'une voiture"
         />
       ) : (

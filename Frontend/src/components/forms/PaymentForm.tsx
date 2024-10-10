@@ -93,7 +93,7 @@ export default function PaymentForm({
       const paymentResult = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:5173",
+          return_url: "https://sayara-wild.fr",
         },
         clientSecret,
       });

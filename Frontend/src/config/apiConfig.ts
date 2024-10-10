@@ -10,11 +10,11 @@ export const ApiConfig: IApi = {
   // TODO contains local api url
   private: {
     // TODO Fill in with the authentication url
-    login: "http://localhost:3310/login",
-    register: "http://localhost:3310/user/register",
-    postTrajet: "http://localhost:3310/trip/new-trip",
-    searchTrajet: "http://localhost:3310/trip/search",
-    socketUri: "http://localhost:3310",
+    login: `${import.meta.env.VITE_BACKEND_URL}/login`,
+    register: `${import.meta.env.VITE_BACKEND_URL}/user/register`,
+    postTrajet: `${import.meta.env.VITE_BACKEND_URL}/trip/new-trip`,
+    searchTrajet: `${import.meta.env.VITE_BACKEND_URL}/trip/search`,
+    socketUri: `${import.meta.env.VITE_BACKEND_URL}`,
   },
   // TODO contains extern api url
   // TODO example: stripe: 'https://www.stripe.com/v1'

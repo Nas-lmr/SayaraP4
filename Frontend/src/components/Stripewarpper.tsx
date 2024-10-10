@@ -14,7 +14,7 @@ export default function TestPaymentIntent() {
   const [errorMessage, setErrorMessage] = useState("");
   const [seatsReserved, setSeatsReserved] = useState<number>(1);
   const { decodedToken } = useUserContext();
-  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null); 
+  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null);
 
   const { id } = useParams<{ id: string | undefined }>();
 
@@ -38,25 +38,28 @@ export default function TestPaymentIntent() {
 
   const createReservationAndFetchClientSecret = async () => {
     setIsLoading(true);
-    setErrorMessage(""); 
+    setErrorMessage("");
     try {
-      const response = await fetch("http://localhost:3310/reservation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reservationData),
-      });
-console.log(response);
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/reservation`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reservationData),
+        }
+      );
+      console.log(response);
 
       if (!response.ok) {
         throw new Error("La réponse du réseau n'était pas correcte.");
       }
 
       const data = await response.json();
-console.log(data,"front ");
-console.log(data.client_secret);
+      console.log(data, "front ");
+      console.log(data.client_secret);
 
       if (data.client_secret) {
-        setClientSecret(data.client_secret); 
+        setClientSecret(data.client_secret);
       } else {
         setErrorMessage(
           data.message ||

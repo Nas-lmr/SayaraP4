@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
 import { fetchUserNotification } from "../../services/user/NotificationService";
 import NotificationCard from "../cards/NotificationCard";
+interface NotificationInterface {
+  seen: boolean;
+}
 
 export default function NotificationContainer() {
-  const [content, setContent] = useState([]); // Les données de notification
+  const [content, setContent] = useState<NotificationInterface[]>([]); // Les données de notification
   const [error, setError] = useState<string | null>(null); // Les erreurs éventuelles
   const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
   const { decodedToken } = useUserContext();

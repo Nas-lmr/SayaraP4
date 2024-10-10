@@ -1,4 +1,7 @@
 import { Box, Typography } from "@mui/material";
+import EuroLogo from "../../assets/icons/fi-br-euro.svg";
+import PouceLogo from "../../assets/icons/fi-br-thumbs-up.svg"
+import LeafLogo from "../../assets/icons/fi-br-leaf.svg"
 
 export default function ObjectiveInfo() {
   return (
@@ -51,7 +54,7 @@ export default function ObjectiveInfo() {
           >
             <Box
               component="img"
-              src="../src/assets/icons/fi-br-euro.svg"
+              src={EuroLogo}
               alt="Icone du sigle euro"
               sx={{ height: { xs: 15, sm: 17, md: 25 } }}
             />
@@ -98,7 +101,7 @@ export default function ObjectiveInfo() {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box
               component="img"
-              src="../src/assets/icons/fi-br-thumbs-up.svg"
+              src={PouceLogo}
               alt="Icone d'un pouce en l'air"
               sx={{ height: { xs: 15, sm: 17, md: 25 } }}
             />
@@ -145,7 +148,7 @@ export default function ObjectiveInfo() {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box
               component="img"
-              src="../src/assets/icons/fi-br-leaf.svg"
+              src={LeafLogo}
               alt="Icone d'une feuille"
               sx={{ height: { xs: 15, sm: 17, md: 25 } }}
             />

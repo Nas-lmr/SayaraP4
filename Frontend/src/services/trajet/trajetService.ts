@@ -21,7 +21,6 @@ export const usePostTrajet = () => {
       });
 
       if (response.ok) {
-        console.log(response, "testtest");
         return await response.json(); // Récupère la réponse si nécessaire
       } else {
         const errorData = await response.json();
@@ -56,7 +55,9 @@ export const searchTrajet = async (params: ISearchTrajet) => {
 
     const response = await fetch(
       // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
-      `http://localhost:3310/trip/filtre?dCity=${departureCity}&aCity=${arrivalCity}&dDate=${travelDate}`,
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/trip/filtre?dCity=${departureCity}&aCity=${arrivalCity}&dDate=${travelDate}`,
       {
         method: "GET",
         headers: {
@@ -72,7 +73,6 @@ export const searchTrajet = async (params: ISearchTrajet) => {
     }
 
     const data = await response.json();
-    console.log(data, "DATAAAAA");
 
     return data;
   } catch (error) {
@@ -86,7 +86,7 @@ export const trajetInfo = async (params: IInfoTrajet) => {
   try {
     const response = await fetch(
       // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
-      `http://localhost:3310/trip/one/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/trip/one/${id}`,
       {
         method: "GET",
         headers: {

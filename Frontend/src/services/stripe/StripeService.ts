@@ -6,13 +6,16 @@ export const stripePayment = async ({
   seatsReserved,
 }: IStripeProduct) => {
   try {
-    const response = await fetch(`http://localhost:3310/reservation`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ passengerId, tripId, seatsReserved }),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/reservation`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ passengerId, tripId, seatsReserved }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(

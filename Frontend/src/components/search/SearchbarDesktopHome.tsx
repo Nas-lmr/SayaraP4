@@ -26,7 +26,6 @@ export default function SearchbarDesktopHome() {
   // Fonction appelée lors de la recherche
   const handleSearch = async () => {
     // Validation des paramètres avant la recherche
-    console.log("APPLIQUEEEEE");
 
     if (!departureCity || !arrivalCity || !travelDate) {
       console.error("Veuillez remplir tous les champs");
@@ -40,12 +39,10 @@ export default function SearchbarDesktopHome() {
       travelDate: formatDate(travelDate),
       // passengers,
     };
-    console.log(params, "PARAMSSS");
 
     try {
       // Appel de la fonction de recherche
       const results = await searchTrajet(params);
-      console.log("RESULT:", results, "PARAMS:", params);
 
       navigate("/trajet/resultats", {
         state: { results },

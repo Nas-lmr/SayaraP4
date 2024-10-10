@@ -6,4 +6,5 @@ export interface IStripeProduct {
   setSeatsReserved: (seats: number) => void;
   tripId: string;
   trajet: IInfoTrajetId | null;
+  passengerId?: number;
 }

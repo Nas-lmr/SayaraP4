@@ -2,6 +2,7 @@ import { Container } from "@mui/material";
 import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
 import ProfilSection from "../components/global/ProfilSection";
 import { useUserContext } from "../context/UserContext";
+import Img from "../assets/images/ProfilImg.png"
 
 export default function ProfilPage() {
   const { userData } = useUserContext();
@@ -22,7 +23,7 @@ export default function ProfilPage() {
       {!userData ? (
         <InfoProfilNotLogged
           text="Pour accéder à ton profil, tu dois te connecter ou bien créer un compte !"
-          image="../src/assets/images/ProfilImg.png"
+          image={Img}
           alt="Homme souriant"
         />
       ) : (

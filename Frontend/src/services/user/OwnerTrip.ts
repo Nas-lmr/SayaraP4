@@ -4,7 +4,7 @@ export const fetchOwnerTripReservationHistoric = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:3310/ownerTrip/${ownerId}/${tripId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/ownerTrip/${ownerId}/${tripId}`,
       {
         method: "GET",
         headers: {
@@ -14,7 +14,6 @@ export const fetchOwnerTripReservationHistoric = async (
     );
 
     const responseData = await response.json();
-    console.log(responseData, "RRRRRRRRRRRRRRRRRRRRRRRR");
 
     if (response.ok) {
       return {
@@ -39,12 +38,15 @@ export const fetchOwnerTripReservationHistoric = async (
 
 export const fetchOwnerTrip = async (id: string | undefined) => {
   try {
-    const response = await fetch(`http://localhost:3310/ownerTrip/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/ownerTrip/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const responseData = await response.json();
 

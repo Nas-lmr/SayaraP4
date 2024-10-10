@@ -1,6 +1,5 @@
 import { Container } from "@mui/material";
-import StripeWrapper from "../components/Stripewarpper";
-
+//TODO REMOVE
 export default function TestStripe() {
   return (
     <Container
@@ -14,8 +13,6 @@ export default function TestStripe() {
         display: "flex",
         justifyContent: "center",
       }}
-    >
-      <StripeWrapper amount={200} />;
-    </Container>
+    ></Container>
   );
 }
