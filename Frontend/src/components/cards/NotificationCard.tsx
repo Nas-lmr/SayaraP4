@@ -9,8 +9,15 @@ import {
 } from "@mui/material";
 import ToProfilBtn from "../buttons/ToProfilBtn";
 import DetailNotification from "./DetailNotification";
+import { Notification } from "../../interfaces/notification/notification";
 
-export default function NotificationCard({ informations }: any) {
+interface DetailNotificationProps {
+  informations: Notification; 
+}
+
+export default function NotificationCard({ informations }:DetailNotificationProps ) {
+  
+  
   return (
     <>
       <Accordion sx={{ "&.MuiPaper-root": { borderRadius: "0.5rem 0.5rem " } }}>
@@ -44,10 +51,10 @@ export default function NotificationCard({ informations }: any) {
             p: 0,
           }}
         >
-          <DetailNotification />
+          <DetailNotification informations={ informations} />
         </AccordionDetails>
         <Divider />
-        <ToProfilBtn />
+        <ToProfilBtn informations={informations}  />
       </Accordion>
     </>
   );
