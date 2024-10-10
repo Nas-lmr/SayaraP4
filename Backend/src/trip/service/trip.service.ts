@@ -141,8 +141,6 @@ export class TripService {
     aCity: string,
     dateTrip: string
   ): Promise<any[]> {
-    console.log(dateTrip, "DAAATETTETETETEE");
-
     return await this.tripRepository
       .createQueryBuilder("trip")
       .innerJoinAndSelect("trip.departureCity", "departureCity")

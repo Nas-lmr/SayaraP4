@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectRepository } from "@nestjs/typeorm";
+import { ReservationEntity } from "src/reservation/entity/reservation.entity";
+import { TripEntity } from "src/trip/entity/trip.entity";
+import { UserEntity } from "src/user/entity/user.entity";
 import { Repository } from "typeorm";
 import { NotificationEntity } from "../entity/notification.entity";
 import { NotificationTypeEntity } from "../entity/notificatioType.entity";
-import { TripEntity } from "src/trip/entity/trip.entity";
-import { ReservationEntity } from "src/reservation/entity/reservation.entity";
-import { UserEntity } from "src/user/entity/user.entity";
-import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class NotificationService {
@@ -44,7 +44,7 @@ export class NotificationService {
 
     const tripOwnerId = trip.owner.id;
     const notificationContent = {
-      message: `Nouvelle demande de réservation de ${passenger.username} pour votre voyage. ${new Date().toLocaleTimeString()}`,
+      message: `Demande de réservation de ${passenger.username} à ${new Date().toLocaleTimeString()}`,
       tripId: trip.id,
       passengerId: passenger.id,
       ownerId: tripOwnerId,
@@ -79,7 +79,6 @@ export class NotificationService {
       notificationId,
     });
   }
-
   async markNotificationsAsSeen(
     ownerId: number,
     notificationId: number
@@ -102,6 +101,7 @@ export class NotificationService {
       .leftJoinAndSelect("notification.reservationId", "reservation")
       .leftJoinAndSelect("notification.type", "notificationType")
       .leftJoinAndSelect("notification.owner","ownerID")
+      .leftJoinAndSelect("notification.user","passenger")
       .where("notification.owner = :ownerId", { ownerId })
       .andWhere("notification.seen = :seen", { seen: false })
       .select([
@@ -109,6 +109,7 @@ export class NotificationService {
         "notification.content",
         "notification.seen",
         "ownerID.id",
+        "passenger",
         "trip.id",
         "trip.departureDateTime",
         "departureCity.name",
@@ -135,6 +136,7 @@ export class NotificationService {
       .leftJoinAndSelect("notification.reservationId", "reservation")
       .leftJoinAndSelect("notification.type", "notificationType")
       .leftJoinAndSelect("notification.owner", "ownerID")
+      .leftJoinAndSelect("notification.user","passenger")
       .where("notification.owner = :ownerId", { ownerId })
       .andWhere("notification.seen = :seen", { seen: true })
       .select([
@@ -142,6 +144,7 @@ export class NotificationService {
         "notification.content",
         "notification.seen",
         "ownerID.id",
+        "passenger",
         "trip.id",
         "departureCity.name",
         "destinationCity.name",
