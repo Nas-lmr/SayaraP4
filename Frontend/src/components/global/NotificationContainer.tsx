@@ -3,26 +3,24 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
 import { fetchUserNotification } from "../../services/user/NotificationService";
 import NotificationCard from "../cards/NotificationCard";
-interface NotificationInterface {
-  seen: boolean;
-}
+import { Notification } from "../../interfaces/notification/notification";
+
 
 export default function NotificationContainer() {
-  const [content, setContent] = useState<NotificationInterface[]>([]); // Les données de notification
-  const [error, setError] = useState<string | null>(null); // Les erreurs éventuelles
-  const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
+  const [content, setContent] = useState<Notification[]>([]); 
+  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState<boolean>(true); 
   const { decodedToken } = useUserContext();
   const ownerId = decodedToken?.id;
 
-  // Fetch des notifications lors du montage du composant
   useEffect(() => {
     if (ownerId) {
       fetchUserNotification(ownerId)
         .then((response) => {
           if (response.success) {
-            setContent(response.data); // Stocke les notifications dans l'état
+            setContent(response.data); 
           } else {
-            setError(response.error); // Enregistre l'erreur si la requête échoue
+            setError(response.error); 
           }
         })
         .catch((err) => {
@@ -32,7 +30,7 @@ export default function NotificationContainer() {
           );
         })
         .finally(() => {
-          setLoading(false); // Quoi qu'il arrive, on arrête le chargement
+          setLoading(false); 
         });
     }
   }, [ownerId]);
@@ -42,6 +40,8 @@ export default function NotificationContainer() {
     (notification) => !notification.seen
   );
 
+  // console.log(content,"test");
+  
   return (
     <Box sx={{ height: "100%", width: "90%", pt: "1rem" }}>
       <Typography

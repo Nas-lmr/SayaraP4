@@ -58,25 +58,27 @@ export class NotificationService {
     if (!notificationType) {
       throw new NotFoundException("Notification type not found");
     }
-
     const notification = this.notificationRepository.create({
       content: notificationContent.message,
       user: reservation.passengerId,
       owner: trip.owner,
       type: notificationType,
+      tripId: trip,
+      reservationId: reservation,
     });
 
     const savedNotification =
       await this.notificationRepository.save(notification);
+
     const notificationId = savedNotification.id;
-    // Emit the notification event through EventEmitter2
+
+    // Emit the notification event through EventEmitter2  for the sse 
     this.eventEmitter.emit("notification.event", {
       message: notificationContent.message,
       ownerId: tripOwnerId,
       notificationId,
     });
   }
-  //fonction post pour màj notification comme lu
   async markNotificationsAsSeen(
     ownerId: number,
     notificationId: number
@@ -87,29 +89,71 @@ export class NotificationService {
     );
   }
 
-  // Fetch missed notif
+  // Fetch missed notifications 
   async getMissedNotificationsByOwnerId(
     ownerId: number
   ): Promise<NotificationEntity[]> {
-    return this.notificationRepository.find({
-      where: { owner: { id: ownerId }, seen: false },
-      relations: ["user", "owner"],
-      order: { id: "DESC" },
-    });
+    return await this.notificationRepository
+      .createQueryBuilder("notification")
+      .leftJoinAndSelect("notification.tripId", "trip")
+      .leftJoinAndSelect("trip.departureCity", "departureCity")
+      .leftJoinAndSelect("trip.destinationCity", "destinationCity")
+      .leftJoinAndSelect("notification.reservationId", "reservation")
+      .leftJoinAndSelect("notification.type", "notificationType")
+      .leftJoinAndSelect("notification.owner","ownerID")
+      .leftJoinAndSelect("notification.user","passenger")
+      .where("notification.owner = :ownerId", { ownerId })
+      .andWhere("notification.seen = :seen", { seen: false })
+      .select([
+        "notification.id",
+        "notification.content",
+        "notification.seen",
+        "ownerID.id",
+        "passenger",
+        "trip.id",
+        "trip.departureDateTime",
+        "departureCity.name",
+        "destinationCity.name",
+        "reservation",
+        "notificationType.name",
+      ])
+      .orderBy("notification.id", "DESC")
+      .getMany();
   }
 
-  // Fetch all notif prioritizing missed notifications
+  // Fetch all notifications
   async getAllNotificationsByOwnerId(
     ownerId: number
   ): Promise<NotificationEntity[]> {
     const missedNotifications =
       await this.getMissedNotificationsByOwnerId(ownerId);
 
-    const seenNotifications = await this.notificationRepository.find({
-      where: { owner: { id: ownerId }, seen: true },
-      relations: ["user", "owner"],
-      order: { id: "DESC" },
-    });
+    const seenNotifications = await this.notificationRepository
+      .createQueryBuilder("notification")
+      .leftJoinAndSelect("notification.tripId", "trip")
+      .leftJoinAndSelect("trip.departureCity", "departureCity")
+      .leftJoinAndSelect("trip.destinationCity", "destinationCity")
+      .leftJoinAndSelect("notification.reservationId", "reservation")
+      .leftJoinAndSelect("notification.type", "notificationType")
+      .leftJoinAndSelect("notification.owner", "ownerID")
+      .leftJoinAndSelect("notification.user","passenger")
+      .where("notification.owner = :ownerId", { ownerId })
+      .andWhere("notification.seen = :seen", { seen: true })
+      .select([
+        "notification.id",
+        "notification.content",
+        "notification.seen",
+        "ownerID.id",
+        "passenger",
+        "trip.id",
+        "departureCity.name",
+        "destinationCity.name",
+        "trip.departureDateTime",
+        "reservation",
+        "notificationType.name",
+      ])
+      .orderBy("notification.id", "DESC")
+      .getMany();
 
     return [...missedNotifications, ...seenNotifications];
   }

@@ -1,12 +1,10 @@
-import { Container, Typography } from "@mui/material";
-import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
-import { TchatErrorComponent } from "../components/chat/TchatErrorComponent";
-import { useRoom } from "../hooks/messages/useRoom";
-import { PageMessageComponent } from "../components/chat/PageMessageComponent";
+import { Container } from "@mui/material";
 import Img from "../assets/images/MsgImg.png";
+import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
+import { useRoom } from "../hooks/messages/useRoom";
 
 export default function TchatPage() {
-  const { userData, error } = useRoom();
+  const { userData } = useRoom();
 
   return (
     <Container
@@ -30,12 +28,9 @@ export default function TchatPage() {
         />
       ) : (
         <>
-          {error && <TchatErrorComponent error={error} />}
-          {!error ? (
-            <PageMessageComponent />
-          ) : (
-            <Typography variant="h6">Pas de room sélectionner</Typography>
-          )}
+          <h1> en cours de contruction </h1>
+          {/* {error && <TchatErrorComponent error={error} />}
+              {!error ? (<PageMessageComponent />) : (<Typography variant="h6">Pas de room sélectionner</Typography>)} */}
         </>
       )}
     </Container>
