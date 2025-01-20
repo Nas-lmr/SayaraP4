@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 import NavDesktop from "./NavDesktop";
-import logo from "/assets/images/Sayara-logo.png";
+import logo from "../../assets/images/Sayara-logo.png";
 
 export default function Header() {
   const location = useLocation();
