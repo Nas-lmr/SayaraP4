@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import TestPaymentIntent from "./components/Stripewarpper.tsx";
+import StripePaymentIntent from "./components/Stripewarpper.tsx";
 import { UserContextProvider } from "./context/UserContext.tsx";
 import "./index.css";
 import MainLayout from "./layouts/MainLayout.tsx";
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
 
       {
         path: "/trajet/reservation/:id/infos-trajet",
-        element: <TestPaymentIntent />,
+        element: <StripePaymentIntent amount={undefined} />,
       },
      
       {

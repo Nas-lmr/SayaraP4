@@ -10,8 +10,8 @@ export default function NotificationContainer() {
   const [content, setContent] = useState<Notification[]>([]); 
   const [error, setError] = useState<string | null>(null); 
   const [loading, setLoading] = useState<boolean>(true); 
-  const { decodedToken } = useUserContext();
-  const ownerId = decodedToken?.id;
+  const { userData } = useUserContext();
+  const ownerId = userData?.user?.id;
 
   useEffect(() => {
     if (ownerId) {
@@ -40,7 +40,6 @@ export default function NotificationContainer() {
     (notification) => !notification.seen
   );
 
-  // console.log(content,"test");
   
   return (
     <Box sx={{ height: "100%", width: "90%", pt: "1rem" }}>

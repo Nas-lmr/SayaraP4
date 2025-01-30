@@ -1,7 +1,5 @@
 import {Container} from "@mui/material";
-// import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
-// import {TchatErrorComponent} from "../components/chat/TchatErrorComponent";
-// import {PageMessageComponent} from "../components/chat/PageMessageComponent";
+
 
 export default function TchatPage() {
 
@@ -23,8 +21,7 @@ export default function TchatPage() {
         
             <>
              <h1> en cours de contruction </h1>
-              {/* {error && <TchatErrorComponent error={error} />}
-              {!error ? (<PageMessageComponent />) : (<Typography variant="h6">Pas de room sélectionner</Typography>)} */}
+              
             </>
           
       }

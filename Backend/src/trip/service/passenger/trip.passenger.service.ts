@@ -79,15 +79,12 @@ export class TripPassengerService {
 
       return data;
     } catch (error) {
-      // Log the error for debugging purposes
       console.error("Error fetching passenger trips:", error);
 
-      // Differentiate between types of errors
       if (error instanceof NotFoundException) {
-        throw error; // rethrow not found exception
+        throw error; 
       }
 
-      // Handle other types of errors
       throw new InternalServerErrorException({
         statusCode: 500,
         message: "An error occurred while fetching passenger trips",

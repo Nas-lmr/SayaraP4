@@ -25,12 +25,13 @@ export default function ValidationTrajet({
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { decodedToken } = useUserContext();
+  const { userData } = useUserContext();
   const navigate = useNavigate();
   const postTrajet = usePostTrajet();
 
+  
   const handleConfirm = async () => {
-    if (decodedToken?.id) {
+    if (userData) {
       setLoading(true);
       setError(null);
       try {

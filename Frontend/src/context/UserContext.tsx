@@ -1,50 +1,33 @@
-import { jwtDecode } from "jwt-decode";
 import {
   createContext,
   ReactNode,
   useContext,
   useMemo,
   useState,
-  useEffect,
+   useEffect,
+
 } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { IDecodedToken } from "../interfaces/context/IDecodedToken";
 import { IUserContext } from "../interfaces/context/IUserContext";
 import { IUserInfo } from "../interfaces/context/IUserInfo";
 
-// Création du contexte utilisateur
+
 const userContext = createContext<IUserContext | null>(null);
-
 export function UserContextProvider({ children }: { children: ReactNode }) {
-  // État pour stocker les données utilisateur et le token décodé
-  const [decodedToken, setDecodedToken] = useState<IDecodedToken | null>(null);
-  const [userData, setUserData] = useLocalStorage<IUserInfo | null>(
-    "user",
-    null
-  );
+  const [userData, setUserData] = useState<IUserInfo | null>(null);
 
-  // Restaurer le token à partir des données utilisateur lors du rechargement
-  useEffect(() => {
-    if (userData && userData.token) {
-      const decoded = jwtDecode<IDecodedToken>(userData.token);
-      setDecodedToken(decoded);
-    } else {
-      setDecodedToken(null);
-    }
-  }, [userData]);
 
-  // Fonction de login pour définir les données utilisateur
-  const login = (userInfo: IUserInfo) => {
-    setUserData(userInfo); // Stocke les données utilisateur
-    const decoded = jwtDecode<IDecodedToken>(userInfo.token); // Décode le token JWT
-    setDecodedToken(decoded); // Met à jour le token décodé dans l'état
+  const login = async (userInfo: IUserInfo) => {
+    setUserData(userInfo); 
+    await persistLogin();
   };
 
-  // Fonction de logout pour effacer les données utilisateur
+  console.log(userData, "context ");
+  
   const logout = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
+        // `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
+        'http://localhost:3310/user/logout',
         {
           method: "POST",
           credentials: "include",
@@ -53,9 +36,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
       );
 
       if (response.status === 200) {
-        localStorage.clear(); // Vide le localStorage
-        setUserData(null); // Supprime les données utilisateur
-        setDecodedToken(null); // Réinitialise le token décodé
+        setUserData(null); 
       } else {
         console.error("Failed to logout. Please try again.");
       }
@@ -64,16 +45,46 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Utilise useMemo pour mémoriser les valeurs du contexte
+
+  // une function pour surveiller si l'utilisateur est connecté 
+  const persistLogin = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3310/persist',
+        {
+          method: "GET",
+          credentials: "include", 
+        }
+      );
+
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("Persisted user data:", data);
+
+        setUserData(data);
+      } else {
+        console.warn("error the User might be logged out.");
+      }
+    } catch (err) {
+      console.error("Error persisting login:", err);
+    }
+  };
+
+
+  useEffect(() => {
+    persistLogin();
+  }, []);
+
+
   const contextValue = useMemo(
     () => ({
       userData,
       setUserData,
       login,
       logout,
-      decodedToken,
     }),
-    [userData, decodedToken]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [userData]
   );
 
   return (
@@ -81,7 +92,6 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook pour accéder au contexte utilisateur
 export const useUserContext = () => {
   const context = useContext(userContext);
   if (!context) {

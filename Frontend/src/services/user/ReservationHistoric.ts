@@ -1,9 +1,8 @@
-export const fetchPassengerReservationHistoric = async (
-  id: string | undefined
-) => {
+export const fetchPassengerReservationHistoric = async (id: number) => {
   try {
     const response = await fetch(`http://localhost:3310/passengerTrips/${id}`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

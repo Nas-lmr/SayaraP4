@@ -5,7 +5,7 @@ import { useUserContext } from "../../context/UserContext";
 import ProfilBtn from "../buttons/ProfilBtn";
 
 export default function ProfilSection() {
-  const { decodedToken } = useUserContext();
+  const { userData } = useUserContext();
   return (
     <Box
       sx={{
@@ -57,7 +57,7 @@ export default function ProfilSection() {
             width: "90%",
           }}
         >
-          {decodedToken?.username}
+          {userData?.user?.username}
         </Typography>
       </Box>
       <Box

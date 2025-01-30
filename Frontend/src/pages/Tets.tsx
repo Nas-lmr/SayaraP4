@@ -3,8 +3,8 @@ import { useUserContext } from "../context/UserContext";
 
 export default function TestEvents() {
   const [test, setTest] = useState<string | null>(null);
-  const { decodedToken } = useUserContext();
-  const ownerId = decodedToken?.id;
+  const { userData } = useUserContext();
+  const ownerId = userData?.user?.id;
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -12,7 +12,6 @@ export default function TestEvents() {
     );
 
     eventSource.onmessage = function ({ data }) {
-      console.log(data, "testets");
 
       try {
         const parsedData = JSON.parse(data);

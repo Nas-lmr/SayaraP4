@@ -1,9 +1,10 @@
-export const fetchUserNotification = async (ownerId: string) => {
+export const fetchUserNotification = async (ownerId: number) => {
   try {
     const response = await fetch(
       `http://localhost:3310/notifications/${ownerId}`,
       {
         method: "GET",
+        
         headers: {
           "Content-Type": "application/json",
         },
