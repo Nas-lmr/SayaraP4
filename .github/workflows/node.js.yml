@@ -11,32 +11,40 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Utilisation de l'environnement Ubuntu pour les builds
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]  # Test avec plusieurs versions de Node.js
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Cloner le code source depuis le dépôt GitHub
+      uses: actions/checkout@v4  # Cloner le code source depuis GitHub
 
     - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4  # Installer la version de Node.js selon la matrice
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'  # Cache des dépendances npm pour améliorer les performances
+        cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci  # Installe les dépendances en utilisant 'npm ci' pour garantir une installation propre
+    - name: Install root dependencies
+      run: npm ci  # Installe les dépendances de la racine du projet
 
-    - name: Run ESLint
-      run: npm run lint  # Exécuter ESLint pour vérifier la qualité du code
+    - name: Run ESLint on frontend
+      run: npm run lint --prefix frontend  # Exécute ESLint dans le répertoire 'frontend'
 
-    - name: Run build
-      run: npm run build --if-present  # Exécuter le build si un script 'build' est défini dans package.json
+    - name: Run build frontend
+      run: npm run build:frontend  # Exécute le build du frontend
 
-    - name: Run tests
-      run: npm test  # Exécuter les tests unitaires ou d'intégration
+    - name: Run tests frontend
+      run: npm run test --prefix frontend  # Exécute les tests du frontend
+
+    - name: Run ESLint on backend
+      run: npm run lint --prefix backend  # Exécute ESLint dans le répertoire 'backend'
+
+    - name: Run build backend
+      run: npm run build:backend  # Exécute le build du backend
+
+    - name: Run tests backend
+      run: npm run test --prefix backend  # Exécute les tests du backend
+
+
+   
 
  
