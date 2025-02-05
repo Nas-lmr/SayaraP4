@@ -5,9 +5,9 @@ name: CI - Tests Backend
 
 on:
   push:
-    branches: [ "**" ]
+    branches: [ "city.service" ]
   pull_request:
-    branches: [ "**" ]
+    branches: [ "city.service" ]
 
 jobs:
   test-backend:
