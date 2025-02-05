@@ -5,16 +5,16 @@ name: CI - Tests Backend
 
 on:
   push:
-    branches: [ "city.service" ]
+    branches: [ "**" ]  # Déclenche les tests sur chaque commit dans toutes les branches
   pull_request:
-    branches: [ "city.service" ]
+    branches: [ "**" ]  # Déclenche les tests avant la fusion d'une PR dans n'importe quelle branche
 
 jobs:
   test-backend:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout du code
       uses: actions/checkout@v4
 
     - name: Installer Node.js
@@ -30,7 +30,10 @@ jobs:
     - name: Exécuter les tests unitaires Backend
       run: |
         cd Backend
-        npm run test -- city.service  # Lance les tests unitaires Jest
+        npm run test -- src/city/service/city.service.spec.ts  # Exécute les tests unitaires Jest
+
+
+
 
      
 
