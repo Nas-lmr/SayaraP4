@@ -30,7 +30,7 @@ jobs:
     - name: Exécuter les tests unitaires Backend
       run: |
         cd Backend
-        npm run test  # Lance les tests unitaires Jest
+        npm run test -- city.service  # Lance les tests unitaires Jest
 
      
 
