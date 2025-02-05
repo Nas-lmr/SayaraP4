@@ -61,6 +61,7 @@ export default function HistoricReservationCard({
     parsedDurationTime
   );
   const ArrivalTimeFormated = formatTime(ArrivalTime);
+  
   return (
     <Card
       sx={{

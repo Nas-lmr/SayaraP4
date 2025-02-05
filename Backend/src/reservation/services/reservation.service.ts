@@ -34,7 +34,9 @@ export class ReservationService {
       const client = await this.userRepository.findOneBy({
         id: reservationData.passengerId,
       });
-      if (!client) {
+      console.log("Passenger ID received:", reservationData.passengerId);
+
+      if (! reservationData.passengerId) {
         throw new HttpException('Passenger not found', HttpStatus.BAD_REQUEST);
       }
 

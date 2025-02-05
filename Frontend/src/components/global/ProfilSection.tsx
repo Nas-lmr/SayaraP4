@@ -86,13 +86,13 @@ export default function ProfilSection() {
         >
           <ProfilBtn
             label="Historique des réservations"
-            onclick={() => console.log("salut")}
+            onclick={() => console.info("salut")}
           />
         </NavLink>
         <NavLink to="/trajet/mes-trajets" style={{ textDecoration: "none" }}>
           <ProfilBtn
             label="Historique des trajets"
-            onclick={() => console.log("salut")}
+            onclick={() => console.info("salut")}
           />
         </NavLink>
       </Box>

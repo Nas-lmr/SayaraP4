@@ -11,7 +11,7 @@ export default function Header() {
   const location = useLocation();
   const pathname = location.pathname;
   const [message, setMessage] = useState<string | null>(null);
-  const { userData, decodedToken } = useUserContext();
+  const { userData } = useUserContext();
 
   const activeStyle = {
     backgroundColor: "#321F47",
@@ -20,7 +20,7 @@ export default function Header() {
     borderRadius: "0 0 1rem 1rem",
   };
 
-  const ownerId = decodedToken?.id;
+  const ownerId = userData?.user?.id;
   useEffect(() => {
     const eventSource = new EventSource(
       `http://localhost:3310/notifications/sse/${ownerId}`

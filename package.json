@@ -3,15 +3,15 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-        "dev:frontend": "npm run dev --prefix frontend",
-        "dev:backend": "npm run dev --prefix backend",
-        "build": "npm run build:frontend && npm run build:backend",
-        "build:frontend": "npm run build --prefix frontend",
-        "build:backend": "npm run build --prefix backend",
-        "lint": "npm run lint:frontend && npm run lint:backend",
-        "lint:frontend": "npm run lint --prefix frontend",
-        "lint:backend": "npm run lint --prefix backend"
+        "dev": "concurrently \"npm run dev:Frontend\" \"npm run dev:Backend\"",
+        "dev:Frontend": "npm run dev --prefix Frontend",
+        "dev:Backend": "npm run dev --prefix Backend",
+        "build": "npm run build:Frontend && npm run build:Backend",
+        "build:Frontend": "npm run build --prefix Frontend",
+        "build:Backend": "npm run build --prefix Backend",
+        "lint": "npm run lint:Frontend && npm run lint:Backend",
+        "lint:Frontend": "npm run lint --prefix Frontend",
+        "lint:Backend": "npm run lint --prefix Backend"
     },
     "devDependencies": {
         "concurrently": "^8.2.2"

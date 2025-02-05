@@ -15,7 +15,6 @@ export default function OwnerTripContainer() {
     if (id) {
       fetchOwnerTrip(id)
         .then((response) => {
-          console.log(response, "gggg");
           
           if (response.success) {
             setInformations(response.data);

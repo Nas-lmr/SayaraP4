@@ -26,9 +26,9 @@ export default function StripePaymentIntent({ amount }: StripePaymentIntentProps
   const { id } = useParams<{ id: string | undefined }>();
 
   const reservationData = {
-    seatsReserved: seatsReserved, // Nombre de places réservées
-    tripId: id, // ID du trajet
-    passengerId: userData?.user?.id, // ID du passager
+    seatsReserved: seatsReserved, 
+    tripId: id, 
+    passengerId: userData?.user?.id, 
   };
 console.log(reservationData, "striperpayment intent");
 
@@ -36,7 +36,7 @@ console.log(reservationData, "striperpayment intent");
     const fetchTrajetId = async () => {
       try {
         const response = await trajetInfo({ id: id ?? "" });
-        setTrajet(response.data); // Récupération des données du trajet
+        setTrajet(response.data); 
       } catch (error) {
         console.error("Erreur lors de la récupération du trajet :", error);
       }

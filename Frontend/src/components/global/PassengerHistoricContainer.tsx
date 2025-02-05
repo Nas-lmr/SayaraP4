@@ -38,11 +38,11 @@ export default function PassengerHistoricContainer() {
         alignItems: "center",
         overflow: "auto",
         pb: "2rem",
-        "&::-webkitScrollbar": {
+        "&::-webkit-scrollbar": {
           display: "none", // Cache la scrollbar pour les navigateurs basés sur Webkit (Chrome, Safari, etc.)
         },
-        "MsOverflowStyle": "none", // Cache la scrollbar pour Internet Explorer et Edge
-        "scrollbarWidth": "none", // Cache la scrollbar pour Firefox
+        "-ms-over-flow-style": "none", // Cache la scrollbar pour Internet Explorer et Edge
+        "scrollbar-width": "none", // Cache la scrollbar pour Firefox
       }}
     >
       <Box
@@ -73,9 +73,11 @@ export default function PassengerHistoricContainer() {
             sx={{
               height: { xs: "30%", sm: "100%", md: "40%" },
               width: "100%",
+              maxHeight:"20%",
               display: "flex",
               justifyContent: "center",
               mt: "1rem",
+
             }}
           >
             <HistoricReservationCard key={index} reservation={reservation} />

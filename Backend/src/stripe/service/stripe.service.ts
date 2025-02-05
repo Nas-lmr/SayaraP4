@@ -74,7 +74,6 @@ export class StripeService {
         payment_method: paymentMethodId,
       }
     );
-    console.log(confirmedPaymentIntent, "stripeservice");
 
     return confirmedPaymentIntent;
   }
