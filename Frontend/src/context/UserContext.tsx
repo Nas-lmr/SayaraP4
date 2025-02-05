@@ -92,6 +92,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useUserContext = () => {
   const context = useContext(userContext);
   if (!context) {
