@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: estlint/ prettier check
+name: eslint check
 
 on:
   push:
@@ -18,24 +18,17 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Vérifier la structure des fichiers
-      run: ls -R
-
-    - name: Installer les dépendances du Frontend
-      run: |
-        cd Frontend
-        npm ci
-
-    - name: Installer les dépendances du Backend
-      run: |
-        cd Backend
-        npm ci
+      run: ls -R  # Vérifie la structure des fichiers
 
     - name: Lancer ESLint sur le Frontend
       run: |
         cd Frontend
-        npm run lint
+        npm install  # Installe les dépendances si elles ne sont pas déjà présentes
+        npm run lint  # Exécute ESLint sur le frontend
 
     - name: Lancer ESLint sur le Backend
       run: |
         cd Backend
-        npm run lint
+        npm install  # Installe les dépendances si elles ne sont pas déjà présentes
+        npm run lint  # Exécute ESLint sur le backend
+
