@@ -1,8 +1,18 @@
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import { Box, Typography } from "@mui/material";
+import { formatDateDisplay,formatTime } from "../../services/common/ConversionValue";
+import { Notification } from "../../interfaces/notification/notification";
 
-export default function DetailNotification() {
+interface DetailNotificationProps {
+  informations: Notification; 
+}
+
+
+export default function DetailNotification({ informations }: DetailNotificationProps) {
+
+const formateDateTime = new Date(informations.tripId.departureDateTime)
+
   return (
     <Box
       sx={{
@@ -23,7 +33,7 @@ export default function DetailNotification() {
             color: "#321F47",
           }}
         >
-          Départ: 06/09/2024 à 15h30
+          {formatDateDisplay(formateDateTime)} à {formatTime(formateDateTime)}
         </Typography>
         <Typography
           alignContent="center"
@@ -35,10 +45,11 @@ export default function DetailNotification() {
             fontFamily: "Montserrat",
             fontWeight: 500,
             color: "#321F47",
-            width: "23%",
+            width: "10%",
           }}
         >
-          Pour: 2{" "}
+           {informations.reservationId.seatsReserved}
+
           <PersonRoundedIcon
             sx={{
               fontSize: "1rem",
@@ -58,7 +69,7 @@ export default function DetailNotification() {
             color: "#321F47",
           }}
         >
-          Paris
+          {informations.tripId.departureCity.name}
         </Typography>
         <ArrowRightAltRoundedIcon
           sx={{
@@ -76,7 +87,7 @@ export default function DetailNotification() {
             color: "#321F47",
           }}
         >
-          Marseille
+          {informations.tripId.destinationCity.name}
         </Typography>
       </Box>
       <Typography
@@ -87,7 +98,6 @@ export default function DetailNotification() {
           color: "#321F47",
         }}
       >
-        Lieu du rdv : Pl. Louis Armand, 75012 Paris{" "}
       </Typography>
     </Box>
   );

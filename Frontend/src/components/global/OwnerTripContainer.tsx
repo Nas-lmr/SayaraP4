@@ -8,13 +8,14 @@ import OwnerTripCard from "../cards/OwnerTripCard";
 export default function OwnerTripContainer() {
   const [informations, setInformations] = useState([]);
   const [error, setError] = useState(null);
-  const { decodedToken } = useUserContext();
-  const id = decodedToken?.id;
+  const { userData } = useUserContext();
+  const id = userData?.user?.id;
 
   useEffect(() => {
     if (id) {
       fetchOwnerTrip(id)
         .then((response) => {
+          
           if (response.success) {
             setInformations(response.data);
           } else {
@@ -38,11 +39,11 @@ export default function OwnerTripContainer() {
         alignItems: "center",
         overflow: "auto",
         pb: "2rem",
-        "&::-webkit-scrollbar": {
+        "&::-webkitScrollbar": {
           display: "none", // Cache la scrollbar pour les navigateurs basés sur Webkit (Chrome, Safari, etc.)
         },
-        "-ms-overflow-style": "none", // Cache la scrollbar pour Internet Explorer et Edge
-        "scrollbar-width": "none", // Cache la scrollbar pour Firefox
+        "MsOverflowStyle": "none", // Cache la scrollbar pour Internet Explorer et Edge
+        "scrollbarWidth": "none", // Cache la scrollbar pour Firefox
       }}
     >
       <Typography
@@ -66,7 +67,7 @@ export default function OwnerTripContainer() {
         <ReturnPreviousBtn />
       </Box>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {informations.length > 0 ? (
+      {informations ? (
         informations.map((information, index) => (
           <Box
             key={index}
@@ -82,7 +83,7 @@ export default function OwnerTripContainer() {
           </Box>
         ))
       ) : (
-        <p>No trips found</p>
+        <p>Aucun trajet trouvé</p>
       )}
     </Box>
   );

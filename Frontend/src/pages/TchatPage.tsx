@@ -1,11 +1,7 @@
-import {Container, Typography} from "@mui/material";
-import InfoProfilNotLogged from "../components/global/InfoProfilNotLogged";
-import {TchatErrorComponent} from "../components/chat/TchatErrorComponent";
-import {useRoom} from "../hooks/messages/useRoom";
-import {PageMessageComponent} from "../components/chat/PageMessageComponent";
+import {Container} from "@mui/material";
+
 
 export default function TchatPage() {
-  const {userData, error} = useRoom();
 
   return (
     <Container
@@ -22,19 +18,12 @@ export default function TchatPage() {
       }}
     >
       {
-        userData === null ?
-          (
-            <InfoProfilNotLogged
-              text=" Pour voir tes messages tu dois te connecter ou bien crées un compte!"
-              image="../src/assets/images/MsgImg.png"
-              alt="Homme écrivant un message"
-            />
-          ) : (
+        
             <>
-              {error && <TchatErrorComponent error={error} />}
-              {!error ? (<PageMessageComponent />) : (<Typography variant="h6">Pas de room sélectionner</Typography>)}
+             <h1> en cours de contruction </h1>
+              
             </>
-          )
+          
       }
     </Container>
   );

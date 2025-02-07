@@ -3,6 +3,12 @@
 /node_modules
 /build
 
+# ssl certificate
+server-cert.pem
+
+#ssl key
+server-key.pem
+
 # Logs
 logs
 *.log

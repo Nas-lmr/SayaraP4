@@ -8,7 +8,8 @@ export interface ILoginParams {
 // Typage pour le succès de la réponse
 export interface ILoginSuccessResponse {
   success: true;
-  user: IUserInfo; // Vous pouvez remplacer 'any' par le type de votre utilisateur s'il est défini
+  error?: true;
+  user: IUserInfo;
 }
 
 // Typage pour l'échec de la réponse

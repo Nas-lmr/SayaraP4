@@ -1,7 +1,12 @@
 import { ArrowForwardIosRounded } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
+import { Notification } from "../../interfaces/notification/notification";
 
-export default function ToProfilBtn() {
+interface DetailNotificationProps {
+  informations: Notification; 
+}
+
+export default function ToProfilBtn({informations}: DetailNotificationProps) {
   return (
     <Button
       variant="contained"
@@ -21,7 +26,7 @@ export default function ToProfilBtn() {
       <Typography
         sx={{ color: "#321F47", fontFamily: "Montserrat", fontWeight: 500 }}
       >
-        Aristide
+        {informations.user.username}
       </Typography>
     </Button>
   );

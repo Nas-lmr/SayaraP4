@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import TestPaymentIntent from "./components/Stripewarpper.tsx";
+import StripePaymentIntent from "./components/Stripewarpper.tsx";
 import { UserContextProvider } from "./context/UserContext.tsx";
 import "./index.css";
 import MainLayout from "./layouts/MainLayout.tsx";
@@ -18,6 +18,7 @@ import ItinerairePage from "./pages/reservations/ItinerairePage.tsx";
 import NewJourneyPage from "./pages/reservations/NewJourneyPage.tsx";
 import ResultPage from "./pages/reservations/ResultPage.tsx";
 import TchatPage from "./pages/TchatPage.tsx";
+import TestsEvents from "./pages/Tets.tsx"
 import OwnerTripReservationHistoricPage from "./pages/profil/OwnerTripReservationHistoricPage.tsx";
 
 const router = createBrowserRouter([
@@ -73,8 +74,9 @@ const router = createBrowserRouter([
 
       {
         path: "/trajet/reservation/:id/infos-trajet",
-        element: <TestPaymentIntent />,
+        element: <StripePaymentIntent amount={undefined} />,
       },
+     
       {
         path: "/trajet/reservation/historique",
         element: <ReservationHistoricPage />,
@@ -89,6 +91,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/sse",
+    element:<TestsEvents/>
+  }
 ]);
 
 const rootElement = document.getElementById("root");

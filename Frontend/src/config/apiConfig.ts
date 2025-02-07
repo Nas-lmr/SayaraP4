@@ -11,6 +11,8 @@ export const ApiConfig: IApi = {
   private: {
     // TODO Fill in with the authentication url
     login: "http://localhost:3310/login",
+    persist:"http://localhost:3310/persist", 
+    logout:   "http://localhost:3310/user/logout",
     register: "http://localhost:3310/user/register",
     postTrajet: "http://localhost:3310/trip/new-trip",
     searchTrajet: "http://localhost:3310/trip/search",

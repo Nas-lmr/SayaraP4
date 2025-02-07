@@ -8,8 +8,8 @@ import HistoricReservationCard from "../cards/HistoricReservationPassengerCard";
 export default function PassengerHistoricContainer() {
   const [reservations, setReservations] = useState([]);
   const [error, setError] = useState(null);
-  const { decodedToken } = useUserContext();
-  const id = decodedToken?.id;
+  const { userData } = useUserContext();
+  const id = userData?.user?.id;
 
   useEffect(() => {
     if (id) {
@@ -41,7 +41,7 @@ export default function PassengerHistoricContainer() {
         "&::-webkit-scrollbar": {
           display: "none", // Cache la scrollbar pour les navigateurs basés sur Webkit (Chrome, Safari, etc.)
         },
-        "-ms-overflow-style": "none", // Cache la scrollbar pour Internet Explorer et Edge
+        "-ms-over-flow-style": "none", // Cache la scrollbar pour Internet Explorer et Edge
         "scrollbar-width": "none", // Cache la scrollbar pour Firefox
       }}
     >
@@ -73,9 +73,11 @@ export default function PassengerHistoricContainer() {
             sx={{
               height: { xs: "30%", sm: "100%", md: "40%" },
               width: "100%",
+              maxHeight:"20%",
               display: "flex",
               justifyContent: "center",
               mt: "1rem",
+
             }}
           >
             <HistoricReservationCard key={index} reservation={reservation} />
