@@ -4,13 +4,13 @@ export const verifyUrlNotNull = (url: string) => url !== "";
 /**
  * This method does it call in first step before rendering component with useEffect((), [])
  */
-export const isAuthenticated = () => {
-  window.addEventListener("storage", () => {
-    if (localStorage.user === null || localStorage.user === undefined) {
-      window.location.href = "/accueil";
-    }
-  });
-};
+// export const isAuthenticated = () => {
+//   window.addEventListener("storage", () => {
+//     if (localStorage.user === null || localStorage.user === undefined) {
+//       window.location.href = "/accueil";
+//     }
+//   });
+// };
 
 /*  */
 
@@ -42,8 +42,8 @@ export const getRoute = async (
     {
       params: {
         api_key: apiKey,
-        start: `${coords1[1]},${coords1[0]}`, // longitude,latitude
-        end: `${coords2[1]},${coords2[0]}`, // longitude,latitude
+        start: `${coords1[1]},${coords1[0]}`, // longitude, latitude
+        end: `${coords2[1]},${coords2[0]}`, // longitude, latitude
       },
     }
   );
@@ -62,3 +62,4 @@ export const getRoute = async (
 
   return { routeCoordinate, distance, duration };
 };
+export const replaceRoomName = (name: string) => name.split('-')[1].replace('_', ' ');

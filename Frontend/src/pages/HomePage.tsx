@@ -4,6 +4,8 @@ import HeroSection from "../components/global/HeroSection";
 import ObjectiveInfo from "../components/global/ObjectiveInfo";
 
 export default function HomePage() {
+ 
+
   return (
     <Container
       disableGutters

@@ -21,9 +21,14 @@ export default function RecapTrajetCreation() {
     "success"
   );
 
-  const { decodedToken } = useUserContext();
+  const { userData } = useUserContext();
 
-  const owner = decodedToken?.id || "";
+  if (!userData?.user?.id) {
+    throw new Error("logged user is required but is undefined.");
+  }
+
+  const owner = userData?.user?.id;
+  
   const location = useLocation();
   const {
     villeDepart,

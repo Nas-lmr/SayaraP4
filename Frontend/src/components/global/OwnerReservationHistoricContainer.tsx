@@ -14,9 +14,11 @@ import ReturnPreviousBtn from "../buttons/ReturnPreviousBtn";
 import OwnerReservationHistoricCard from "../cards/OwnerReservationHistoricCard";
 
 export default function OwnerReservationHistoricContainer() {
-  const [reservations, setReservations] = useState<Reservation[]>([]); // Explicitly define the state type
-  const { decodedToken } = useUserContext();
-  const id = decodedToken?.id;
+  const [reservations, setReservations] = useState<Reservation[]>([]); 
+  const { userData } = useUserContext();
+
+
+  const id = userData?.user?.id;
   const tripId = useParams();
 
   useEffect(() => {
@@ -44,11 +46,11 @@ export default function OwnerReservationHistoricContainer() {
         alignItems: "center",
         overflow: "auto",
         pb: { xs: "2rem", md: 0 },
-        "&::-webkit-scrollbar": {
+        "&::-webkitScrollbar": {
           display: "none",
         },
-        "-ms-overflow-style": "none",
-        "scrollbar-width": "none",
+        "MsOverflowStyle": "none",
+        "scrollbarWidth": "none",
       }}
     >
       <Box
@@ -57,14 +59,14 @@ export default function OwnerReservationHistoricContainer() {
           height: "100%",
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          justifyContent: { md: "space-around" },
+          justifyContent: { md: "spaceAround" },
         }}
       >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent: "spaceBetween",
             alignItems: "center",
             width: { md: "55%" },
             height: { md: "60%", lg: "75%" },
@@ -109,7 +111,7 @@ export default function OwnerReservationHistoricContainer() {
               width: { xs: "100%", md: "45%" },
               height: { xs: "70%", md: "100%" },
               display: "flex",
-              justifyContent: { md: "space-between" },
+              justifyContent: { md: "spaceBetween" },
               alignItems: { sm: "center" },
               flexDirection: "column",
               backgroundColor: "white",

@@ -1,5 +1,5 @@
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import MoodBadRoundedIcon from "@mui/icons-material/MoodBadRounded";
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import {
   Accordion,
   AccordionDetails,
@@ -9,13 +9,28 @@ import {
 } from "@mui/material";
 import ToProfilBtn from "../buttons/ToProfilBtn";
 import DetailNotification from "./DetailNotification";
+import { Notification } from "../../interfaces/notification/notification";
 
-export default function NotificationCard() {
+interface DetailNotificationProps {
+  informations: Notification; 
+}
+
+export default function NotificationCard({ informations }:DetailNotificationProps ) {
+  
+  
   return (
     <>
       <Accordion sx={{ "&.MuiPaper-root": { borderRadius: "0.5rem 0.5rem " } }}>
-        <AccordionSummary expandIcon={<KeyboardArrowDownRoundedIcon />}>
-          <MoodBadRoundedIcon color="error" />
+        <AccordionSummary
+          expandIcon={<KeyboardArrowDownRoundedIcon />}
+          sx={{
+            "& .MuiAccordionSummary-content": {
+              display: "flex",
+              alignItems: "center",
+            },
+          }}
+        >
+          <LocationOnRoundedIcon sx={{ color: "#321F47" }} />
           <Typography
             alignContent="center"
             sx={{
@@ -26,7 +41,7 @@ export default function NotificationCard() {
               color: "#321F47",
             }}
           >
-            Aristide a refusé votre réservation
+            {informations && informations.content}
           </Typography>
         </AccordionSummary>
         <Divider />
@@ -36,10 +51,10 @@ export default function NotificationCard() {
             p: 0,
           }}
         >
-          <DetailNotification />
+          <DetailNotification informations={ informations} />
         </AccordionDetails>
         <Divider />
-        <ToProfilBtn />
+        <ToProfilBtn informations={informations}  />
       </Accordion>
     </>
   );

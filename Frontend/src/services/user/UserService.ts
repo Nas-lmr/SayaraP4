@@ -41,6 +41,7 @@ export const registerService = async ({
 };
 
 type LoginResponse = ILoginSuccessResponse | ILoginErrorResponse;
+
 export const loginService = async ({
   email,
   password,
@@ -55,30 +56,15 @@ export const loginService = async ({
       body: JSON.stringify({ email, password }),
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       const userData = await response.json();
-      const token = userData.token;
-
-      if (!token) {
-        return {
-          success: false,
-          error: "Aucun jeton d'authentification fourni",
-        };
-      }
-
-      return { success: true, user: userData };
+      return { success: true, user:userData };
     } else {
       const error = await response.json();
-      return {
-        success: false,
-        error: error.message || "Email ou mot de passe incorrect",
-      };
+      return { success: false, error: error.message || "Invalid credentials" };
     }
   } catch (err) {
     console.error("Login service error:", err);
-    return {
-      success: false,
-      error: "Une erreur s'est produite lors de la connexion",
-    };
+    return { success: false, error: "An error occurred during login" };
   }
 };

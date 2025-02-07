@@ -28,7 +28,7 @@ export default function ReservationContainer() {
       <Typography>ville arrivee:{trajet?.destinationCity.name}</Typography>
       <Typography>price:{trajet?.pricePerSeat}</Typography>
       <Typography>places dispo:{trajet?.availableSeats}</Typography> */}
-      <StripeWrapper amount={trajet?.pricePerSeat ?? null} />
+      <StripeWrapper amount={trajet?.pricePerSeat} />
     </Box>
   );
 }

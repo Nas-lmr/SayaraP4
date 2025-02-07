@@ -10,7 +10,6 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
 
   const { login } = useUserContext();
-
   const navigate = useNavigate();
 
   const handleMailChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,17 +22,16 @@ export default function LoginForm() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     const response = await loginService({ email, password });
-
-    if (response.success) {
-      login({ ...response.user });
-      console.info("Connecté");
+  
+    if (response.success && response.user) {
+      login(response.user);
+      console.info("Connected");
       navigate("/");
-      console.info("Connexion réussie");
     } else {
+      console.error("Login failed:", response.error);
       navigate("/login");
-      console.error("Echec de la connexion:", response.error);
     }
   };
 
@@ -159,4 +157,4 @@ export default function LoginForm() {
       </Box>
     </Paper>
   );
-}
+};

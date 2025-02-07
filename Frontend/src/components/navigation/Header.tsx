@@ -1,14 +1,16 @@
+import NotificationsActiveRoundedIcon from "@mui/icons-material/NotificationsActiveRounded";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
-// import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
-import { AppBar, Box, Button, Toolbar } from "@mui/material";
+import { AppBar, Badge, Box, Button, Toolbar } from "@mui/material";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 import NavDesktop from "./NavDesktop";
-import logo from "/assets/images/Sayara-logo.png";
+import logo from "../../assets/images/Sayara-logo.png";
 
 export default function Header() {
   const location = useLocation();
   const pathname = location.pathname;
+  const [message, setMessage] = useState<string | null>(null);
   const { userData } = useUserContext();
 
   const activeStyle = {
@@ -17,6 +19,38 @@ export default function Header() {
     height: "90%",
     borderRadius: "0 0 1rem 1rem",
   };
+
+  const ownerId = userData?.user?.id;
+  useEffect(() => {
+    const eventSource = new EventSource(
+      `http://localhost:3310/notifications/sse/${ownerId}`
+    );
+
+    eventSource.onmessage = function ({ data }) {
+      try {
+        const parsedData = JSON.parse(data);
+        console.log(parsedData, "testets");
+        setMessage(`${parsedData.message}`);
+      } catch (error) {
+        console.error("Failed to parse SSE data", error);
+      }
+    };
+
+    eventSource.onerror = function (event) {
+      console.error("SSE connection error:", event);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [ownerId]);
+
+  useEffect(() => {
+    if (pathname === "/notifications") {
+      setMessage(null); // Réinitialise le message lorsque sur la page notifications
+    }
+  }, [pathname]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -56,24 +90,37 @@ export default function Header() {
               display: { xs: !userData ? "none" : "", md: "none" },
             }}
           >
-            <NotificationsNoneRoundedIcon
-              fontSize="large"
-              sx={{
-                color:
-                  pathname === "/notifications" ? activeStyle.color : "#321F47",
-              }}
-            />
-            {/* 
-            TODO A REMETTRE EN PLACE LORSQUE NOTIF RECU
-            <Badge
-              overlap="circular"
-              color="error"
-              variant="dot"
-              invisible={pathname === "/notifications"}
-            >
-              
-                 <NotificationsActiveRoundedIcon/>
-            </Badge> */}
+            {!message ? (
+              <NotificationsNoneRoundedIcon
+                fontSize="large"
+                sx={{
+                  color:
+                    pathname === "/notifications"
+                      ? activeStyle.color
+                      : "#321F47",
+                }}
+              />
+            ) : (
+              <Badge
+                overlap="circular"
+                color="error"
+                variant="dot"
+                invisible={pathname === "/notifications"}
+                badgeContent={message}
+              >
+                <NotificationsActiveRoundedIcon
+                  fontSize="large"
+                  sx={{
+                    color:
+                      pathname === "/notifications"
+                        ? activeStyle.color
+                        : "#321F47",
+                  }}
+                />
+              </Badge>
+            )}
+
+            {/* // TODO A REMETTRE EN PLACE LORSQUE NOTIF RECU */}
           </Button>
           <NavDesktop />
         </Toolbar>

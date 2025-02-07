@@ -8,27 +8,35 @@ import { trajetInfo } from "../services/trajet/trajetService";
 import PaymentForm from "./forms/PaymentForm";
 import InfosTrajet from "./trajet/InfosTrajet";
 
-export default function TestPaymentIntent() {
+
+interface StripePaymentIntentProps {
+  amount: number | undefined;  
+}
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function StripePaymentIntent({ amount }: StripePaymentIntentProps) {
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [seatsReserved, setSeatsReserved] = useState<number>(1);
-  const { decodedToken } = useUserContext();
+  const { userData } = useUserContext();
   const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null); 
 
   const { id } = useParams<{ id: string | undefined }>();
 
   const reservationData = {
-    seatsReserved: seatsReserved, // Nombre de places réservées
-    tripId: id, // ID du trajet
-    passengerId: decodedToken?.id, // ID du passager
+    seatsReserved: seatsReserved, 
+    tripId: id, 
+    passengerId: userData?.user?.id, 
   };
+console.log(reservationData, "striperpayment intent");
 
   useEffect(() => {
     const fetchTrajetId = async () => {
       try {
         const response = await trajetInfo({ id: id ?? "" });
-        setTrajet(response.data); // Récupération des données du trajet
+        setTrajet(response.data); 
       } catch (error) {
         console.error("Erreur lors de la récupération du trajet :", error);
       }
@@ -42,6 +50,7 @@ export default function TestPaymentIntent() {
     try {
       const response = await fetch("http://localhost:3310/reservation", {
         method: "POST",
+        credentials:"include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
       });

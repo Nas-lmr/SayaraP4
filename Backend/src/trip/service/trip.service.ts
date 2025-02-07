@@ -141,12 +141,12 @@ export class TripService {
     aCity: string,
     dateTrip: string
   ): Promise<any[]> {
-    console.log(dateTrip, "DAAATETTETETETEE");
-
     return await this.tripRepository
       .createQueryBuilder("trip")
       .innerJoinAndSelect("trip.departureCity", "departureCity")
       .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+      .innerJoinAndSelect("trip.owner", "owner")
+
       .select([
         "trip.id",
         "trip.availableSeats",
@@ -156,6 +156,7 @@ export class TripService {
         "destinationCity.name",
         "trip.distance",
         "trip.duration",
+        "owner.username",
       ])
       .where("departureCity.name = :dCity", { dCity })
       .andWhere("destinationCity.name = :aCity", { aCity })
@@ -163,11 +164,15 @@ export class TripService {
       .getMany();
   }
 
+  // get trip by id
+
   async GetById(id: number): Promise<any> {
     return await this.tripRepository
       .createQueryBuilder("trip")
       .innerJoinAndSelect("trip.departureCity", "departureCity")
       .innerJoinAndSelect("trip.destinationCity", "destinationCity")
+      .innerJoinAndSelect("trip.owner", "owner")
+
       .select([
         "trip.id",
         "trip.availableSeats",
@@ -177,6 +182,7 @@ export class TripService {
         "destinationCity.name",
         "trip.distance",
         "trip.duration",
+        "owner.username",
       ])
       .where("trip.id = :id", { id })
       .getOne();

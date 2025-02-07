@@ -176,7 +176,7 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
                 <Box
                   sx={{
                     display: "flex",
-                    gap: "0.2rem", // espace entre les cercles
+                    gap: "0.2rem", 
                   }}
                 >
                   {Array.from({ length: trajet.availableSeats }).map(
@@ -186,7 +186,7 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
                         sx={{
                           backgroundColor: "#6AE35F",
                           borderRadius: "50%",
-                          width: "0.8rem", // taille du cercle
+                          width: "0.8rem", 
                           height: "0.8rem",
                         }}
                       />
