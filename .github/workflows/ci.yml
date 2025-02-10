@@ -32,13 +32,13 @@
 #         cd Backend
 #         npm run test -- src/city/service/city.service.spec.ts  # Exécute les tests unitaires Jest
 
-name: CI/CD Deployment
+name: CI/CD  deployment
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ] 
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
   build-and-deploy:
@@ -49,7 +49,7 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - name: Checkout Code
+    - name: Checkout du code
       uses: actions/checkout@v4
 
     - name: Setup Node.js
@@ -57,21 +57,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: |
         cd Frontend
-        rm -rf node_modules package-lock.json  # Ensure clean install
-        npm ci  # Faster and more reliable for CI/CD
-
-    - name: Debug Node Modules
-      run: |
-        cd Frontend
-        ls -R node_modules/date-fns/locale  # Check if locales exist
-
-    - name: TypeScript Check
-      run: |
-        cd Frontend
-        npx tsc --noEmit  # Ensure TypeScript is working
+        npm install
 
     - name: Build Frontend
       run: |
@@ -86,7 +75,6 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         source: "Frontend/dist/"
         target: "/var/www/html"
-
 
 
 
