@@ -70,8 +70,9 @@ export default function TopSearchCpnt() {
         setTravelDate={setTravelDate}
         passengers={passengers}
         setPassengers={setPassengers}
-        onSearch={handleSearch}
-      />
+        onSearch={handleSearch} availableSeats={0} setAvailableSeats={function (): void {
+          throw new Error("Function not implemented.");
+        } }      />
       <Searchbar
         departureCity={departureCity}
         setDepartureCity={setDepartureCity}
@@ -81,8 +82,9 @@ export default function TopSearchCpnt() {
         setTravelDate={setTravelDate}
         passengers={passengers}
         setPassengers={setPassengers}
-        onSearch={handleSearch}
-      />
+        onSearch={handleSearch} availableSeats={0} setAvailableSeats={function (): void {
+          throw new Error("Function not implemented.");
+        } }      />
     </Box>
   );
 }

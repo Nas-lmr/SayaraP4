@@ -14,7 +14,6 @@ interface StripePaymentIntentProps {
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function StripePaymentIntent({ amount }: StripePaymentIntentProps) {
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +28,7 @@ export default function StripePaymentIntent({ amount }: StripePaymentIntentProps
     seatsReserved: seatsReserved, 
     tripId: id, 
     passengerId: userData?.user?.id, 
+    amount
   };
 console.log(reservationData, "striperpayment intent");
 
@@ -72,7 +72,7 @@ console.log(reservationData, "striperpayment intent");
     } catch (error) {
       console.error("Erreur lors de la récupération du client secret :", error);
       setErrorMessage(
-        "Une erreur est survenue lors de la récupération du client secret."
+        "Une erreur est survenue."
       );
     } finally {
       setIsLoading(false);

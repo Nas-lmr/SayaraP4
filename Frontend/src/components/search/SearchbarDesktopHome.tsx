@@ -5,7 +5,7 @@ import { Box, OutlinedInput } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import fr from "date-fns/locale/fr";
+import { fr } from "date-fns/locale/fr";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
@@ -26,7 +26,6 @@ export default function SearchbarDesktopHome() {
   // Fonction appelée lors de la recherche
   const handleSearch = async () => {
     // Validation des paramètres avant la recherche
-    console.log("APPLIQUEEEEE");
 
     if (!departureCity || !arrivalCity || !travelDate) {
       console.error("Veuillez remplir tous les champs");
@@ -40,7 +39,6 @@ export default function SearchbarDesktopHome() {
       travelDate: formatDate(travelDate),
       // passengers,
     };
-    console.log(params, "PARAMSSS");
 
     try {
       // Appel de la fonction de recherche

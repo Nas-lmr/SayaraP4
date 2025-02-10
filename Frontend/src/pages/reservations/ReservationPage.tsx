@@ -14,7 +14,7 @@ export default function ReservationPage() {
         justifyContent: "center",
       }}
     >
-      <TestPaymentIntent />
+      <TestPaymentIntent amount={undefined} />
     </Container>
   );
 }
