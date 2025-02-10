@@ -14,7 +14,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {fr} from "date-fns/locale/fr";
+import fr from "date-fns/locale/fr";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
