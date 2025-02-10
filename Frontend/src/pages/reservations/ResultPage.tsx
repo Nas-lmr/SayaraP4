@@ -17,14 +17,14 @@ export default function ResultPage() {
   const [travelDate, setTravelDate] = useState<Date | null>(null);
   const [passengers, setPassengers] = useState<number>(1);
   const [availableSeats, setAvailableSeats] = useState<number>(1);
-
-  console.log(results, "Resultpage");
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
   const handleSearch = async () => {
     // Validation des paramètres avant la recherche
 
     if (!departureCity || !arrivalCity || !travelDate) {
+      setError("Veuillez remplir tous les champs");
       console.error("Veuillez remplir tous les champs");
       return;
     }
@@ -44,8 +44,10 @@ export default function ResultPage() {
       navigate("/trajet/resultats", {
         state: { results },
       });
+      setError("");
     } catch (err) {
       console.error(err);
+      setError("Une erreur est survenue lors de la recherche. Veuillez réessayer.");
     }
   };
 
@@ -89,6 +91,11 @@ export default function ResultPage() {
         availableSeats={availableSeats}
         setAvailableSeats={setAvailableSeats}
       />
+         {error && (
+        <div style={{ color: "red", fontWeight: "bold", marginTop: "1rem" }}>
+          {error}
+        </div>
+      )}
       {results ? (
         <ResultJourneyContainer results={results.data} />
       ) : (

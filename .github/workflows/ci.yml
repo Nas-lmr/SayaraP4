@@ -1,41 +1,84 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: CI - Tests Backend
+# name: CI/CD 
+
+# on:
+#   push:
+#     branches: [ "main" ] 
+#   pull_request:
+#     branches: [ "main" ]  
+
+# jobs:
+#   test-backend:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout du code
+#       uses: actions/checkout@v4
+
+#     - name: Installer Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: 20.16.0  
+
+#     - name: Installer les dépendances Backend
+#       run: |
+#         cd Backend
+#         npm install  # Installe les dépendances
+
+#     - name: Exécuter les tests unitaires Backend
+#       run: |
+#         cd Backend
+#         npm run test -- src/city/service/city.service.spec.ts  # Exécute les tests unitaires Jest
+
+name: CI/CD
 
 on:
   push:
-    branches: [ "**" ]  # Déclenche les tests sur chaque commit dans toutes les branches
+    branches: [ "main" ] 
   pull_request:
-    branches: [ "**" ]  # Déclenche les tests avant la fusion d'une PR dans n'importe quelle branche
+    branches: [ "main" ]
 
 jobs:
-  test-backend:
+
+  build-and-deploy:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.16.0]
 
     steps:
     - name: Checkout du code
       uses: actions/checkout@v4
-
-    - name: Installer Node.js
-      uses: actions/setup-node@v4
       with:
-        node-version: 20.16.0  
+        node-version: ${{ matrix.node-version }}
 
-    - name: Installer les dépendances Backend
+    - name: Install independencies
       run: |
-        cd Backend
-        npm install  # Installe les dépendances
+        cd Frontend
+        npm install
 
-    - name: Exécuter les tests unitaires Backend
+    - name: Build Frontend
       run: |
-        cd Backend
-        npm run test -- src/city/service/city.service.spec.ts  # Exécute les tests unitaires Jest
+        cd Frontend
+        npm run build
+
+    -name: scp frontend
+      uses: c0c1/scp-action@master
+      with:
+
+        src: 'Frontend/dist'
+        host: ${{ SERVER_HOST }}
+        remote_path: '/var/www/html'
+        username: ${{ SERVER_USERNAME }}
+        password: ${{ SERVER_PASSWORD }}
+        
 
 
 
-# Pour le backend
-# Pour le frontend
-scp .env user@votre-serveur:~/.config/app-secrets/.env.Frontend
+
+
      
 
