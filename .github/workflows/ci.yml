@@ -34,6 +34,8 @@ jobs:
 
 
 
-
+# Pour le backend
+# Pour le frontend
+scp .env user@votre-serveur:~/.config/app-secrets/.env.Frontend
      
 
