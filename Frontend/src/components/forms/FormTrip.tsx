@@ -17,7 +17,7 @@ import { TimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import frFR from "date-fns/locale/fr";
+import enUS from "date-fns/locale/fr";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateJourneyBtn from "../buttons/CreateTripBtn";
@@ -162,7 +162,7 @@ const FormTrip: React.FC = () => {
           onChange={(e) => setVilleArrive(e.target.value)}
         />
 
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={frFR}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUS}>
           <DatePicker
             disablePast
             sx={{
