@@ -32,7 +32,7 @@
 #         cd Backend
 #         npm run test -- src/city/service/city.service.spec.ts  # Exécute les tests unitaires Jest
 
-name: CI/CD deployment
+name: CI/CD deployment 
 
 on:
   push:
