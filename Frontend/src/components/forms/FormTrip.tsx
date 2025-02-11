@@ -17,7 +17,7 @@ import { TimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import enUS from "date-fns/locale/fr";
+import enUS from "date-fns/locale/en-US";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateJourneyBtn from "../buttons/CreateTripBtn";
