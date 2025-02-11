@@ -75,8 +75,9 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         port: ${{ secrets.SERVER_PORT }}
-        source: "Frontend/dist/"
-        remote: "/var/www/html"
+        source: "Frontend/dist/*"
+        target: "/var/www/html/"
+        strip_components: 2
 
 
 
