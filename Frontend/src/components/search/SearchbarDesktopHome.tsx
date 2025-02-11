@@ -5,7 +5,7 @@ import { Box, OutlinedInput } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import enUs  from "date-fns/locale/en-US";
+import {enUS}  from "date-fns/locale/en-US";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
@@ -130,7 +130,7 @@ export default function SearchbarDesktopHome() {
           fontWeight: 500,
         }}
       />
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUs}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUS}>
         <DesktopDatePicker
           disablePast
           sx={{
