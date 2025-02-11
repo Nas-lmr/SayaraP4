@@ -62,6 +62,10 @@ jobs:
         cd Frontend
         npm install
 
+    - name: cat tsconfig.json
+      run: |
+        cat Frontend/tsconfig.json
+        
     - name: Build Frontend
       run: |
         cd Frontend
