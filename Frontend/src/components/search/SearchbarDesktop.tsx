@@ -5,7 +5,7 @@ import { Box, OutlinedInput } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import enUS from "date-fns/locale/en-US";
+import {enUS} from "date-fns/locale";
 import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
