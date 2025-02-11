@@ -14,7 +14,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import fr from "date-fns/locale/fr";
+import enUS from "date-fns/locale/en-US";
 import { ISearchForm } from "../../interfaces/components/trajet/ISearchForm";
 import SearchJourneyBtn from "../buttons/SearchJourneyBtn";
 
@@ -159,7 +159,7 @@ export default function SearchForm({
             />
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
-              adapterLocale={fr}
+              adapterLocale={enUS}
             >
               <DatePicker
                 disablePast
