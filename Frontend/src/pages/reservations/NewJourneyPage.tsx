@@ -22,7 +22,7 @@ export default function NewJourneyPage() {
     >
       {!userData ? (
         <InfoProfilNotLogged
-          text=" Pour créer un trajet tu dois te connecter ou bien crées un compte!"
+          text=" Pour ----------------créer un trajet tu dois te connecter ou bien crées un compte!"
           image={loop}
           alt="Homme réfléchisant à côté d'une voiture"
         />
