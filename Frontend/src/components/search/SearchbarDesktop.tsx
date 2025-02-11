@@ -5,7 +5,7 @@ import { Box, OutlinedInput } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {enUS} from "date-fns/locale";
+import {fr} from "date-fns/locale";
 import { ISearchbarProps } from "../../interfaces/components/trajet/ISearchbarProps";
 import SearchDesktopBtn from "../buttons/SearchDesktopBtn";
 import PassengerSearchbar from "./PassengerSearchbar";
@@ -99,7 +99,7 @@ export default function SearchbarDesktop({
           fontWeight: 500,
         }}
       />
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUS}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
         <DesktopDatePicker
           disablePast
           sx={{
