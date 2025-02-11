@@ -57,11 +57,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies
+    - name: Installer les dépendances Backend
+      run: |
+        cd Backend
+        npm install 
+
+    - name: Exécuter les tests unitaires Backend
+      run: |
+        cd Backend
+         npm run test -- src/city/service/city.service.spec.ts  
+
+    - name: Install dependencies frontend 
       run: |
         cd Frontend
         npm install
-
 
     - name: Build Frontend
       run: |
