@@ -8,35 +8,35 @@ import { trajetInfo } from "../services/trajet/trajetService";
 import PaymentForm from "./forms/PaymentForm";
 import InfosTrajet from "./trajet/InfosTrajet";
 
-
 interface StripePaymentIntentProps {
-  amount: number | undefined;  
+  amount: number | undefined;
 }
 
-
-export default function StripePaymentIntent({ amount }: StripePaymentIntentProps) {
+export default function StripePaymentIntent({
+  amount,
+}: StripePaymentIntentProps) {
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [seatsReserved, setSeatsReserved] = useState<number>(1);
   const { userData } = useUserContext();
-  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null); 
+  const [trajet, setTrajet] = useState<IInfoTrajetId | null>(null);
 
   const { id } = useParams<{ id: string | undefined }>();
 
   const reservationData = {
-    seatsReserved: seatsReserved, 
-    tripId: id, 
-    passengerId: userData?.user?.id, 
-    amount
+    seatsReserved: seatsReserved,
+    tripId: id,
+    passengerId: userData?.user?.id,
+    amount,
   };
-console.log(reservationData, "striperpayment intent");
+  console.log(reservationData, "striperpayment intent");
 
   useEffect(() => {
     const fetchTrajetId = async () => {
       try {
         const response = await trajetInfo({ id: id ?? "" });
-        setTrajet(response.data); 
+        setTrajet(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération du trajet :", error);
       }
@@ -46,14 +46,17 @@ console.log(reservationData, "striperpayment intent");
 
   const createReservationAndFetchClientSecret = async () => {
     setIsLoading(true);
-    setErrorMessage(""); 
+    setErrorMessage("");
     try {
-      const response = await fetch("http://localhost:3310/reservation", {
-        method: "POST",
-        credentials:"include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reservationData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/reservation`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reservationData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("La réponse du réseau n'était pas correcte.");
@@ -62,7 +65,7 @@ console.log(reservationData, "striperpayment intent");
       const data = await response.json();
 
       if (data.client_secret) {
-        setClientSecret(data.client_secret); 
+        setClientSecret(data.client_secret);
       } else {
         setErrorMessage(
           data.message ||
@@ -71,9 +74,7 @@ console.log(reservationData, "striperpayment intent");
       }
     } catch (error) {
       console.error("Erreur lors de la récupération du client secret :", error);
-      setErrorMessage(
-        "Une erreur est survenue."
-      );
+      setErrorMessage("Une erreur est survenue.");
     } finally {
       setIsLoading(false);
     }

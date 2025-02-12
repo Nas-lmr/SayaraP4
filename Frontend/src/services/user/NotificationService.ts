@@ -1,10 +1,10 @@
 export const fetchUserNotification = async (ownerId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:3310/notifications/${ownerId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/notifications/${ownerId}`,
       {
         method: "GET",
-        
+
         headers: {
           "Content-Type": "application/json",
         },

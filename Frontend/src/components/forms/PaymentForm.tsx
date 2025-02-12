@@ -93,7 +93,8 @@ export default function PaymentForm({
       const paymentResult = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:5173",
+          // return_url: "http://localhost:5173",
+          return_url: `${import.meta.env.VITE_FRONTEND_PROD_URL}`,
         },
         clientSecret,
       });
