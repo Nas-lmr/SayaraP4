@@ -3,7 +3,6 @@ import { IInfoTrajet } from "../../interfaces/services/IInfoTrajet";
 import { IPostTrajet } from "../../interfaces/services/IPostTrajet";
 import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
 export const usePostTrajet = () => {
-
   const postTrajet = async (data: IPostTrajet) => {
     try {
       const response = await fetch(ApiConfig.private.postTrajet, {
@@ -41,7 +40,9 @@ export const searchTrajet = async (params: ISearchTrajet) => {
   try {
     const response = await fetch(
       // `${ApiConfig.private.searchTrajet}?${queryString.toString()}`,
-      `http://localhost:3310/trip/filtre?dCity=${departureCity}&aCity=${arrivalCity}&dDate=${travelDate}`,
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/trip/filtre?dCity=${departureCity}&aCity=${arrivalCity}&dDate=${travelDate}`,
       {
         method: "GET",
         credentials: "include",
@@ -70,13 +71,16 @@ export const searchTrajet = async (params: ISearchTrajet) => {
 export const trajetInfo = async (params: IInfoTrajet) => {
   const { id } = params;
   try {
-    const response = await fetch(`http://localhost:3310/trip/one/${id}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/trip/one/${id}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(

@@ -27,7 +27,7 @@ const fetchCity = async (
   const normalizedCityName = cityName.toLowerCase();
 
   const response = await fetch(
-    `http://localhost:3310/city/one?name=${normalizedCityName}`
+    `${import.meta.env.VITE_BACKEND_URL}/city/one?name=${normalizedCityName}`
   );
   const data = await response.json();
 
@@ -80,7 +80,7 @@ const saveCity = async (
 
   const coordinateString = `${lat}, ${lon}`;
 
-  const response = await fetch("http://localhost:3310/city", {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/city`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export const fetchAndSaveCity = async (
 ): Promise<{
   city: string;
   coordinates: Coordinates;
-  id: number; 
+  id: number;
 } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
@@ -132,7 +132,7 @@ export const fetchAndSaveCity = async (
             return {
               city: cityData.city,
               coordinates: cityData.coordinates,
-              id: cityData.id, 
+              id: cityData.id,
             };
           }
         } catch (error) {
@@ -150,7 +150,7 @@ export const fetchAndSaveCity = async (
     ? {
         city: cityData.city,
         coordinates: cityData.coordinates,
-        id: cityData.id, 
+        id: cityData.id,
       }
     : null;
 };

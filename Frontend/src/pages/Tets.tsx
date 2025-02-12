@@ -8,11 +8,12 @@ export default function TestEvents() {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `http://localhost:3310/notifications/sse/${ownerId}`
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/reservation/notifications/sse/${ownerId}`
     );
 
     eventSource.onmessage = function ({ data }) {
-
       try {
         const parsedData = JSON.parse(data);
         setTest(`Notification: ${parsedData.message}`);

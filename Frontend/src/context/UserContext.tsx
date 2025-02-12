@@ -2,32 +2,29 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useState,
-   useEffect,
-
 } from "react";
 import { IUserContext } from "../interfaces/context/IUserContext";
 import { IUserInfo } from "../interfaces/context/IUserInfo";
-
 
 const userContext = createContext<IUserContext | null>(null);
 export function UserContextProvider({ children }: { children: ReactNode }) {
   const [userData, setUserData] = useState<IUserInfo | null>(null);
 
-
   const login = async (userInfo: IUserInfo) => {
-    setUserData(userInfo); 
+    setUserData(userInfo);
     await persistLogin();
   };
 
   console.log(userData, "context ");
-  
+
   const logout = async () => {
     try {
       const response = await fetch(
-        // `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
-        'http://localhost:3310/user/logout',
+        `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
+
         {
           method: "POST",
           credentials: "include",
@@ -36,7 +33,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
       );
 
       if (response.status === 200) {
-        setUserData(null); 
+        setUserData(null);
       } else {
         console.error("Failed to logout. Please try again.");
       }
@@ -45,15 +42,14 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-
-  // une function pour surveiller si l'utilisateur est connecté 
+  // une function pour surveiller si l'utilisateur est connecté
   const persistLogin = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3310/persist',
+        `${import.meta.env.VITE_BACKEND_URL}/reservation/persist`,
         {
           method: "GET",
-          credentials: "include", 
+          credentials: "include",
         }
       );
 
@@ -70,11 +66,9 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-
   useEffect(() => {
     persistLogin();
   }, []);
-
 
   const contextValue = useMemo(
     () => ({
