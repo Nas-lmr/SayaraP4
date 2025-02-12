@@ -86,9 +86,9 @@ export default function ObjectiveInfo() {
               textJustify: "auto",
             }}
           >
-            Réduisez vos frais de gfxhxhtrehertransport en partageant vos
-            trajets avec d'autres passagers. Moins de dépenses pour plus de
-            confort, c'est un choix malin pour votre portefeuille.
+            Réduisez vos frais de transport en partageant vos trajets avec
+            d'autres passagers. Moins de dépenses pour plus de confort, c'est un
+            choix malin pour votre portefeuille.
           </Typography>
         </Box>
         <Box

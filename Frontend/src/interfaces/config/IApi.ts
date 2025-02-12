@@ -5,10 +5,9 @@ export interface IApi {
   private: {
     login: string;
     persist: string;
-    logout:string;
+    logout: string;
     register: string;
     postTrajet: string;
     searchTrajet: string;
-    socketUri: string;
   };
 }
