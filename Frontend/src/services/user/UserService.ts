@@ -1,4 +1,4 @@
-import { ApiConfig } from "../../config/apiConfig";
+// import { ApiConfig } from "../../config/apiConfig";
 import {
   ILoginErrorResponse,
   ILoginParams,
@@ -12,14 +12,17 @@ export const registerService = async ({
   password,
 }: IRegisterParams) => {
   try {
-    const response = await fetch(ApiConfig.private.register, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/user/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-      body: JSON.stringify({ username, email, password }),
-    });
+        body: JSON.stringify({ username, email, password }),
+      }
+    );
 
     const responseData = await response.json();
 
@@ -47,7 +50,7 @@ export const loginService = async ({
   password,
 }: ILoginParams): Promise<LoginResponse> => {
   try {
-    const response = await fetch(ApiConfig.private.login, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -58,7 +61,7 @@ export const loginService = async ({
 
     if (response.status === 200) {
       const userData = await response.json();
-      return { success: true, user:userData };
+      return { success: true, user: userData };
     } else {
       const error = await response.json();
       return { success: false, error: error.message || "Invalid credentials" };
