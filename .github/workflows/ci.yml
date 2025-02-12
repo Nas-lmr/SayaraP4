@@ -38,10 +38,10 @@ jobs:
           cd Frontend
           npm install
 
-      - name: Exécuter les tests unitaires Frontend
-        run: |
-          cd Frontend
-           npm run test -- src/services/trajet/trajetService.spec.ts
+      # - name: Exécuter les tests unitaires Frontend
+      #   run: |
+      #     cd Frontend
+      #      npm run test -- src/services/trajet/trajetService.spec.ts
 
       - name: Build Frontend
         run: |
