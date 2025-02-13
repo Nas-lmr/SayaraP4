@@ -29,7 +29,6 @@ export default function Header() {
     eventSource.onmessage = function ({ data }) {
       try {
         const parsedData = JSON.parse(data);
-        console.log(parsedData, "testets");
         setMessage(`${parsedData.message}`);
       } catch (error) {
         console.error("Failed to parse SSE data", error);
@@ -119,8 +118,6 @@ export default function Header() {
                 />
               </Badge>
             )}
-
-            {/* // TODO A REMETTRE EN PLACE LORSQUE NOTIF RECU */}
           </Button>
           <NavDesktop />
         </Toolbar>

@@ -7,7 +7,6 @@ import HistoricReservationCard from "../cards/HistoricReservationPassengerCard";
 
 export default function PassengerHistoricContainer() {
   const [reservations, setReservations] = useState([]);
-  const [error, setError] = useState(null);
   const { userData } = useUserContext();
   const id = userData?.user?.id;
 
@@ -17,8 +16,6 @@ export default function PassengerHistoricContainer() {
         .then((response) => {
           if (response.success) {
             setReservations(response.data);
-          } else {
-            setError(response.error);
           }
         })
         .catch((err) => {
@@ -65,7 +62,6 @@ export default function PassengerHistoricContainer() {
           Historique des réservations
         </Typography>
       </Box>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       {reservations.length > 0 ? (
         reservations &&
         reservations.map((reservation, index) => (
@@ -73,18 +69,28 @@ export default function PassengerHistoricContainer() {
             sx={{
               height: { xs: "30%", sm: "100%", md: "40%" },
               width: "100%",
-              maxHeight:"20%",
+              maxHeight: "20%",
               display: "flex",
               justifyContent: "center",
               mt: "1rem",
-
             }}
           >
             <HistoricReservationCard key={index} reservation={reservation} />
           </Box>
         ))
       ) : (
-        <p>No reservations found</p>
+        <Typography
+          sx={{
+            fontSize: { xs: "1.3rem", sm: "1.9rem", md: "2.2rem" },
+            fontFamily: "Montserrat",
+            fontWeight: 600,
+            color: "#321F47",
+            pt: { md: "3.5rem" },
+            mt: "2rem",
+          }}
+        >
+          Tu n'as pas encore de réservations
+        </Typography>
       )}
     </Box>
   );
