@@ -93,9 +93,9 @@ const saveCity = async (
 
   const data = await response.json();
   if (response.ok) {
-    console.info(`City ${cityName} saved successfully:`, data);
+    console.info("Saved successfully");
   } else {
-    console.error("Failed to save city:", data);
+    console.error("Failed to save", data);
   }
 };
 
