@@ -23,7 +23,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}user/logout`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
 
         {
           method: "POST",
