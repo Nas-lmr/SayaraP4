@@ -30,7 +30,6 @@ export default function StripePaymentIntent({
     passengerId: userData?.user?.id,
     amount,
   };
-  console.log(reservationData, "striperpayment intent");
 
   useEffect(() => {
     const fetchTrajetId = async () => {

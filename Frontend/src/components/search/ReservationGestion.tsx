@@ -1,7 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import SearchPageBtn from "../buttons/SearchPageBtn";
 
 export default function ReservationGestion() {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -36,11 +38,11 @@ export default function ReservationGestion() {
       >
         <SearchPageBtn
           label="Mes réservations"
-          onclick={() => console.log("Mes reservations")}
+          onclick={() => navigate("/trajet/mes-trajets")}
         />
         <SearchPageBtn
           label="Historique"
-          onclick={() => console.log("Historique")}
+          onclick={() => navigate("/trajet/reservation/historique")}
         />
       </Box>
     </Box>

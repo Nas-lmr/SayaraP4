@@ -128,6 +128,25 @@ export default function MenuDesktop({
                   Messagerie
                 </MenuItem>
               </NavLink>,
+              <NavLink
+                to="/notifications"
+                style={{
+                  textDecoration: "none",
+                }}
+                key="chat-link"
+              >
+                <MenuItem
+                  key="item-chat-link"
+                  onClick={onClose}
+                  sx={{
+                    fontFamily: "Montserrat",
+                    color: "#321F47",
+                    fontWeight: 500,
+                  }}
+                >
+                  Notifications
+                </MenuItem>
+              </NavLink>,
               <MenuItem
                 key="logout-link"
                 onClick={handleLogoutClick}

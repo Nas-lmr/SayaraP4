@@ -22,7 +22,6 @@ export default function RecapTrajetCreation() {
   );
 
   const { userData } = useUserContext();
-  console.log(userData, "userData");
   if (!userData?.user?.id) {
     throw new Error("logged user is required but is undefined.");
   }
@@ -63,7 +62,7 @@ export default function RecapTrajetCreation() {
   };
 
   const toggleConfirmation = () => {
-    setIsOpen((prevState) => !prevState); // Inverse l'état de isOpen
+    setIsOpen((prevState) => !prevState);
   };
 
   const handleSuccess = () => {

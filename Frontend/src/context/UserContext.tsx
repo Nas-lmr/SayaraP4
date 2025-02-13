@@ -18,8 +18,6 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     await persistLogin();
   };
 
-  console.log(userData, "context ");
-
   const logout = async () => {
     try {
       const response = await fetch(
@@ -55,7 +53,6 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
 
       if (response.status === 200) {
         const data = await response.json();
-        console.log("Persisted user data:", data);
 
         setUserData(data);
       } else {

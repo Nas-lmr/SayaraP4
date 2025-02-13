@@ -5,7 +5,7 @@ import { Box, OutlinedInput } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {fr}  from "date-fns/locale";
+import { fr } from "date-fns/locale";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISearchTrajet } from "../../interfaces/services/ISearchTrajet";
@@ -43,7 +43,6 @@ export default function SearchbarDesktopHome() {
     try {
       // Appel de la fonction de recherche
       const results = await searchTrajet(params);
-      console.log("RESULT:", results, "PARAMS:", params);
 
       navigate("/trajet/resultats", {
         state: { results },
