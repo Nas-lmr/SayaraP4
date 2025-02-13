@@ -22,13 +22,6 @@ export default function RecapTrajetCreation() {
   );
 
   const { userData } = useUserContext();
-<<<<<<< HEAD
-console.log(userData, "trahet ");
-console.log(userData?.user?.id, "userid");
-
-
-=======
->>>>>>> c55c5ac706f356e2b1ff0b7139574e0839ec9402
   if (!userData?.user?.id) {
     throw new Error("logged user is required but is undefined.");
   }

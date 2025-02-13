@@ -178,6 +178,7 @@ export default function OwnerReservationHistoricContainer() {
                 alignItems: "center",
                 borderRadius: "1rem",
                 pt: { xs: "1rem", md: 0 },
+                mt: "3rem"
               }}
             >
               {reservations.map((reservation, index) => (
