@@ -72,9 +72,10 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           source: "Frontend/.env"
           target: "/var/www/html/"
+          strip_components: 1
 
-      # - name: Vérifier le fichier .env
-      #   run: cat /var/www/html/.env
+      - name: Vérifier le fichier .env
+        run: cat /var/www/html/.env
 
         
       - name: Déployer le Frontend via SCP
