@@ -162,6 +162,7 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
               }}
             >
               <Typography
+                component="span"
                 sx={{
                   height: "50%",
                   fontSize: { xs: "0.8rem", sm: "1rem" },
@@ -174,9 +175,10 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
               >
                 {capitalizeFirstLetter(departureCity)}
                 <Box
+                  component="span"
                   sx={{
                     display: "flex",
-                    gap: "0.2rem", 
+                    gap: "0.2rem",
                   }}
                 >
                   {Array.from({ length: trajet.availableSeats }).map(
@@ -186,7 +188,7 @@ export default function ResultJourneyCard({ trajet }: IResultCard) {
                         sx={{
                           backgroundColor: "#6AE35F",
                           borderRadius: "50%",
-                          width: "0.8rem", 
+                          width: "0.8rem",
                           height: "0.8rem",
                         }}
                       />

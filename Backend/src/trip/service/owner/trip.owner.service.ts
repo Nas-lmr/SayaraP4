@@ -81,7 +81,6 @@ export class TripOwnerService {
         seatsReserved: reservation.seatsReserved,
         reservationTime: reservation.reservationTime,
       }));
-      console.log(data, "DANS SERVICE");
 
       return data;
     } catch (error) {

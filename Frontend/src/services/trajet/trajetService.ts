@@ -59,7 +59,6 @@ export const searchTrajet = async (params: ISearchTrajet) => {
     }
 
     const data = await response.json();
-    console.log(data, "trajet service ");
 
     return data;
   } catch (error) {
