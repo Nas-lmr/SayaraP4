@@ -56,7 +56,7 @@ jobs:
           echo "VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }}" >> .env
 
       - name: Vérifier le fichier .env
-        run: cat Frontend/.env
+        run: cat var/www/html/.env
 
       - name: Build Frontend
         run: |
