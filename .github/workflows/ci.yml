@@ -104,5 +104,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           source: "Backend/dist/*"
-          target: "/home/shark/Backend/"
+          target: "/home/"
           strip_components: 2
