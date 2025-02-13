@@ -11,7 +11,7 @@ export const ApiConfig: IApi = {
   private: {
     // TODO Fill in with the authentication url
     login: `${import.meta.env.VITE_BACKEND_URL}/login`,
-    persist: `${import.meta.env.VITE_BACKEND_URL}persist`,
+    persist: `${import.meta.env.VITE_BACKEND_URL}/persist`,
     logout: `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
     register: `${import.meta.env.VITE_BACKEND_URL}/user/register`,
     postTrajet: `${import.meta.env.VITE_BACKEND_URL}/trip/new-trip`,

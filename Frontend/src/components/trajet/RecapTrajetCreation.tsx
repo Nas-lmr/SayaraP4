@@ -22,13 +22,13 @@ export default function RecapTrajetCreation() {
   );
 
   const { userData } = useUserContext();
-
+  console.log(userData, "userData");
   if (!userData?.user?.id) {
     throw new Error("logged user is required but is undefined.");
   }
 
   const owner = userData?.user?.id;
-  
+
   const location = useLocation();
   const {
     villeDepart,
