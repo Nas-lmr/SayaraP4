@@ -32,8 +32,6 @@ export default function RegisterForm() {
 
     if (success) {
       navigate("/login");
-    } else {
-      console.info("Pas inscrit");
     }
   };
 

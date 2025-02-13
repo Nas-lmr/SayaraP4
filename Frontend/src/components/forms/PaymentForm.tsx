@@ -397,6 +397,7 @@ export default function PaymentForm({
         </Box>
         <Box
           sx={{
+            minHeight: "100%",
             width: { xs: "100%", sm: "90%", md: "45rem" },
             height: { xs: "60%", sm: "55%", md: "90%" },
             display: "flex",

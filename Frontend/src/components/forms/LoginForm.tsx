@@ -22,12 +22,11 @@ export default function LoginForm() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
+
     const response = await loginService({ email, password });
-  
+
     if (response.success && response.user) {
       login(response.user);
-      console.info("Connected");
       navigate("/");
     } else {
       console.error("Login failed:", response.error);
@@ -157,4 +156,4 @@ export default function LoginForm() {
       </Box>
     </Paper>
   );
-};
+}
