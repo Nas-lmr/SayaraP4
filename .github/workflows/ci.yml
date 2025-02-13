@@ -55,8 +55,7 @@ jobs:
           echo "VITE_OPEN_ROUTE_SERVICE_KEY=${{ secrets.VITE_OPEN_ROUTE_SERVICE_KEY }}" >> .env
           echo "VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }}" >> .env
 
-      - name: Vérifier le fichier .env
-        run: cat var/www/html/.env
+      
 
       - name: Build Frontend
         run: |
@@ -74,6 +73,10 @@ jobs:
           source: "Frontend/.env"
           target: "/var/www/html/"
 
+      - name: Vérifier le fichier .env
+        run: cat var/www/html/.env
+
+        
       - name: Déployer le Frontend via SCP
         uses: appleboy/scp-action@master
         with:
