@@ -72,7 +72,7 @@ export default function PassengerHistoricContainer() {
               maxHeight: "20%",
               display: "flex",
               justifyContent: "center",
-              mt: "1rem",
+              mt: "10rem",
             }}
           >
             <HistoricReservationCard key={index} reservation={reservation} />

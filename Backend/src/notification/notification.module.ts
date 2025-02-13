@@ -9,10 +9,10 @@ import { UserEntity } from 'src/user/entity/user.entity';
 import { ReservationStatusEntity } from 'src/reservation/entity/reservation_status.entity';
 import { ReservationEntity } from 'src/reservation/entity/reservation.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-
+import { SeedNotificationService } from './service/seed-notification.service';
 @Module({
   controllers: [NotificationController],
-  providers: [NotificationService],
+  providers: [NotificationService,SeedNotificationService],
   imports:[
     TypeOrmModule.forFeature([
       TripEntity,
