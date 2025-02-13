@@ -10,9 +10,9 @@ import { StripeService } from "src/stripe/service/stripe.service";
 import { NotificationService } from "src/notification/service/notification.service";
 import { NotificationEntity } from "src/notification/entity/notification.entity";
 import { NotificationTypeEntity } from "src/notification/entity/notificatioType.entity";
-
+import { SeedNotificationService } from "./services/seed.reservation.status";
 @Module({
-  providers: [ReservationService,StripeService,NotificationService],
+  providers: [ReservationService,StripeService,NotificationService,SeedNotificationService],
   controllers: [ReservationController],
   imports: [
     TypeOrmModule.forFeature([
