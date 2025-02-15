@@ -193,6 +193,8 @@ export default function SearchFormHome() {
             >
               <DatePicker
                 disablePast
+                reduceAnimations={true}
+
                 sx={{
                   fontWeight: 400,
                   height: "100%",
