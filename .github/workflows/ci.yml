@@ -77,6 +77,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           source: "Backend/package.json"
           target: "/home/shark/Backend/"
+          strip_components: 1
 
       - name: Installer les dépendances Backend
         run: |
