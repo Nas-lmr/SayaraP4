@@ -132,6 +132,8 @@ export default function SearchbarDesktopHome() {
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
         <DesktopDatePicker
           disablePast
+          reduceAnimations={true}
+
           sx={{
             fontWeight: 400,
             height: "100%",

@@ -19,7 +19,6 @@ const TransformPoint = (pointString: string): Coordinates | null => {
 };
 
 /* ****************************local database fetch**************************** */
-/* 2 function that fetch the city in our database if not from external database then saves using theree method */
 
 const fetchCity = async (
   cityName: string
@@ -110,22 +109,18 @@ export const fetchAndSaveCity = async (
 } | null> => {
   const normalizedCityName = cityName.toLowerCase();
 
-  // First, fetch city from local database
   let cityData = await fetchCity(normalizedCityName);
 
   if (cityData === null) {
     const coordinates = await getExternalApi(cityName);
 
     if (coordinates) {
-      // check if the city is in the database localy before saving it
       const existingCity = await fetchCity(normalizedCityName);
 
       if (!existingCity) {
         try {
-          // save the city only if it doesn't exist already
           await saveCity(normalizedCityName, coordinates);
 
-          // Fetch the city again to get the id after saving
           cityData = await fetchCity(normalizedCityName);
 
           if (cityData) {

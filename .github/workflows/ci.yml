@@ -1,4 +1,4 @@
-name: CI/CD deployment
+name: Deploy Frontend & Backend
 
 on:
   push:
@@ -46,7 +46,7 @@ jobs:
       #     cd Frontend
       #     npm run test -- src/services/trajet/trajetService.spec.ts
 
-      - name: Créer le fichier .env
+      - name: Créer le fichier .env du frontend
         run: |
           set -e
           cd Frontend
@@ -88,6 +88,23 @@ jobs:
           target: "/var/www/html/"
           strip_components: 2
 
+      # ************************************************************Backend ***************************************
+      - name: Créer le fichier .env du backend
+        run: |
+          set -e
+          cd Backend
+          echo "APP_PORT=${{ secrets.APP_PORT }}" > .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "API_SECRET_KEY=${{ secrets.API_SECRET_KEY }}" >> .env 
+          echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          
+
+
 
       - name: Build Backend
         run: |
@@ -95,14 +112,43 @@ jobs:
           cd Backend
           npm run build
 
+      - name: Déployer le fichier .env via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "Backend/.env"
+          target: "/home/shark/Backend/dist"
+          strip_components: 1
+      
+      
 
-      # - name: Déployer le Backend via SCP
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USERNAME }}
-      #     key: ${{ secrets.SERVER_SSH_KEY }}
-      #     port: ${{ secrets.SERVER_PORT }}
-      #     source: "Backend/dist/*"
-      #     target: "/home/shark/Backend/dist/"
-      #     strip_components: 2
+
+
+
+      - name: Déployer le Backend via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "Backend/dist/*"
+          target: "/home/shark/Backend/"
+          strip_components: 2
+
+
+      - name: Redémarrer les services PM2
+        uses: appleboy/ssh-action@master
+        with:
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.SERVER_USERNAME }}
+            key: ${{ secrets.SERVER_SSH_KEY }}
+            port: ${{ secrets.SERVER_PORT }}
+            script: |
+              export NVM_DIR="$HOME/.nvm"
+              source "$NVM_DIR/nvm.sh"
+              export PATH=$HOME/.nvm/versions/node/v20.16.0/bin:$PATH
+              pm2 restart all || pm2 start dist/main.js

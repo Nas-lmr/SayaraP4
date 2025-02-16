@@ -165,6 +165,7 @@ const FormTrip: React.FC = () => {
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
           <DatePicker
             disablePast
+            reduceAnimations={true}
             sx={{
               width: "85%",
               fontFamily: "Montserrat",

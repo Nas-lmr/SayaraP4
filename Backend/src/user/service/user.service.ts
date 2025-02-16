@@ -14,9 +14,12 @@ export class UserService {
     private userRepository: Repository<UserEntity>
   ) {}
 
+  validatePassword(password: string): boolean {
+    const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password);
+  }
+  
 
-
-  // pour créer un utilisateur
   async create(userDto: UserDto, password: string): Promise<UserDto> {
     try {
       
@@ -28,6 +31,12 @@ export class UserService {
         );
       }
 
+      if (!this.validatePassword(password)) {
+        throw new HttpException(
+          'Le mot de passe doit contenir au moins 8 caractères et une lettre majuscule.',
+          HttpStatus.BAD_REQUEST
+        );
+      }
       
       const hashedPassword = await bcrypt.hash(password, this.saltRounds);
 
@@ -49,17 +58,7 @@ export class UserService {
 
 
 
-  //  pour obtenir tous les utilisateurs
-  // async getUsers(): Promise<UserEntity[]> {
-  //   try {
-  //     return await this.userRepository.find();
-  //   } catch (error) {
-  //     throw new HttpException(
-  //       `Erreur lors de la récupération des utilisateurs : ${error.message}`,
-  //       HttpStatus.INTERNAL_SERVER_ERROR
-  //     );
-  //   }
-  // }
+ 
 
   
 
@@ -72,7 +71,6 @@ export class UserService {
 
 
 
-  //  pour trouver un utilisateur par ID
   async findById(userId: number): Promise<UserEntity | undefined> {
     try {
       const user = await this.userRepository.findOne({
