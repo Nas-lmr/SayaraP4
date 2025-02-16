@@ -104,6 +104,11 @@ jobs:
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
           
       
+      - name: Build Backend
+        run: |
+          set -e
+          cd Backend
+          npm run build
 
 
       - name: Déployer le Backend via SCP
@@ -117,14 +122,6 @@ jobs:
           target: "/home/shark/Backend"
           strip_components: 1
 
-
-
-
-      - name: Build Backend
-        run: |
-          set -e
-          cd Backend
-          npm run build
 
       - name: Déployer le fichier .env via SCP
         uses: appleboy/scp-action@master
