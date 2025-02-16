@@ -23,17 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Installer les dépendances Backend
-        run: |
-          set -e
-          cd Backend
-          npm install
-
-      - name: Exécuter les tests unitaires Backend
-        run: |
-          set -e
-          cd Backend
-          npm run test -- src/city/service/city.service.spec.ts
+     
 
       - name: Installer les dépendances Frontend
         run: |
@@ -89,6 +79,27 @@ jobs:
           strip_components: 2
 
       # ************************************************************Backend ***************************************
+
+      - name: Copier le package.json du Backend
+        run: |
+          set -e
+          # Copier le package.json du Backend
+          cp Backend/package.json /home/shark/Backend/
+
+
+      - name: Installer les dépendances Backend
+        run: |
+          set -e
+          cd Backend
+          npm install
+
+      - name: Exécuter les tests unitaires Backend
+        run: |
+          set -e
+          cd Backend
+          npm run test -- src/city/service/city.service.spec.ts  
+          
+
       - name: Créer le fichier .env du backend
         run: |
           set -e
