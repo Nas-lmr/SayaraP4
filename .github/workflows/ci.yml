@@ -23,18 +23,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-     
-
+      # ******************************************************** Frontend ***********************************************
       - name: Installer les dépendances Frontend
         run: |
           set -e
           cd Frontend
           npm install
-
-      # - name: Exécuter les tests unitaires Frontend
-      #   run: |
-      #     cd Frontend
-      #     npm run test -- src/services/trajet/trajetService.spec.ts
 
       - name: Créer le fichier .env du frontend
         run: |
@@ -44,8 +38,6 @@ jobs:
           echo "VITE_FRONTEND_PROD_URL=${{ secrets.VITE_FRONTEND_PROD_URL }}" >> .env
           echo "VITE_OPEN_ROUTE_SERVICE_KEY=${{ secrets.VITE_OPEN_ROUTE_SERVICE_KEY }}" >> .env
           echo "VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }}" >> .env
-
-      
 
       - name: Build Frontend
         run: |
@@ -64,9 +56,6 @@ jobs:
           target: "/var/www/html/"
           strip_components: 1
 
-     
-
-        
       - name: Déployer le Frontend via SCP
         uses: appleboy/scp-action@master
         with:
@@ -78,16 +67,16 @@ jobs:
           target: "/var/www/html/"
           strip_components: 2
 
-      # ************************************************************Backend ***************************************
-
-      - name: Copier le package.json du Backend
-        run: |
-          set -e
-          cd Backend
+      # ******************************************************** Backend ***********************************************
+      - name: Copier le package.json du Backend via SCP
         uses: appleboy/scp-action@master
-        source: "Backend/package.json"
-        target: "/home/shark/Backend"
-
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "Backend/package.json"
+          target: "/home/shark/Backend/"
 
       - name: Installer les dépendances Backend
         run: |
@@ -100,7 +89,6 @@ jobs:
           set -e
           cd Backend
           npm run test -- src/city/service/city.service.spec.ts  
-
 
       - name: Créer le fichier .env du backend
         run: |
@@ -115,14 +103,12 @@ jobs:
           echo "API_SECRET_KEY=${{ secrets.API_SECRET_KEY }}" >> .env 
           echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          
-      
+
       - name: Build Backend
         run: |
           set -e
           cd Backend
           npm run build
-
 
       - name: Déployer le Backend via SCP
         uses: appleboy/scp-action@master
@@ -135,7 +121,6 @@ jobs:
           target: "/home/shark/Backend/dist"
           strip_components: 2
 
-
       - name: Déployer le fichier .env via SCP
         uses: appleboy/scp-action@master
         with:
@@ -147,16 +132,15 @@ jobs:
           target: "/home/shark/Backend/dist"
           strip_components: 1   
 
-        
       - name: Redémarrer les services PM2
         uses: appleboy/ssh-action@master
         with:
-            host: ${{ secrets.SERVER_HOST }}
-            username: ${{ secrets.SERVER_USERNAME }}
-            key: ${{ secrets.SERVER_SSH_KEY }}
-            port: ${{ secrets.SERVER_PORT }}
-            script: |
-              export NVM_DIR="$HOME/.nvm"
-              source "$NVM_DIR/nvm.sh"
-              export PATH=$HOME/.nvm/versions/node/v20.16.0/bin:$PATH
-              pm2 restart all || pm2 start dist/main.js
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            export PATH=$HOME/.nvm/versions/node/v20.16.0/bin:$PATH
+            pm2 restart all || pm2 start dist/main.js
