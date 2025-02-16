@@ -134,7 +134,7 @@ jobs:
           target: "/home/shark/Backend/dist"
           strip_components: 1   
 
-        # redémarrer le pm2
+        
       - name: Redémarrer les services PM2
         uses: appleboy/ssh-action@master
         with:
