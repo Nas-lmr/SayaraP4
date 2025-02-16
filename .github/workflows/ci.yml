@@ -140,8 +140,5 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          script: |
-            export NVM_DIR="$HOME/.nvm"
-            source "$NVM_DIR/nvm.sh"
-            export PATH=$HOME/.nvm/versions/node/v20.16.0/bin:$PATH
-            pm2 restart all || pm2 start dist/main.js
+          run: |
+             pm2 restart main
