@@ -20,7 +20,7 @@ export default function TchatPage() {
       {
         
             <>
-             <h1> en cours de contruction </h1>
+             <h1> en cours de construction </h1>
               
             </>
           
