@@ -118,9 +118,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "Backend/dist/"
-          target: "/home/shark/Backend"
-          strip_components: 1
+          source: "Backend/dist/*"
+          target: "/home/shark/Backend/dist"
+          strip_components: 2
 
 
       - name: Déployer le fichier .env via SCP
